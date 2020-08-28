@@ -5,6 +5,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+import { Header } from 'react-native-elements';
+
+import StaticText from './StaticText';
+import Theme from './Theme';
+import LockerTheme from './Theme';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -15,7 +20,11 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
+        <Header
+          leftComponent={{ icon: 'menu', color: LockerTheme["text-color"]}}
+          centerComponent={{ text: StaticText.title, style: { color:LockerTheme["text-color"] } }}
+          rightComponent={{ icon: 'home', color: LockerTheme["text-color"] }}
+        />
         <StatusBar />
       </SafeAreaProvider>
     );

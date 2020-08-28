@@ -8,6 +8,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import config from '../config';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -47,6 +48,10 @@ function TabBarIcon(props: { name: string; color: string }) {
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
+  // fetch(`${config.server}/api/users`,{
+  //   method: 'GET'
+  // }).then(res=>res.json())
+  //   .then(data=>console.log(data))
   return (
     <TabOneStack.Navigator>
       <TabOneStack.Screen
