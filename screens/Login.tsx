@@ -1,20 +1,43 @@
 "use strict";
 
 import React, {useState} from 'react';
-import { StyleSheet, TextInput, View, Button } from 'react-native';
+import { AsyncStorage, TextInput, View, Button } from 'react-native';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Login } from 'Reducer';
 
-const LoginScreen = (props : Object) => {
-    const [login, setLogin] = useState('');
+import { Login } from 'Reducer';
+import config from 'config';
+
+
+const login = async (loginInfo : Object, props: any) => {
+  loginInfo = config.default_user;
+  let response = await fetch(`${config.server}/auth/login`,{
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+      },
+    body: JSON.stringify(loginInfo)
+  });
+  if (response.ok){
+    let result = await response.json();
+    await AsyncStorage.setItem("token",result.token);
+    props.Login(result.token);
+    props.navigation.navigate('Home');
+  } else {
+    let err = await response.json();
+    console.log(err);
+  }
+}
+
+const LoginScreen = (props : any) => {
+    const [loginInfo, setLoginInfo] = useState('');
     const [password, setPassword] = useState('');
     return (
         <View>
         <TextInput
           placeholder="Enter username, email, or phone number"
-          value={login}
-          onChangeText={setLogin}
+          value={loginInfo}
+          onChangeText={setLoginInfo}
         />
         <TextInput
           placeholder="Enter password"
@@ -22,12 +45,20 @@ const LoginScreen = (props : Object) => {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <Button title="Sign in" onPress={()=>Login({
-          "login":login,
-          "password":password
-        })} />
+        <Button title="Login" onPress={()=>
+          login({
+            "login":loginInfo,
+            "password":password
+          },props
+        )} />
       </View>
     );
 }
 
-export default LoginScreen;
+const mapStateToProps = (state : any) => (state);
+const mapDispatchToProps = { Login };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginScreen)

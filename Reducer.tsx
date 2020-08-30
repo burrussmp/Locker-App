@@ -57,29 +57,11 @@ export const SignUp = async (data : Object) : Promise<AuthorizationActions> => {
   }
 }
 
-export const Login = async (data : Object) : Promise<AuthorizationActions> => {
-  let response = await fetch(`${config.server}/auth/login`,{
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-      },
-    body: JSON.stringify(data)
-  });
-  if (response.ok){
-    let result = await response.json();
-    await AsyncStorage.setItem("token",result.token);
+export const Login = (token : string) : AuthorizationActions => {
     return {
       type: LOGIN,
-      token: result.token
+      token: token
     }
-  } else {
-    let err = await response.json();
-    return {
-      type : ERROR,
-      message: err.message
-    }
-  }
 }
 
 export const LogOut = async () : Promise<AuthorizationActions> => {
