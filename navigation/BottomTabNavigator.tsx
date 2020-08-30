@@ -48,10 +48,6 @@ function TabBarIcon(props: { name: string; color: string }) {
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
-  // fetch(`${config.server}/api/users`,{
-  //   method: 'GET'
-  // }).then(res=>res.json())
-  //   .then(data=>console.log(data))
   return (
     <TabOneStack.Navigator>
       <TabOneStack.Screen
