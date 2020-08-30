@@ -1,16 +1,16 @@
-import React,{useEffect,dispatch} from 'react';
-import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
+import React,{useEffect} from 'react';
+import { AsyncStorage} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import logger from 'redux-logger' 
 import Login from 'screens/Login';
 import Splash from 'screens/Splash';
 import Home from 'screens/Home';
 
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore,applyMiddleware } from 'redux';
 import Reducer from 'Reducer';
-
+import compose from 'lodash/fp/compose'
 
 const AppContext = React.createContext({
   language: "EN",
@@ -19,8 +19,17 @@ const AppContext = React.createContext({
 });
 
 
+// Create the stack (similar to stack trace)
 const Stack = createStackNavigator();
-const store = createStore(Reducer);
+// Add logging
+
+const middleware = [];
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === `development`) {
+  middleware.push(logger);
+}
+
+const store = compose(applyMiddleware(...middleware))(createStore)(Reducer);
 
 export default function App({ navigation }) {
   useEffect(() => {

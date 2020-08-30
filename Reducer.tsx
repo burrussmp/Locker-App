@@ -3,10 +3,10 @@ import { AsyncStorage } from 'react-native';
 
 import config from 'config';
 
-const SIGN_UP = "SIGN_UP";
-const LOGIN = "LOGIN";
-const LOGOUT = "LOGOUT";
-const ERROR = "ERROR"
+const SIGN_UP = "auth/sign_up";
+const LOGIN = "auth/login";
+const LOGOUT = "auth/logout";
+const ERROR = "auth/error"
 
 interface SignUpAction {
   type: typeof SIGN_UP,

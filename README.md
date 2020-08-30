@@ -28,6 +28,8 @@ Understand the redux pattern for react native.
 
 ## Understanding Redux and React-Redux
 
+Highly recommend this for a brief on Redux: https://redux.js.org/tutorials/essentials/part-1-overview-concepts
+
 A **reducer** is a pure function that takes the previous state and an action and returns a new state. In other words, you can dispatch an action to the reducer and the reducer will manipulate the state and return a new state. The state's should be entirely dependent on the previous state and current action. Wherever you want the reducers, just make sure to add `import { Provider } from 'react-redux';` to the top of the code. This should be in the App.js.
 
 A **store** is created from a reducer `createStore(reducer)`. It is the actual object that holds the data. In other words, the action is an object, the reducer reacts to the object and returns a new state, and the store is in charge of maintaining that state.

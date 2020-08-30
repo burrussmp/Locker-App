@@ -1,41 +1,61 @@
 "use strict";
 
-import React,{useState} from 'react';
-import {StyleSheet, Text, View, TextInput, ToucheableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, TextInput, View, Button } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { SignUp } from 'Reducer';
 
-
-export interface RegistrationTextInputProps {
-    placeholder: string;
-  }
-  
-const RegistrationTextInput: React.FC<RegistrationTextInputProps> = (props) => {
-    const [text, setText] = useState(props.placeholder);
-    return (
-        <TextInput
-            style={{height:40}}
-            placeholder={props.placeholder}
-            onChangeText={text => setText(text)}
-            defaultValue={text}
-        />
-    )
-};
-
-const Registration = () => {
+const RegisterScreen = (props : Object) => {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [password, setPassword] = useState('');
     return (
         <View>
-            <RegistrationTextInput placeholder="Username"></RegistrationTextInput>
-            <RegistrationTextInput placeholder="Email"></RegistrationTextInput>
-            <RegistrationTextInput placeholder="Phone Number"></RegistrationTextInput>
-            <RegistrationTextInput placeholder="First Name"></RegistrationTextInput>
-            <RegistrationTextInput placeholder="Last Name"></RegistrationTextInput>
-            <RegistrationTextInput placeholder="Password"></RegistrationTextInput>
-        </View>
-    )
-} ;
+        <TextInput
+          placeholder="Enter username"
+          value={username}
+          onChangeText={setUsername}
+        />
+        <TextInput
+          placeholder="Enter email"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          placeholder="Enter first name"
+          value={firstName}
+          onChangeText={setFirstName}
+        />
+        <TextInput
+          placeholder="Enter last name"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+        <TextInput
+          placeholder="Enter phone number"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+        />
+        <TextInput
+          placeholder="Enter password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <Button title="Sign Up" onPress={()=>SignUp({
+          "username":username,
+          "password":password,
+          "first_name":firstName,
+          "last_name":lastName,
+          "email":email,
+          "phone_number":phoneNumber
+        })} />
+      </View>
+    );
+}
 
-const styles = StyleSheet.create({
-    
-})
-  
-export default Registration;
-  
+export default RegisterScreen;
