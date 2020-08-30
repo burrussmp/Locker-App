@@ -11,3 +11,7 @@ or if that fails
 ```bash
 ifconfig
 ```
+
+## Useful Links
+
+**core components**: https://reactnative.dev/docs/components-and-apis

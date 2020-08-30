@@ -5,8 +5,8 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../pages/TabOneScreen';
-import TabTwoScreen from '../pages/TabTwoScreen';
+import TabOneScreen from '../screen/TabOneScreen';
+import TabTwoScreen from '../screen/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import config from '../config';
 

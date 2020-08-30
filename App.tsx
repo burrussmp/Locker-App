@@ -8,8 +8,8 @@ import Navigation from './navigation';
 import { Header } from 'react-native-elements';
 
 import StaticText from './StaticText';
-import Theme from './Theme';
-import LockerTheme from './Theme';
+import Theme from './styles/Theme';
+import LockerTheme from './styles/Theme';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -25,6 +25,7 @@ export default function App() {
           centerComponent={{ text: StaticText.title, style: { color:LockerTheme["text-color"] } }}
           rightComponent={{ icon: 'home', color: LockerTheme["text-color"] }}
         />
+        <Navigation></Navigation>
         <StatusBar />
       </SafeAreaProvider>
     );
