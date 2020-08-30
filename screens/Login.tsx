@@ -2,8 +2,9 @@
 
 import React, {useState} from 'react';
 import { StyleSheet, TextInput, View, Button } from 'react-native';
-
-import config from 'config';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Login } from 'Reducer';
 
 const LoginScreen = (props : Object) => {
     const [login, setLogin] = useState('');
@@ -21,10 +22,12 @@ const LoginScreen = (props : Object) => {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <Button title="Sign in" onPress={() => props.navigation.navigate("Home")} />
+        <Button title="Sign in" onPress={()=>Login({
+          "login":login,
+          "password":password
+        })} />
       </View>
     );
 }
-
 
 export default LoginScreen;

@@ -3,10 +3,6 @@ import { AsyncStorage } from 'react-native';
 
 import config from 'config';
 
-interface AuthState {
-  token : string
-};
-
 const SIGN_UP = "SIGN_UP";
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
@@ -32,7 +28,14 @@ interface ErrorAction {
 
 type AuthorizationActions = SignUpAction | LoginAction | LogOutAction | ErrorAction;
 
-const SignUp = async (data : Object) : Promise<AuthorizationActions> => {
+interface AuthState {
+  token : string
+};
+const AuthInitialState = {
+  token : ""
+};
+
+export const SignUp = async (data : Object) : Promise<AuthorizationActions> => {
   let response = await fetch(`${config.server}/users`,{
     method: 'POST',
     headers: {
@@ -54,7 +57,7 @@ const SignUp = async (data : Object) : Promise<AuthorizationActions> => {
   }
 }
 
-const Login = async (data : Object) : Promise<AuthorizationActions> => {
+export const Login = async (data : Object) : Promise<AuthorizationActions> => {
   let response = await fetch(`${config.server}/auth/login`,{
     method: 'POST',
     headers: {
@@ -79,12 +82,12 @@ const Login = async (data : Object) : Promise<AuthorizationActions> => {
   }
 }
 
-const LogOut = async () : Promise<AuthorizationActions> => {
+export const LogOut = async () : Promise<AuthorizationActions> => {
   let response = await fetch(`${config.server}/auth/logout`);
   if (response.ok){
     await AsyncStorage.setItem("token","");
     return {
-      type: LOGOUT,
+      type: LOGOUT
     }
   } else {
     let err = await response.json();
@@ -95,10 +98,23 @@ const LogOut = async () : Promise<AuthorizationActions> => {
   }
 }
  
-const AuthorizationReducer = (state = {
-    token: null,
-}, action : AuthorizationActions) => {
+const AuthorizationReducer = (
+  state = AuthInitialState, 
+  action : AuthorizationActions
+  ) : AuthState => {
   switch (action.type) {
+    case LOGOUT:
+      return {
+        "token" : ""
+      }
+    case SIGN_UP:
+      return state
+    case LOGIN:
+      return {
+        "token" : action.token
+      }
+    case ERROR: 
+      return state
     default:
       return state
   }

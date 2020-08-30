@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useEffect,dispatch} from 'react';
 import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,86 +8,26 @@ import config from 'config';
 import Login from 'screens/Login';
 import Splash from 'screens/Splash';
 
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import AuthReducer from 'Reducer';
+
+
 const AuthContext = React.createContext({
   language: "EN",
   theme: "light",
   authenticated: false
 });
 
-function HomeScreen() {
-  const { signOut } = React.useContext(AuthContext);
-  return (
-    <View>
-      <Text>Signed in!</Text>
-      <Button title="Sign out" onPress={signOut} />
-    </View>
-  );
-}
-
-function SignInScreen() {
-  const [login, setLogin] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
-  const { signIn } = React.useContext(AuthContext);
-
-  return (
-    <View>
-      <TextInput
-        placeholder="Username, email, or phone number"
-        value={login}
-        onChangeText={setLogin}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button title="Sign in" onPress={() => signIn(config.default_user)} />
-    </View>
-  );
-}
 
 const Stack = createStackNavigator();
-
+const store = createStore(AuthReducer);
 export default function App({ navigation }) {
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: null,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
-    }
-  );
-
-  React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
+  useEffect(() => {
     const bootstrapAsync = async () => {
       let userToken;
       try {
         userToken = await AsyncStorage.getItem('userToken');
-        console.log(userToken)
       } catch (e) {
         console.log(e);
       }
