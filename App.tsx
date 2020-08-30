@@ -3,25 +3,16 @@ import { AsyncStorage, Button, Text, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import config from './config';
+import config from 'config';
+
+import Login from 'screens/Login';
+import Splash from 'screens/Splash';
 
 const AuthContext = React.createContext({
   language: "EN",
   theme: "light",
-  authenticated: false,
-  signOut: false
+  authenticated: false
 });
-
-/*
-  Show while fetching token and before loading is complete
-*/
-function SplashScreen() {
-  return (
-    <View>
-      <Text>Loading...</Text>
-    </View>
-  );
-}
 
 function HomeScreen() {
   const { signOut } = React.useContext(AuthContext);
@@ -152,15 +143,17 @@ export default function App({ navigation }) {
   );
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider value={{
+      "language" : 'EN',
+      "theme" : "light",
+      "authenticated" : false,
+    }}>
       <NavigationContainer>
         <Stack.Navigator>
           {state.isLoading ? (
-            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="Splash" component={Splash} />
           ) : state.userToken == null ? (
-            <Stack.Screen
-              name="SignIn"
-              component={SignInScreen}
+            <Stack.Screen name="Login" component={Login}
               options={{
                 title: 'Sign in',
                 animationTypeForReplace: state.isSignout ? 'pop' : 'push',
