@@ -1,4 +1,9 @@
-"use strict";
+/**
+  * @author Matthew P. Burruss
+  * @date Aug 2020
+  * @desc Client-Side API calls
+  * @version 1.0.0
+*/
 
 import config from 'config';
 import { AsyncStorage } from 'react-native';

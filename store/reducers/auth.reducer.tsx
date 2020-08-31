@@ -1,4 +1,9 @@
-"use strict";
+/**
+  * @author Matthew P. Burruss
+  * @date Aug 2020
+  * @desc The slice reducer for the authorization. Handles all the logic necessary to 
+  * produce a new state given the old state and the action
+*/
 
 import {
     AuthorizationActions,

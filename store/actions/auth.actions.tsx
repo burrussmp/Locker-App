@@ -1,4 +1,10 @@
-"use strict";
+/**
+  * @author Matthew P. Burruss
+  * @date Aug 2020
+  * @desc All the actions necessary to authorize a user
+  * Actions in redux are dispatched to the store. The store uses the appropriate reducer
+  * to change the state based on the current state and the dispatched action.
+*/
 
 import {
     AuthorizationActions,

@@ -1,8 +1,11 @@
-"use strict";
+/**
+  * @author Matthew P. Burruss
+  * @date Aug 2020
+  * @desc Registration screen
+*/
 
 import React, {useState} from 'react';
 import {TextInput, View, Button } from 'react-native';
-
 import AuthActions from 'store/actions/auth.actions'; 
 import api from 'api/api';
 import styles from 'styles/styles';
