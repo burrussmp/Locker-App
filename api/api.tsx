@@ -3,21 +3,29 @@
 import config from 'config';
 import { AsyncStorage } from 'react-native';
 
-/*
-  * Helpers
-*/
+// HELPERS
 
-// set the JWT token from AsyncStorage
+/**
+  * @desc Saves user JWT token in memory
+  * @param token : String - Token retrieved from server or empty to remove
+  * @return Promise to be resolved
+*/
 const setToken = async (token : string) : Promise<void> => {
   return AsyncStorage.setItem("token",token);
 }
 
-// get the JWT token from AsyncStorage
+/**
+  * @desc Retrieves the user JWT token from memory
+  * @return Promise<String>
+*/
 const getToken = async () : Promise<String | null> => {
   return AsyncStorage.getItem("token"); 
 }
 
-// A wrapper to throw a new error that includes the status code and server message
+/**
+  * @desc A wrapper to retrieve error (status code and message are JSON stringified)
+  * @return Promise<Error>
+*/
 const handleError = async (res : any) : Promise<Error> => {
   let status = res.status;
   let err = await res.json();
@@ -27,7 +35,10 @@ const handleError = async (res : any) : Promise<Error> => {
   }))
 }
 
-// retrieves the header including the token to set the Authorization header
+/**
+  * @desc A wrapper to retrieve token and set headers for React's Fetch API
+  * @return Promise<Object>
+*/
 const getHeaders = async () : Promise<{}> => {
   let token = await getToken();
   return {
@@ -40,12 +51,22 @@ const getHeaders = async () : Promise<{}> => {
 /*
   * API
 */
-const Login = async (loginInfo : Object) : Promise<String | Error | undefined> => {
-  loginInfo = config.default_user;
+
+/**
+  * @desc Login API
+  * @param data : Object - Contains the login info and password of the
+  * Example: {
+  *   login: "userA",
+  *   password: "password123$"
+  * }
+  * @return A promise that can be handled. If resolved, the user's token is returned (String) else an error is returned
+*/
+const Login = async (data : Object) : Promise<String | Error | undefined> => {
+  data = config.default_user;
   let res = await fetch(`${config.server}/auth/login`,{
     method: 'POST',
     headers: await getHeaders(),
-    body: JSON.stringify(loginInfo)
+    body: JSON.stringify(data)
   });
   if (res.ok){
     let result = await res.json();
@@ -56,6 +77,10 @@ const Login = async (loginInfo : Object) : Promise<String | Error | undefined> =
   }
 }
 
+/**
+  * @desc Logout API
+  * @return A promise that can be handled. If resolved, the user's token has been deleted else error can be caught
+*/
 const Logout = async () : Promise<void | Error> => {
   let res = await fetch(`${config.server}/auth/logout`);
   if (res.ok){
@@ -65,6 +90,19 @@ const Logout = async () : Promise<void | Error> => {
   }
 }
 
+/**
+  * @desc Login API
+  * @param data : Object - Contains the login info and password of the
+  * Example: {
+  *   username: "userA",
+  *   email : "userA@mail.com",
+  *   first_name : "userA first name",
+  *   last_name : "userA last name",
+  *   phone_number: "000-111-2222"
+  *   password: "password123$"
+  * }
+  * @return A promise that can be handled. If resolved, void else throws error
+*/
 const SignUp = async (data : Object) : Promise<void | Error>=> {
   let res = await fetch(`${config.server}/users`,{
     method: 'POST',
