@@ -57,6 +57,15 @@ export const SignUp = async (data : Object) : Promise<AuthorizationActions> => {
   }
 }
 
+export const isLoggedIn = (state : any) => {
+  console.log(state.auth)
+  if (state.auth.token){
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export const Login = (token : string) : AuthorizationActions => {
     return {
       type: LOGIN,
