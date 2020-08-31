@@ -7,7 +7,6 @@ import LoginScreen from 'screens/Login';
 const AuthNavigation = createStackNavigator(
     {
       Login: { screen: LoginScreen }
-    //   Signup: { screen: Signup }
     },
     {
       initialRouteName: 'Login',

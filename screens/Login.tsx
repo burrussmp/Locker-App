@@ -4,7 +4,7 @@ import React, {useState,useEffect} from 'react';
 import { AsyncStorage, TextInput, View, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { Login } from 'Reducer';
+import AuthActions from 'store/actions/auth.actions';
 import config from 'config';
 import Splash from 'screens/Splash';
 
@@ -40,10 +40,10 @@ const LoginScreen = (props : any) => {
         let token = await AsyncStorage.getItem('token');
         if (token) {
           props.Login(token);
-          console.log('logged in')
+          console.log('User is already logged in')
           props.navigation.navigate('App');
         } else {
-          console.log('Not logged in.');
+          console.log('User is not logged in');
           setIsLoading(false);
         }
       } catch (err) {
@@ -87,7 +87,11 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state : any) => (state);
-const mapDispatchToProps = { Login };
+const mapDispatchToProps = () => {
+  return {
+    "Login": AuthActions.Login
+  }
+};
 
 export default connect(
   mapStateToProps,
