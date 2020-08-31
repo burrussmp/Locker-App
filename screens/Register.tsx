@@ -1,31 +1,13 @@
 "use strict";
 
 import React, {useState} from 'react';
-import { StyleSheet, TextInput, View, Button } from 'react-native';
-import { connect } from 'react-redux';
+import {TextInput, View, Button } from 'react-native';
 
-import config from 'config';
 import AuthActions from 'store/actions/auth.actions'; 
+import api from 'api/api';
+import styles from 'styles/styles';
 
-const SignUp = async (data: any,props:any) => {
-  let response = await fetch(`${config.server}/users`,{
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-      },
-    body: JSON.stringify(data)
-  });
-  if (response.ok){
-    props.SignUp();
-    props.navigation.navigate('Login');
-  } else {
-    let err = await response.json();
-    console.log(err);
-  }
-}
-
-const RegisterScreen = (props : Object) => {
+const RegisterScreen = (props : any) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -33,59 +15,51 @@ const RegisterScreen = (props : Object) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
     return (
-        <View>
+      <View style = {styles.container_center}>
         <TextInput
           placeholder="Enter username"
           value={username}
-          onChangeText={setUsername}
-        />
+          onChangeText={setUsername}/>
         <TextInput
           placeholder="Enter email"
           value={email}
-          onChangeText={setEmail}
-        />
+          onChangeText={setEmail}/>
         <TextInput
           placeholder="Enter first name"
           value={firstName}
-          onChangeText={setFirstName}
-        />
+          onChangeText={setFirstName}/>
         <TextInput
           placeholder="Enter last name"
           value={lastName}
-          onChangeText={setLastName}
-        />
+          onChangeText={setLastName}/>
         <TextInput
           placeholder="Enter phone number"
           value={phoneNumber}
-          onChangeText={setPhoneNumber}
-        />
+          onChangeText={setPhoneNumber}/>
         <TextInput
           placeholder="Enter password"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry
-        />
-        <Button title="Sign Up" onPress={()=>
-        SignUp({
-          "username":username,
-          "password":password,
-          "first_name":firstName,
-          "last_name":lastName,
-          "email":email,
-          "phone_number":phoneNumber
-          } , props
-        )}/>
+          secureTextEntry/>
+        <Button title="Sign Up" onPress={()=> {
+          let data = {
+            "username":username,
+            "password":password,
+            "first_name":firstName,
+            "last_name":lastName,
+            "email":email,
+            "phone_number":phoneNumber
+          };
+          api.SignUp(data).then(()=>{
+            props.SignUp();
+            props.navigation.navigate('Login');
+          }).catch(err=>{
+            console.log(err);
+          });
+        }}/>
       </View>
     );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
 
 const mapStateToProps = (state : any) => (state);
 const mapDispatchToProps = () => {
@@ -93,6 +67,7 @@ const mapDispatchToProps = () => {
     "SignUp": AuthActions.SignUp
   }
 };
+import { connect } from 'react-redux';
 export default connect(
   mapStateToProps,
   mapDispatchToProps

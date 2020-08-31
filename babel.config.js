@@ -12,7 +12,9 @@ module.exports = function(api) {
             screens: './screens',
             components: './components',
             navigation: './navigation',
-            store: './store'
+            store: './store',
+            api : './api',
+            styles: './styles'
           },
         },
       ],

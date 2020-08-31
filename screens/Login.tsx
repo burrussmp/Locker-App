@@ -1,34 +1,11 @@
 "use strict";
-
 import React, {useState,useEffect} from 'react';
-import { AsyncStorage, TextInput, View, Button, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
+import {TextInput, View, Button} from 'react-native';
 
-import AuthActions from 'store/actions/auth.actions';
-import config from 'config';
 import Splash from 'screens/Splash';
-
-
-const login = async (loginInfo : Object, props: any) => {
-  loginInfo = config.default_user;
-  let response = await fetch(`${config.server}/auth/login`,{
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-      },
-    body: JSON.stringify(loginInfo)
-  });
-  if (response.ok){
-    let result = await response.json();
-    await AsyncStorage.setItem("token",result.token);
-    props.Login(result.token);
-    props.navigation.navigate('App');
-  } else {
-    let err = await response.json();
-    console.log(err);
-  }
-}
+import AuthActions from 'store/actions/auth.actions';
+import api from 'api/api';
+import styles from 'styles/styles'
 
 const LoginScreen = (props : any) => {
   const [loginInfo, setLoginInfo] = useState('');
@@ -37,13 +14,11 @@ const LoginScreen = (props : any) => {
   useEffect(() => {
     const bootstrapAsync = async () => {
       try {
-        let token = await AsyncStorage.getItem('token');
+        let token = await api.getToken();
         if (token) {
           props.Login(token);
-          console.log('User is already logged in')
           props.navigation.navigate('App');
         } else {
-          console.log('User is not logged in');
           setIsLoading(false);
         }
       } catch (err) {
@@ -55,7 +30,7 @@ const LoginScreen = (props : any) => {
   return isLoading ? 
     <Splash/>
     : (
-      <View style={styles.container}>
+      <View style={styles.container_center}>
         <TextInput
           placeholder="Enter username, email, or phone number"
           value={loginInfo}
@@ -67,24 +42,21 @@ const LoginScreen = (props : any) => {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <Button title="Login" onPress={()=>
-          login({
+        <Button title="Login" onPress={()=> {
+          let data = {
             "login":loginInfo,
             "password":password
-          },props
-        )} />
+          };
+          api.Login(data).then(token=>{
+            props.Login(token);
+            props.navigation.navigate('App');
+          }).catch(err=>{
+            console.log(err);
+          })
+        }} />
       </View>
     )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
 
 const mapStateToProps = (state : any) => (state);
 const mapDispatchToProps = () => {
@@ -92,7 +64,7 @@ const mapDispatchToProps = () => {
     "Login": AuthActions.Login
   }
 };
-
+import { connect } from 'react-redux';
 export default connect(
   mapStateToProps,
   mapDispatchToProps
