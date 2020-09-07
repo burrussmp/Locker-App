@@ -15,6 +15,7 @@ const LoginScreen = (props : any) => {
   const [loginInfo, setLoginInfo] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading,setIsLoading] = useState(true);
+  
   useEffect(() => {
     const bootstrapAsync = async () => {
       try {
@@ -31,6 +32,7 @@ const LoginScreen = (props : any) => {
     };
     bootstrapAsync();
   }, []);
+
   return isLoading ? 
     <Splash/>
     : (

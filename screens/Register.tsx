@@ -44,7 +44,7 @@ const RegisterScreen = (props : any) => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry/>
-        <Button title="Sign Up" onPress={()=> {
+        <Button title="Sign Up" onPress={ ()=> {
           let data = {
             "username":username,
             "password":password,
@@ -54,7 +54,7 @@ const RegisterScreen = (props : any) => {
             "phone_number":phoneNumber
           };
           api.SignUp(data).then(()=>{
-            props.SignUp();
+            AuthActions.SignUp();
             props.navigation.navigate('Login');
           }).catch(err=>{
             console.log(err);
