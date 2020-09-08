@@ -4,11 +4,13 @@
   * @desc Home screen
 */
 
-import React from 'react';
+import * as React from 'react';
 import {Text,View,Button} from 'react-native';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import styles from 'styles/styles';
+
+import BottomNavigationBar from 'navigation/BottomNavigationBar';
 
 const HomeScreen = (props : any) => {
     return (
@@ -17,7 +19,6 @@ const HomeScreen = (props : any) => {
             <Button title="LogOut" onPress={async () =>
                 api.Logout().then(()=>{
                   props.Logout();
-                  props.navigation.navigate('Auth');
                 }).catch(err=>{
                   console.log(err);
                 })

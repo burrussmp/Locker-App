@@ -14,28 +14,7 @@ import styles from 'styles/styles'
 const LoginScreen = (props : any) => {
   const [loginInfo, setLoginInfo] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading,setIsLoading] = useState(true);
-  
-  useEffect(() => {
-    const bootstrapAsync = async () => {
-      try {
-        let token = await api.getToken();
-        if (token) {
-          props.Login(token);
-          props.navigation.navigate('App');
-        } else {
-          setIsLoading(false);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    bootstrapAsync();
-  }, []);
-
-  return isLoading ? 
-    <Splash/>
-    : (
+  return (
       <View style={styles.container_center}>
         <TextInput
           placeholder="Enter username, email, or phone number"
@@ -55,7 +34,6 @@ const LoginScreen = (props : any) => {
           };
           api.Login(data).then(token=>{
             props.Login(token);
-            props.navigation.navigate('App');
           }).catch(err=>{
             console.log(err);
           })
