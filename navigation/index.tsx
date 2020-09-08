@@ -5,24 +5,22 @@
 */
 
 import React, {useState,useEffect} from 'react';
-import AuthNavigation from 'navigation/AuthNavigation';
-import BottomNavigationBar from 'navigation/BottomNavigationBar';
 import { NavigationContainer } from '@react-navigation/native';
+import { connect } from 'react-redux';
+
+import AuthNavigation from 'navigation/AuthNavigation';
+import AppNavigation from 'navigation/AppNavigation';
+import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/Splash';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
-import AuthSelector from 'store/selectors/auth.selectors';
 
 const Navigation = (props : any) => {
   const [isLoading,setIsLoading] = useState(true);
-  const [isLoggedIn,setIsLoggedIn] = useState(false);
   useEffect(() => {
     api.getToken().then((token) => {
       if (token) {
         props.Login(token);
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
       }
       setIsLoading(false);
     }).catch(err=>{
@@ -33,8 +31,8 @@ const Navigation = (props : any) => {
     <Splash/>
     : (
     <NavigationContainer>
-        {isLoggedIn ? (
-          <BottomNavigationBar/>
+        {AuthSelectors.isLoggedIn(props.state) ? (
+          <AppNavigation/>
         ) : (
           <AuthNavigation />
         )}
@@ -47,13 +45,12 @@ const mapStateToProps = (state : any) => {
     state : state
   }
 };
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    "Login": AuthActions.Login
+    "Login": (token : string) => {dispatch(AuthActions.Login(token))}
   }
 };
-import { connect } from 'react-redux';
-import authSelectors from 'store/selectors/auth.selectors';
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

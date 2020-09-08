@@ -6,7 +6,8 @@
 
 import React, {useState,useEffect} from 'react';
 import {TextInput, View, Button} from 'react-native';
-import Splash from 'screens/Splash';
+import { connect } from 'react-redux';
+
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import styles from 'styles/styles'
@@ -42,14 +43,13 @@ const LoginScreen = (props : any) => {
     )
 }
 
-const mapStateToProps = (state : any) => (state);
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    "Login": AuthActions.Login
+    "Login": (token : string) => {dispatch(AuthActions.Login(token))}
   }
 };
-import { connect } from 'react-redux';
+
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(LoginScreen)

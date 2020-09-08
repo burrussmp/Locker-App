@@ -5,12 +5,13 @@
 */
 
 import * as React from 'react';
+import { connect } from 'react-redux';
 import {Text,View,Button} from 'react-native';
+
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import styles from 'styles/styles';
 
-import BottomNavigationBar from 'navigation/BottomNavigationBar';
 
 const HomeScreen = (props : any) => {
     return (
@@ -27,14 +28,13 @@ const HomeScreen = (props : any) => {
     );
 };
 
-const mapStateToProps = (state : any) => (state);
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    "Logout": AuthActions.Logout
+    "Logout": () => {dispatch(AuthActions.Logout())}
   }
 };
-import { connect } from 'react-redux';
+
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(HomeScreen)
