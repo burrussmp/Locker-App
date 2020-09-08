@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import {BlurView} from 'expo-blur';
 import HomeScreen from 'screens/Home';
 
 function Profile() {
@@ -23,22 +23,38 @@ function Notifications() {
 }
 
 const Tab = createBottomTabNavigator();
-
 const AppNavigation = () => {
   return (
+    // <BlurView
+    //   style={{
+    //     position: 'absolute',
+    //     bottom: 0,
+    //     left: 0,
+    //     right: 0,
+    //   }}
+    //   tint="default"
+    //   intensity={100}
+    //   >
       <Tab.Navigator
         initialRouteName="Home"
         tabBarOptions={{
-            activeTintColor: '#e91e63',
+            activeTintColor: '#000000',
+            inactiveTintColor: '#555555',
+            style: {
+              borderTopWidth: 1,
+              borderTopColor: '#aaaaaabb',
+              backgroundColor: '#eeeeeebb',
+              position:'absolute'
+          }
         }}
       >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+          tabBarLabel: '',
+          tabBarIcon: ({focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? "home" : "home-outline"} color={color} size={size} />
           ),
         }}
       />
@@ -46,9 +62,9 @@ const AppNavigation = () => {
         name="Explore"
         component={Notifications}
         options={{
-          tabBarLabel: 'Explore',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={size} />
+          tabBarLabel: '',
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? "magnify-minus" : "magnify"} color={color} size={size} />
           ),
         }}
       />
@@ -56,9 +72,9 @@ const AppNavigation = () => {
         name="Locker"
         component={Notifications}
         options={{
-          tabBarLabel: 'My Locker',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="checkbox-blank-circle" color={color} size={size} />
+          tabBarLabel: '',
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? "alpha-l-circle" : "alpha-l-circle-outline"} color={color} size={size} />
           ),
         }}
       />
@@ -66,9 +82,9 @@ const AppNavigation = () => {
         name="Shop"
         component={Notifications}
         options={{
-          tabBarLabel: 'Shop',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="shopping" color={color} size={size} />
+          tabBarLabel: '',
+          tabBarIcon: ({ focused,color, size }) => (
+            <MaterialCommunityIcons name={focused ? "cart" : "cart-outline"} color={color} size={size} />
           ),
         }}
       />
@@ -76,13 +92,14 @@ const AppNavigation = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+          tabBarLabel: '',
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? "account" : "account-outline"} color={color} size={size} />
           ),
         }}
       />
     </Tab.Navigator>
+    // </BlurView>
   );
 }
 

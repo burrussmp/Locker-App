@@ -4,37 +4,47 @@
   * @desc Home screen
 */
 
-import * as React from 'react';
-import { connect } from 'react-redux';
-import {Text,View,Button} from 'react-native';
-
+import React from 'react';
+import {Text,View,Button,ScrollView} from 'react-native';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import styles from 'styles/styles';
 
-
 const HomeScreen = (props : any) => {
     return (
-        <View style={styles.container_center}>
-            <Text>Welcome to Locker!</Text>
-            <Button title="LogOut" onPress={async () =>
-                api.Logout().then(()=>{
-                  props.Logout();
-                }).catch(err=>{
-                  console.log(err);
-                })
-            }/>
-        </View>
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'space-between'
+          }}>
+        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
+        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
+        </ScrollView>
     );
 };
 
-const mapDispatchToProps = (dispatch : any) => {
+const mapStateToProps = (state : any) => (state);
+const mapDispatchToProps = () => {
   return {
-    "Logout": () => {dispatch(AuthActions.Logout())}
+    "Logout": AuthActions.Logout
   }
 };
-
+import { connect } from 'react-redux';
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(HomeScreen)
