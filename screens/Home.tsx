@@ -17,6 +17,13 @@ const HomeScreen = (props : any) => {
               flexGrow: 1,
               justifyContent: 'space-between'
           }}>
+        <Button title="LogOut" onPress={async () =>
+                api.Logout().then(()=>{
+                  props.Logout();
+                }).catch(err=>{
+                  console.log(err);
+                })
+            }/>
         <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
@@ -38,9 +45,9 @@ const HomeScreen = (props : any) => {
 };
 
 const mapStateToProps = (state : any) => (state);
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    "Logout": AuthActions.Logout
+    "Logout": () => {dispatch(AuthActions.Logout())} 
   }
 };
 import { connect } from 'react-redux';

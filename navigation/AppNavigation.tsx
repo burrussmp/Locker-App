@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {BlurView} from 'expo-blur';
 import HomeScreen from 'screens/Home';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 function Profile() {
   return (
@@ -22,20 +21,12 @@ function Notifications() {
   );
 }
 
-const Tab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator();
+const ProfileTopTab = createMaterialTopTabNavigator();
+
 const AppNavigation = () => {
   return (
-    // <BlurView
-    //   style={{
-    //     position: 'absolute',
-    //     bottom: 0,
-    //     left: 0,
-    //     right: 0,
-    //   }}
-    //   tint="default"
-    //   intensity={100}
-    //   >
-      <Tab.Navigator
+      <BottomTab.Navigator
         initialRouteName="Home"
         tabBarOptions={{
             activeTintColor: '#000000',
@@ -48,7 +39,7 @@ const AppNavigation = () => {
           }
         }}
       >
-      <Tab.Screen
+      <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -58,7 +49,7 @@ const AppNavigation = () => {
           ),
         }}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name="Explore"
         component={Notifications}
         options={{
@@ -68,7 +59,7 @@ const AppNavigation = () => {
           ),
         }}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name="Locker"
         component={Notifications}
         options={{
@@ -78,7 +69,7 @@ const AppNavigation = () => {
           ),
         }}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name="Shop"
         component={Notifications}
         options={{
@@ -88,7 +79,7 @@ const AppNavigation = () => {
           ),
         }}
       />
-      <Tab.Screen
+      <BottomTab.Screen
         name="Profile"
         component={Profile}
         options={{
@@ -98,8 +89,7 @@ const AppNavigation = () => {
           ),
         }}
       />
-    </Tab.Navigator>
-    // </BlurView>
+    </BottomTab.Navigator>
   );
 }
 
