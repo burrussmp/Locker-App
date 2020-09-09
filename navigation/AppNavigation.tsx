@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Text, Image, View } from 'react-native';
+import { BottomTabBar, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from 'screens/Home';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import styles from 'styles/styles';
+import { BlurView } from 'expo-blur';
+import { Avatar } from 'react-native-elements';
+
+import icons from 'icons/icons';
 
 
-import { Avatar} from 'react-native-elements';
 const ProfileTopTab = createMaterialTopTabNavigator();
+
 const ProfileOnDisplay = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -70,70 +74,87 @@ function Notifications() {
   );
 }
 
+const TabBar = (props : any) => {
+  return (
+    <BlurView
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+      }}
+      tint="default"
+      intensity={100}
+    >
+      <BottomTabBar {...props} />
+    </BlurView>
+  );
+};
+
 const BottomTab = createBottomTabNavigator();
 
 const AppNavigation = () => {
   return (
-      <BottomTab.Navigator
-        initialRouteName="Profile"
-        tabBarOptions={{
-            activeTintColor: '#000000',
-            inactiveTintColor: '#555555',
-            style: {
-              borderTopWidth: 1,
-              borderTopColor: '#aaaaaabb',
-              backgroundColor: '#eeeeeebb',
-              position:'absolute'
-          }
-        }}
-      >
+    <BottomTab.Navigator
+      initialRouteName='Home'
+      tabBar={TabBar}
+      tabBarOptions={{
+        activeTintColor: '#000000',
+        inactiveTintColor: '#000000',
+        showLabel: false,
+        style: {
+          borderTopColor: '#666666',
+          backgroundColor: 'transparent'
+        }
+      }}
+    >
       <BottomTab.Screen
-        name="Home"
+        name='Home'
         component={HomeScreen}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({focused, color, size }) => (
-            <MaterialCommunityIcons name={focused ? "home" : "home-outline"} color={color} size={size} />
+            <Image source={focused ? icons.home.focused : icons.home.unfocused}/>
           ),
         }}
       />
       <BottomTab.Screen
-        name="Explore"
+        name='Search'
         component={Notifications}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ focused, color, size }) => (
-            <MaterialCommunityIcons name={focused ? "magnify-minus" : "magnify"} color={color} size={size} />
+            <Image source={focused ? icons.search.focused : icons.search.unfocused}/>
           ),
         }}
       />
       <BottomTab.Screen
-        name="Locker"
+        name='Locker'
         component={Notifications}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ focused, color, size }) => (
-            <MaterialCommunityIcons name={focused ? "alpha-l-circle" : "alpha-l-circle-outline"} color={color} size={size} />
+            <Image source={focused ? icons.locker.focused : icons.locker.unfocused}/>
           ),
         }}
       />
       <BottomTab.Screen
-        name="Shop"
+        name='Cart'
         component={Notifications}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({ focused,color, size }) => (
-            <MaterialCommunityIcons name={focused ? "cart" : "cart-outline"} color={color} size={size} />
+          tabBarIcon: ({ focused, color, size }) => (
+            <Image source={focused ? icons.cart.focused : icons.cart.unfocused}/>
           ),
         }}
       />
       <BottomTab.Screen
-        name="Profile"
+        name='Profile'
         component={Profile}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ focused, color, size }) => (
-            <MaterialCommunityIcons name={focused ? "account" : "account-outline"} color={color} size={size} />
+            <Image source={focused ? icons.profile.focused : icons.profile.unfocused}/>
           ),
         }}
       />
