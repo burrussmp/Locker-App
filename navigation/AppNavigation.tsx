@@ -4,11 +4,60 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeScreen from 'screens/Home';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import styles from 'styles/styles';
+
+
+import { Avatar} from 'react-native-elements';
+const ProfileTopTab = createMaterialTopTabNavigator();
+const ProfileOnDisplay = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>ON DISPLAY!</Text>
+    </View>
+  );
+}
+const ProfilePosts = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>ON DISPLAY!</Text>
+    </View>
+  );
+}
+
+const ProfileStylePosts = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>ON DISPLAY!</Text>
+    </View>
+  );
+}
 
 function Profile() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile!</Text>
+    <View style = {styles.container}>
+    <View style={styles.avatarContainer}>
+        <View style = {styles.profileBioView}>
+          <Text style={styles.profileName}>Paula Sullivan</Text>
+          <Text style={styles.profileLiner}>100 Followers • 150 Following</Text>
+          <Text style={styles.profileHandle}>@paula_sullivan</Text>
+        </View>
+        <View style={styles.avatarPhoto}>
+          <Avatar
+            size = "large"
+            rounded
+            source={{
+              uri:
+                'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+            }}
+            onPress={()=>{console.log('avatar pressed')}}
+          />
+        </View>
+    </View>
+    <ProfileTopTab.Navigator>
+      <ProfileTopTab.Screen name="On Display" component={ProfileOnDisplay} />
+      <ProfileTopTab.Screen name="Posts" component={ProfilePosts} />
+      <ProfileTopTab.Screen name="Style" component={ProfileStylePosts} />
+    </ProfileTopTab.Navigator>
     </View>
   );
 }
@@ -22,12 +71,11 @@ function Notifications() {
 }
 
 const BottomTab = createBottomTabNavigator();
-const ProfileTopTab = createMaterialTopTabNavigator();
 
 const AppNavigation = () => {
   return (
       <BottomTab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Profile"
         tabBarOptions={{
             activeTintColor: '#000000',
             inactiveTintColor: '#555555',
