@@ -18,7 +18,7 @@ const RegisterScreen = (props : any) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
     return (
-      <View style = {styles.container_center}>
+      <View style = {styles.container}>
         <TextInput
           placeholder="Enter username"
           value={username}

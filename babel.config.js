@@ -14,7 +14,8 @@ module.exports = function(api) {
             navigation: './navigation',
             store: './store',
             api : './api',
-            styles: './styles'
+            styles: './styles',
+            assets: './assets'
           },
         },
       ],

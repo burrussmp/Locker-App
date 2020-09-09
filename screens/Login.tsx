@@ -12,7 +12,7 @@ import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import styles from 'styles/styles'
 
-const logoImagePath= '../assets/images/logo.png';
+import logoImagePath from 'assets/images/logo.png';
 
 const LoginScreen = (props : any) => {
   const [loginInfo, setLoginInfo] = useState('');
@@ -20,7 +20,7 @@ const LoginScreen = (props : any) => {
   return (
       <View style={styles.centered}>
         <Image 
-          source={require(logoImagePath)}
+          source={logoImagePath}
           style={styles.authLogo}>
         </Image>
         <View style={styles.authTextInput}>

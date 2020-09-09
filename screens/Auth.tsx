@@ -10,20 +10,22 @@ import { connect } from 'react-redux';
 import { BlurView } from 'expo-blur';
 
 import AuthActions from 'store/actions/auth.actions';
-import api from 'api/api';
 import styles from 'styles/styles';
 
-const backgroundImagePath = '../assets/images/splash.png';
-const logoTextImagePath = '../assets/images/logo_text.png';
-const logoImagePath= '../assets/images/logo.png';
+
+
+import backgroundImagePath from 'assets/images/splash.png';
+import logoTextImagePath from 'assets/images/logo_text.png';
+import logoImagePath from 'assets/images/logo.png';
+
 
 const AuthScreen = (props : any) => {
     return (
         <View style={styles.container}>
-          <ImageBackground source={require(backgroundImagePath)} style={styles.authBackgroundImage}>
+          <ImageBackground source={backgroundImagePath} style={styles.authBackgroundImage}>
             <View style={styles.centered}>
-              <Image source={require(logoTextImagePath)} style={styles.logoText}></Image>
-              <Image source={require(logoImagePath)}></Image>
+              <Image source={logoTextImagePath} style={styles.logoText}></Image>
+              <Image source={logoImagePath}></Image>
             </View>
             <View style={styles.authButtonContainer}>
               <View
