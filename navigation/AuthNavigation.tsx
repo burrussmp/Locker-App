@@ -5,14 +5,20 @@
 */
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import AuthScreen from 'screens/Auth';
 import LoginScreen from 'screens/Login';
 
 const AuthStack = createStackNavigator();
 
 const AuthNavigation = () => {
   return (
-    <AuthStack.Navigator headerMode="none">
-      <AuthStack.Screen name="Login" component={LoginScreen} />
+    <AuthStack.Navigator 
+      headerMode='none' 
+      initialRouteName='Auth'
+      mode='modal'>
+        <AuthStack.Screen name='Auth' component={AuthScreen}/>
+        <AuthStack.Screen name='Login' component={LoginScreen}/>
     </AuthStack.Navigator>
   );
 }
