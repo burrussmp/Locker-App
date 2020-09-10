@@ -12,7 +12,7 @@ import styles from 'styles/styles';
 
 const HomeScreen = (props: any) => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.droidSafeArea}>
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
