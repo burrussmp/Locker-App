@@ -107,7 +107,8 @@ const AppNavigation = () => {
         inactiveTintColor: '#000000',
         showLabel: false,
         style: {
-          borderTopColor: '#666666',
+          borderOpacity: 0,
+          borderTopColor: '#000000',
           backgroundColor: 'transparent',
           elevation: 0,
         },

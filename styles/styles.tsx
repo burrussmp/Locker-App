@@ -50,14 +50,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'tan',
     opacity: 0,
   },
-  authButtonBlurredOverlay: {
-    backgroundColor: 'tan',
-    opacity: 0,
-  },
-  authButtonBlackOverlay: {
-    backgroundColor: 'tan',
-    opacity: 0,
-  },
   authButtonText: {
     fontSize: 16,
     color: '#63564B',
@@ -85,10 +77,10 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: '#ddd',
-    color: 'black',
+    borderColor: '#DDD',
+    color: '#000',
   },
   authHeaderText: {
     marginBottom: 25,
