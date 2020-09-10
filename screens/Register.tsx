@@ -7,6 +7,7 @@
 import React, {useState} from 'react';
 import {
   KeyboardAvoidingView,
+  Keyboard,
   SafeAreaView,
   TextInput,
   Text,
@@ -34,9 +35,10 @@ const RegisterScreen = (props: any) => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : 20}
+        keyboardVerticalOffset={Platform.OS == 'ios' ? -100 : 20}
         enabled={Platform.OS === 'ios' ? true : false}
       >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.topCentered}>
           <Image source={logoImage} style={styles.authLogo}></Image>
           <Text style={styles.authHeaderText}>W E L C O M E</Text>
@@ -48,7 +50,6 @@ const RegisterScreen = (props: any) => {
             onChangeText={setUsername}
             textContentType="username"
             autoCapitalize="none"
-            returnKeyType="done"
           />
           <TextInput
             style={styles.authTextInput}
@@ -59,7 +60,6 @@ const RegisterScreen = (props: any) => {
             textContentType="emailAddress"
             keyboardType="email-address"
             autoCapitalize="none"
-            returnKeyType="done"
           />
           <TextInput
             style={styles.authTextInput}
@@ -68,7 +68,6 @@ const RegisterScreen = (props: any) => {
             value={firstName}
             onChangeText={setFirstName}
             textContentType="name"
-            returnKeyType="done"
           />
           <TextInput
             style={styles.authTextInput}
@@ -77,7 +76,6 @@ const RegisterScreen = (props: any) => {
             value={lastName}
             onChangeText={setLastName}
             textContentType="familyName"
-            returnKeyType="done"
           />
           <TextInput
             style={styles.authTextInput}
@@ -88,7 +86,6 @@ const RegisterScreen = (props: any) => {
             textContentType="telephoneNumber"
             keyboardType="phone-pad"
             autoCapitalize="none"
-            returnKeyType="done"
           />
           <TextInput
             style={styles.authTextInput}
@@ -99,7 +96,6 @@ const RegisterScreen = (props: any) => {
             textContentType="newPassword"
             autoCapitalize="none"
             secureTextEntry={true}
-            returnKeyType="done"
           />
           <View style={styles.authButtonContainer}>
             <View style={[styles.authButton, styles.blackBackground]}>
@@ -134,6 +130,7 @@ const RegisterScreen = (props: any) => {
             </TouchableOpacity>
           </View>
         </View>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

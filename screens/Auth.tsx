@@ -32,7 +32,7 @@ const AuthScreen = (props: any) => {
           </View>
           <View style={styles.authButtonContainer}>
             <View style={[styles.authButton, styles.whiteBackground]}>
-              <Text style={styles.authButtonText}>Sign Up</Text>
+              <Text style={styles.authButtonText}>Get Started</Text>
             </View>
             <BlurView tint={'default'} intensity={100} style={styles.authButton}>
               <View style={styles.authButton}>
@@ -47,7 +47,7 @@ const AuthScreen = (props: any) => {
               onPress={() => {
                 props.navigation.navigate('Register')
               }}>
-              <Text style={styles.authButtonBlurredText}>Sign Up</Text>
+              <Text style={styles.authButtonBlurredText}>Get Started</Text>
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.5}

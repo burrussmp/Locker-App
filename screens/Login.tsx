@@ -21,13 +21,15 @@ const LoginScreen = (props: any) => {
   const [loginInfo, setLoginInfo] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-      style={styles.container}
+    <SafeAreaView style={styles.droidSafeArea}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS == 'ios' ? -100 : 20}
+        enabled={Platform.OS === 'ios' ? true : false}
       >
-      
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.topCentered}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.topCentered}>
       <Image source={logoImage} style={styles.authLogo}></Image>
       <TextInput
         style={styles.authTextInput}
@@ -82,6 +84,7 @@ const LoginScreen = (props: any) => {
       </View>
       </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
+      </SafeAreaView>
   );
 };
 
