@@ -5,13 +5,22 @@
  */
 
 import React, {useState} from 'react';
-import {Keyboard, SafeAreaView, TextInput, Text, TouchableOpacity, TouchableWithoutFeedback, Image, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Image,
+  Platform,
+  View,
+} from 'react-native';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import styles from 'styles/styles';
 
 import logoImage from 'assets/images/logo.png';
-
 
 const RegisterScreen = (props: any) => {
   const [username, setUsername] = useState('');
@@ -21,116 +30,122 @@ const RegisterScreen = (props: any) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <SafeAreaView style={styles.topCentered}>
-      <Image source={logoImage} style={styles.authLogo}></Image>
-      <Text style={styles.authHeaderText}>W E L C O M E</Text>
-      <TextInput
-          style={styles.authTextInput}
-          placeholder="Username"
-          placeholderTextColor="lightgrey"
-          value={username}
-          onChangeText={setUsername}
-          textContentType="username"
-          autoCapitalize="none"
-          returnKeyType="done"
-      />
-      <TextInput
-        style={styles.authTextInput}
-        placeholder="Email"
-        placeholderTextColor="lightgrey"
-        value={email}
-        onChangeText={setEmail}
-        textContentType="emailAddress"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        returnKeyType="done"
-      />
-      <TextInput
-        style={styles.authTextInput}
-        placeholder="First Name"
-        placeholderTextColor="lightgrey"
-        value={firstName}
-        onChangeText={setFirstName}
-        textContentType="name"
-        returnKeyType="done"
-      />
-      <TextInput
-        style={styles.authTextInput}
-        placeholder="Last Name"
-        placeholderTextColor="lightgrey"
-        value={lastName}
-        onChangeText={setLastName}
-        textContentType="familyName"
-        returnKeyType="done"
-      />
-      <TextInput
-        style={styles.authTextInput}
-        placeholder="Phone Number"
-        placeholderTextColor="lightgrey"
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        textContentType="telephoneNumber"
-        keyboardType="phone-pad"
-        autoCapitalize="none"
-        returnKeyType="done"
-      />
-      <TextInput
-        style={styles.authTextInput}
-        placeholder="Password"
-        placeholderTextColor="lightgrey"
-        value={password}
-        onChangeText={setPassword}
-        textContentType="newPassword"
-        autoCapitalize="none"
-        secureTextEntry={true}
-        returnKeyType="done"
-      />
-      <View style={styles.authButtonContainer}>
-        <View
-          style={[
-            styles.authButton,
-            styles.blackBackground,
-          ]}
-        >
-          <Text style={styles.authButtonBlurredText}>Continue</Text>
+    <SafeAreaView style={styles.droidSafeArea}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : 20}
+        enabled={Platform.OS === 'ios' ? true : false}
+      >
+        <View style={styles.topCentered}>
+          <Image source={logoImage} style={styles.authLogo}></Image>
+          <Text style={styles.authHeaderText}>W E L C O M E</Text>
+          <TextInput
+            style={styles.authTextInput}
+            placeholder="Username"
+            placeholderTextColor="lightgrey"
+            value={username}
+            onChangeText={setUsername}
+            textContentType="username"
+            autoCapitalize="none"
+            returnKeyType="done"
+          />
+          <TextInput
+            style={styles.authTextInput}
+            placeholder="Email"
+            placeholderTextColor="lightgrey"
+            value={email}
+            onChangeText={setEmail}
+            textContentType="emailAddress"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            returnKeyType="done"
+          />
+          <TextInput
+            style={styles.authTextInput}
+            placeholder="First Name"
+            placeholderTextColor="lightgrey"
+            value={firstName}
+            onChangeText={setFirstName}
+            textContentType="name"
+            returnKeyType="done"
+          />
+          <TextInput
+            style={styles.authTextInput}
+            placeholder="Last Name"
+            placeholderTextColor="lightgrey"
+            value={lastName}
+            onChangeText={setLastName}
+            textContentType="familyName"
+            returnKeyType="done"
+          />
+          <TextInput
+            style={styles.authTextInput}
+            placeholder="Phone Number"
+            placeholderTextColor="lightgrey"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            textContentType="telephoneNumber"
+            keyboardType="phone-pad"
+            autoCapitalize="none"
+            returnKeyType="done"
+          />
+          <TextInput
+            style={styles.authTextInput}
+            placeholder="Password"
+            placeholderTextColor="lightgrey"
+            value={password}
+            onChangeText={setPassword}
+            textContentType="newPassword"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            returnKeyType="done"
+          />
+          <View style={styles.authButtonContainer}>
+            <View style={[styles.authButton, styles.blackBackground]}>
+              <Text style={styles.authButtonBlurredText}>Continue</Text>
+            </View>
+          </View>
+          <View style={styles.authButtonContainer}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={[styles.authButton, styles.authButtonBlackOverlay]}
+              onPress={() => {
+                const data = {
+                  username: username,
+                  password: password,
+                  first_name: firstName,
+                  last_name: lastName,
+                  email: email,
+                  phone_number: phoneNumber,
+                };
+                console.log(data);
+                api
+                  .SignUp(data)
+                  .then(token => {
+                    props.SignUp(token);
+                  })
+                  .catch((err: any) => {
+                    console.log(err);
+                  });
+              }}
+            >
+              <Text style={styles.authButtonBlurredText}>Continue</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <View style={styles.authButtonContainer}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={[styles.authButton, styles.authButtonBlackOverlay]}
-          onPress={() => {
-            const data = {
-              username: username,
-              password: password,
-              first_name: firstName,
-              last_name: lastName,
-              email: email,
-              phone_number: phoneNumber,
-            };
-            console.log(data)
-            api
-              .SignUp(data)
-              .then(token => {
-                props.SignUp(token);
-              })
-              .catch((err: any) => {
-                console.log(err)
-              })
-          }}
-        >
-          <Text style={styles.authButtonBlurredText}>Continue</Text>
-        </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const mapStateToProps = (state: any) => state;
 
-const mapDispatchToProps = (dispatch : any) => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
-    SignUp: (token : string)=>{dispatch(AuthActions.SignUp(token))},
+    SignUp: (token: string) => {
+      dispatch(AuthActions.SignUp(token));
+    },
   };
 };
 import {connect} from 'react-redux';

@@ -10,10 +10,10 @@ import {StyleSheet, Platform, StatusBar} from 'react-native';
 const styles = StyleSheet.create({
   droidSafeArea: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   container: {
-    flex: 1
+    flex: 1,
   },
   centered: {
     flex: 1,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   topCentered: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   authBackgroundImage: {
     flex: 1,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ddd',
-    color: 'black'
+    color: 'black',
   },
   authHeaderText: {
     marginBottom: 25,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   avatarPhoto: {
     marginBottom: 20,
-  }
+  },
 });
 
 export default styles;
