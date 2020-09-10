@@ -1,133 +1,140 @@
 /**
-  * @author Matthew P. Burruss
-  * @date Aug 2020
-  * @desc This should be where all styles are defined. That way, you can look for a style that could possibly be re-used
-  * and allow code re-use.
-*/
+ * @author Matthew P. Burruss
+ * @date Aug 2020
+ * @desc This should be where all styles are defined. That way, you can look for a style that could possibly be re-used
+ * and allow code re-use.
+ */
 
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'center'
-    },
-    centered: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    authBackgroundImage: {
-        flex: 1,
-        resizeMode: 'cover',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    authButtonContainer: {
-        position: 'absolute',
-        bottom: '15%',
-        width: '100%',
-        justifyContent: 'center'
-    },
-    authButtonContainerMiddle: {
-        position: 'absolute',
-        bottom: '30%',
-        width: '100%',
-        justifyContent: 'center'
-    },
-    authButton: {
-        height: 50,
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    authButtonOverlay: {
-        backgroundColor: 'silver',
-        opacity: 0
-    },
-    authButtonBlurredOverlay: {
-        backgroundColor: 'white',
-        opacity: 0
-    },
-    authButtonBlackOverlay: {
-        backgroundColor: 'black',
-        opacity: 0
-    },
-    authButtonText: {
-        fontSize: 16,
-        color: 'grey'
-    },
-    authButtonBlurredText: {
-        fontSize: 16,
-        color: 'white'
-    },
-    authButtonMargins: {
-        marginTop: 30
-    },
-    authLogo: {
-        height: '10%',
-        bottom: 25,
-        resizeMode: 'contain',
-        tintColor: 'grey'
-    },
-    authTextInput: {
-        position: 'relative',
-        margin: -0.5,
-        height: 35,
-        width: '90%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#ddd'
-    },
-    logoText: {
-        position: 'relative',
-        bottom: 25
-    },
-    whiteBackground: {
-        backgroundColor: 'white',
-    },
-    greyBackground: {
-        backgroundColor: 'grey',
-    },
-    wrapperCustom: {
-        borderRadius: 8,
-        padding: 6
-    },
-    avatarContainer: {
-      height: 125,
-      flexDirection: "row",
-      justifyContent: 'space-around',
-      alignContent: 'flex-start',
-      alignItems: 'flex-end'
-    },
-    profileBioView: {
-      marginBottom: 20
-    },
-    profileName: {
-      fontSize: 18,
-      color: "#000",
-      fontWeight: "bold"
-    },
-    profileLiner: {
-      color: "#000",
-      fontSize: 11,
-      marginTop: 1,
-      fontStyle: "italic"
-    },
-    profileHandle: {
-      color: "#000",
-      marginTop: 3,
-      fontSize: 10,
-      fontWeight: "bold"
-    },
-    avatarPhoto : {
-      marginBottom: 20
-    }
-})
+  container: {
+    flex: 1
+  },
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  topCentered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  authBackgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  authButtonContainer: {
+    position: 'absolute',
+    bottom: 50,
+    height: 100,
+    width: '100%',
+  },
+  authButton: {
+    height: 50,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  authButtonOverlay: {
+    backgroundColor: 'tan',
+    opacity: 0,
+  },
+  authButtonBlurredOverlay: {
+    backgroundColor: 'tan',
+    opacity: 0,
+  },
+  authButtonBlackOverlay: {
+    backgroundColor: 'tan',
+    opacity: 0,
+  },
+  authButtonText: {
+    fontSize: 16,
+    color: '#63564B',
+  },
+  authButtonBlurredText: {
+    fontSize: 16,
+    color: 'white',
+  },
+  authButtonMargins: {
+    marginTop: 30,
+  },
+  authLogo: {
+    height: '10%',
+    top: 25,
+    marginBottom: 50,
+    resizeMode: 'contain',
+    tintColor: 'tan',
+  },
+  authTextInput: {
+    position: 'relative',
+    margin: -0.5,
+    height: 35,
+    width: '90%',
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    color: 'black'
+  },
+  authHeaderText: {
+    marginBottom: 25,
+    fontFamily: 'CircularStd',
+    fontSize: 24,
+    color: 'tan',
+  },
+  logoText: {
+    position: 'relative',
+    bottom: 25,
+  },
+  whiteBackground: {
+    backgroundColor: 'white',
+  },
+  blackBackground: {
+    backgroundColor: 'black',
+  },
+  wrapperCustom: {
+    borderRadius: 8,
+    padding: 6,
+  },
+  avatarContainer: {
+    height: 125,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignContent: 'flex-start',
+    alignItems: 'flex-end',
+  },
+  profileBioView: {
+    marginBottom: 20,
+  },
+  profileName: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  profileLiner: {
+    color: '#000',
+    fontSize: 11,
+    marginTop: 1,
+    fontStyle: 'italic',
+  },
+  profileHandle: {
+    color: '#000',
+    marginTop: 3,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  avatarPhoto: {
+    marginBottom: 20,
+  },
+  BarIcon: {
+    height: 40,
+    width: 40
+  }
+});
 
 export default styles;
