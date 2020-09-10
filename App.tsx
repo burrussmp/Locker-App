@@ -1,6 +1,6 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import { useFonts } from 'expo-font';
+import {useFonts} from 'expo-font';
 
 import store from 'store/index';
 import AppContainer from 'navigation/index';

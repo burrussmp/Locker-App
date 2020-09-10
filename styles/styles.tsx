@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   authLogo: {
-    height: '10%',
+    height: 100,
     top: 25,
     marginBottom: 50,
     resizeMode: 'contain',

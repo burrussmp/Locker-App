@@ -14,11 +14,20 @@ import styles from 'styles/styles';
 
 import logoImage from 'assets/images/logo.png';
 
+import {KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Button, Keyboard  } from 'react-native';
+
+
 const LoginScreen = (props: any) => {
   const [loginInfo, setLoginInfo] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <SafeAreaView style={styles.topCentered}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+      >
+      
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.topCentered}>
       <Image source={logoImage} style={styles.authLogo}></Image>
       <TextInput
         style={styles.authTextInput}
@@ -70,7 +79,9 @@ const LoginScreen = (props: any) => {
           <Text style={styles.authButtonBlurredText}>Login</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+      </View>
+      </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
   );
 };
 

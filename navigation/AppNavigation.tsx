@@ -109,6 +109,7 @@ const AppNavigation = () => {
         style: {
           borderTopColor: '#666666',
           backgroundColor: 'transparent',
+          elevation: 0,
         },
       }}
     >

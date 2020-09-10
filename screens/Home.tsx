@@ -12,13 +12,13 @@ import styles from 'styles/styles';
 
 const HomeScreen = (props: any) => {
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: 'space-between',
-      }}
-    >
-      <SafeAreaView>
+    <SafeAreaView>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+        }}
+      >
         <Button
           title="LogOut"
           onPress={async () =>
@@ -32,12 +32,12 @@ const HomeScreen = (props: any) => {
               })
           }
         />
-        <View 
+        <View
           style={{
             width: '100%',
             height: 500,
             backgroundColor: 'powderblue'
-          }} 
+          }}
         />
         <View
           style={{
@@ -45,24 +45,34 @@ const HomeScreen = (props: any) => {
             backgroundColor: 'lightblue'
           }}
         />
-        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View
+          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
+        />
         <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View
+          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
+        />
         <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View
+          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
+        />
         <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View
+          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
+        />
         <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'powderblue'}} />
+        <View
+          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
+        />
         <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
         <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-      </SafeAreaView>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
