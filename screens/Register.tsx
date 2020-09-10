@@ -18,6 +18,7 @@ import {
   View,
 } from 'react-native';
 import AuthActions from 'store/actions/auth.actions';
+import AuthButton from 'components/AuthButton';
 import api from 'api/api';
 import styles from 'styles/styles';
 
@@ -39,97 +40,90 @@ const RegisterScreen = (props: any) => {
         enabled={Platform.OS === 'ios' ? true : false}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.topCentered}>
-          <Image source={logoImage} style={styles.authLogo}></Image>
-          <Text style={styles.authHeaderText}>W E L C O M E</Text>
-          <TextInput
-            style={styles.authTextInput}
-            placeholder="Username"
-            placeholderTextColor="lightgrey"
-            value={username}
-            onChangeText={setUsername}
-            textContentType="username"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.authTextInput}
-            placeholder="Email"
-            placeholderTextColor="lightgrey"
-            value={email}
-            onChangeText={setEmail}
-            textContentType="emailAddress"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.authTextInput}
-            placeholder="First Name"
-            placeholderTextColor="lightgrey"
-            value={firstName}
-            onChangeText={setFirstName}
-            textContentType="name"
-          />
-          <TextInput
-            style={styles.authTextInput}
-            placeholder="Last Name"
-            placeholderTextColor="lightgrey"
-            value={lastName}
-            onChangeText={setLastName}
-            textContentType="familyName"
-          />
-          <TextInput
-            style={styles.authTextInput}
-            placeholder="Phone Number"
-            placeholderTextColor="lightgrey"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-            textContentType="telephoneNumber"
-            keyboardType="phone-pad"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.authTextInput}
-            placeholder="Password"
-            placeholderTextColor="lightgrey"
-            value={password}
-            onChangeText={setPassword}
-            textContentType="newPassword"
-            autoCapitalize="none"
-            secureTextEntry={true}
-          />
-          <View style={styles.authButtonContainer}>
-            <View style={[styles.authButton, styles.blackBackground]}>
-              <Text style={styles.authButtonBlurredText}>Continue</Text>
+          <View style={styles.topCentered}>
+            <Image source={logoImage} style={styles.authLogo}></Image>
+            <Text style={styles.authHeaderText}>W E L C O M E</Text>
+            <TextInput
+              style={styles.authTextInput}
+              placeholder="Username"
+              placeholderTextColor="lightgrey"
+              value={username}
+              onChangeText={setUsername}
+              textContentType="username"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.authTextInput}
+              placeholder="Email"
+              placeholderTextColor="lightgrey"
+              value={email}
+              onChangeText={setEmail}
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.authTextInput}
+              placeholder="First Name"
+              placeholderTextColor="lightgrey"
+              value={firstName}
+              onChangeText={setFirstName}
+              textContentType="name"
+            />
+            <TextInput
+              style={styles.authTextInput}
+              placeholder="Last Name"
+              placeholderTextColor="lightgrey"
+              value={lastName}
+              onChangeText={setLastName}
+              textContentType="familyName"
+            />
+            <TextInput
+              style={styles.authTextInput}
+              placeholder="Phone Number"
+              placeholderTextColor="lightgrey"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              textContentType="telephoneNumber"
+              keyboardType="phone-pad"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.authTextInput}
+              placeholder="Password"
+              placeholderTextColor="lightgrey"
+              value={password}
+              onChangeText={setPassword}
+              textContentType="newPassword"
+              autoCapitalize="none"
+              secureTextEntry={true}
+            />
+            <View style={styles.authButtonContainer}>
+              <AuthButton
+                text="Continue"
+                mode="dark"
+                onPress={() => {
+                  const data = {
+                    username: username,
+                    password: password,
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    phone_number: phoneNumber,
+                  };
+                  console.log(data);
+                  api
+                    .SignUp(data)
+                    .then(token => {
+                      props.SignUp(token);
+                    })
+                    .catch((err: any) => {
+                      console.log(err);
+                    });
+                }}
+              />
             </View>
           </View>
-          <View style={styles.authButtonContainer}>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={[styles.authButton, styles.authButtonBlackOverlay]}
-              onPress={() => {
-                const data = {
-                  username: username,
-                  password: password,
-                  first_name: firstName,
-                  last_name: lastName,
-                  email: email,
-                  phone_number: phoneNumber,
-                };
-                console.log(data);
-                api
-                  .SignUp(data)
-                  .then(token => {
-                    props.SignUp(token);
-                  })
-                  .catch((err: any) => {
-                    console.log(err);
-                  });
-              }}
-            >
-              <Text style={styles.authButtonBlurredText}>Continue</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </SafeAreaView>

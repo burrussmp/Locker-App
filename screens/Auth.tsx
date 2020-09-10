@@ -10,54 +10,36 @@ import { connect } from 'react-redux';
 import { BlurView } from 'expo-blur';
 
 import AuthActions from 'store/actions/auth.actions';
+import AuthButton from 'components/AuthButton.tsx';
 import styles from 'styles/styles';
 
 
-
-import backgroundImagePath from 'assets/images/splash.png';
-import logoTextImagePath from 'assets/images/logo_text.png';
-import logoImagePath from 'assets/images/logo.png';
+const backgroundImage = require('assets/images/splash.png');
+const logoTextImage = require('assets/images/logo_text.png');
+const logoImage = require('assets/images/logo.png');
 
 const AuthScreen = (props: any) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={backgroundImagePath}
+        source={backgroundImage}
         style={styles.authBackgroundImage}
       >
       <SafeAreaView style={styles.droidSafeArea}>
           <View style={styles.centered}>
-            <Image source={logoTextImagePath} style={styles.logoText}></Image>
-            <Image source={logoImagePath}></Image>
+            <Image source={logoTextImage} style={styles.logoText}></Image>
+            <Image source={logoImage}></Image>
           </View>
           <View style={styles.authButtonContainer}>
-            <View style={[styles.authButton, styles.whiteBackground]}>
-              <Text style={styles.authButtonText}>Get Started</Text>
-            </View>
-            <BlurView tint={'default'} intensity={100} style={styles.authButton}>
-              <View style={styles.authButton}>
-                <Text style={styles.authButtonBlurredText}>Login</Text>
-              </View>
-            </BlurView>
-          </View>
-          <View style={styles.authButtonContainer}>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={[styles.authButton, styles.authButtonOverlay]}
-              onPress={() => {
-                props.navigation.navigate('Register')
-              }}>
-              <Text style={styles.authButtonBlurredText}>Get Started</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.5}
-              style={[styles.authButton, styles.authButtonBlurredOverlay]}
-              onPress={() => {
-                props.navigation.navigate('Login')
-              }}
-            >
-              <Text style={styles.authButtonBlurredText}>Login</Text>
-            </TouchableOpacity>
+            <AuthButton
+              text="Get Started"
+              onPress={() => {props.navigation.navigate('Register')}}
+            />
+            <AuthButton
+              text="Login"
+              mode="blurred"
+              onPress={() => {props.navigation.navigate('Login')}}
+            />
           </View>
         </SafeAreaView>
       </ImageBackground>

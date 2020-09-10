@@ -9,10 +9,11 @@ import {SafeAreaView, TextInput, Text, TouchableOpacity, Image, View} from 'reac
 import {connect} from 'react-redux';
 
 import AuthActions from 'store/actions/auth.actions';
+import AuthButton from 'components/AuthButton.tsx';
 import api from 'api/api';
 import styles from 'styles/styles';
 
-import logoImage from 'assets/images/logo.png';
+const logoImage = require('assets/images/logo.png');
 
 import {KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Button, Keyboard  } from 'react-native';
 
@@ -50,19 +51,9 @@ const LoginScreen = (props: any) => {
         textContentType="password"
       />
       <View style={styles.authButtonContainer}>
-        <View
-          style={[
-            styles.authButton,
-            styles.blackBackground,
-          ]}
-        >
-          <Text style={styles.authButtonBlurredText}>Login</Text>
-        </View>
-      </View>
-      <View style={styles.authButtonContainer}>
-        <TouchableOpacity
-          activeOpacity={1}
-          style={[styles.authButton, styles.authButtonBlackOverlay]}
+        <AuthButton
+          text="Login"
+          mode="dark"
           onPress={() => {
             const data = {
               login: loginInfo,
@@ -77,9 +68,7 @@ const LoginScreen = (props: any) => {
                 console.log(err);
               });
           }}
-        >
-          <Text style={styles.authButtonBlurredText}>Login</Text>
-        </TouchableOpacity>
+        />
       </View>
       </View>
       </TouchableWithoutFeedback>

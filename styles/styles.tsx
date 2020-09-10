@@ -36,12 +36,17 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   authButton: {
-    height: 50,
+    flex: 1,
     alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
   },
   authButtonOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: 'tan',
     opacity: 0,
   },
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#63564B',
   },
-  authButtonBlurredText: {
+  authButtonSecondaryText: {
     fontSize: 16,
     color: 'white',
   },
