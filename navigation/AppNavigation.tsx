@@ -120,7 +120,6 @@ const AppNavigation = () => {
           tabBarIcon: ({focused, color, size}) => (
             <Image
               source={focused ? icons.home.focused : icons.home.unfocused}
-              style={styles.tabBarIcon}
             />
           ),
         }}
@@ -133,7 +132,6 @@ const AppNavigation = () => {
           tabBarIcon: ({focused, color, size}) => (
             <Image
               source={focused ? icons.search.focused : icons.search.unfocused}
-              style={styles.tabBarIcon}
             />
           ),
         }}
@@ -146,7 +144,6 @@ const AppNavigation = () => {
           tabBarIcon: ({focused, color, size}) => (
             <Image
               source={focused ? icons.locker.focused : icons.locker.unfocused}
-              style={styles.tabBarIcon}
             />
           ),
         }}
@@ -159,7 +156,6 @@ const AppNavigation = () => {
           tabBarIcon: ({focused, color, size}) => (
             <Image
               source={focused ? icons.cart.focused : icons.cart.unfocused}
-              style={styles.tabBarIcon}
             />
           ),
         }}
@@ -172,7 +168,6 @@ const AppNavigation = () => {
           tabBarIcon: ({focused, color, size}) => (
             <Image
               source={focused ? icons.profile.focused : icons.profile.unfocused}
-              style={styles.tabBarIcon}
             />
           ),
         }}

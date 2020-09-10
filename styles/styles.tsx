@@ -130,10 +130,6 @@ const styles = StyleSheet.create({
   },
   avatarPhoto: {
     marginBottom: 20,
-  },
-  BarIcon: {
-    height: 40,
-    width: 40
   }
 });
 
