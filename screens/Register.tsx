@@ -22,7 +22,7 @@ import AuthButton from 'components/AuthButton';
 import api from 'api/api';
 import styles from 'styles/styles';
 
-import logoImage from 'assets/images/logo.png';
+const logoImage = require('assets/images/logo.png');
 
 const RegisterScreen = (props: any) => {
   const [username, setUsername] = useState('');
