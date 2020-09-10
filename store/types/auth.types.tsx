@@ -10,6 +10,7 @@ export const LOGOUT = 'auth/logout';
 
 interface SignUpAction {
   type: typeof SIGN_UP;
+  token: string;
 }
 
 interface LoginAction {

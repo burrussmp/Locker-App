@@ -13,9 +13,10 @@ import {
   LOGOUT,
 } from 'store/types/auth.types';
 
-const SignUp = (): AuthorizationActions => {
+const SignUp = (token: string): AuthorizationActions => {
   return {
     type: SIGN_UP,
+    token: token,
   };
 };
 

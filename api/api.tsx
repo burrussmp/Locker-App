@@ -82,7 +82,7 @@ const Login = async (
     await setToken(result.token);
     return result.token;
   } else {
-    throw handleError(res);
+    throw await handleError(res);
   }
 };
 
@@ -95,7 +95,7 @@ const Logout = async (): Promise<void | Error> => {
   if (res.ok) {
     await setToken('');
   } else {
-    throw handleError(res);
+    throw await handleError(res);
   }
 };
 
@@ -113,13 +113,17 @@ const Logout = async (): Promise<void | Error> => {
  * @return A promise that can be handled. If resolved, void else throws error
  */
 const SignUp = async (data: Record<string, any>): Promise<void | Error> => {
-  const res = await fetch(`${config.server}/users`, {
+  const res = await fetch(`${config.server}/api/users`, {
     method: 'POST',
     headers: await getHeaders(),
     body: JSON.stringify(data),
   });
-  if (!res.ok) {
-    throw handleError(res);
+  if (res.ok) {
+    const result = await res.json();
+    await setToken(result.token);
+    return result.token;
+  } else {
+    throw await handleError(res);
   }
 };
 

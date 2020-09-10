@@ -5,7 +5,7 @@
  */
 
 const isLoggedIn = (state: any): boolean => {
-  if (state.auth.token != '') {
+  if (state.auth.token !== '') {
     return true;
   } else {
     return false;

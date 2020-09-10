@@ -108,15 +108,15 @@ const RegisterScreen = (props: any) => {
               email: email,
               phone_number: phoneNumber,
             };
+            console.log(data)
             api
-              .Login(data)
+              .SignUp(data)
               .then(token => {
-                AuthActions.SignUp();
-                props.navigation.navigate('Login');
+                props.SignUp(token);
               })
-              .catch(err => {
-                console.log(err);
-              });
+              .catch((err: any) => {
+                console.log(err)
+              })
           }}
         >
           <Text style={styles.authButtonBlurredText}>Continue</Text>
@@ -128,9 +128,9 @@ const RegisterScreen = (props: any) => {
 
 const mapStateToProps = (state: any) => state;
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch : any) => {
   return {
-    SignUp: AuthActions.SignUp,
+    SignUp: (token : string)=>{dispatch(AuthActions.SignUp(token))},
   };
 };
 import {connect} from 'react-redux';
