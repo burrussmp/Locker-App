@@ -5,12 +5,13 @@
  */
 
 import React, {useState} from 'react';
-import {TextInput, Text, TouchableOpacity, Image, View} from 'react-native';
+import {Keyboard, SafeAreaView, TextInput, Text, TouchableOpacity, TouchableWithoutFeedback, Image, View} from 'react-native';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import styles from 'styles/styles';
 
 import logoImage from 'assets/images/logo.png';
+
 
 const RegisterScreen = (props: any) => {
   const [username, setUsername] = useState('');
@@ -20,83 +21,81 @@ const RegisterScreen = (props: any) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <View style={styles.centered}>
+    <SafeAreaView style={styles.topCentered}>
       <Image source={logoImage} style={styles.authLogo}></Image>
-      <View style={styles.authTextInput}>
-        <TextInput
+      <Text style={styles.authHeaderText}>W E L C O M E</Text>
+      <TextInput
+          style={styles.authTextInput}
           placeholder="Username"
+          placeholderTextColor="lightgrey"
           value={username}
           onChangeText={setUsername}
           textContentType="username"
           autoCapitalize="none"
-          onSubmitEditing={() => {
-            this.secondTextInput.focus();
-          }}
-          blurOnSubmit={false}
-        />
-      </View>
-      <View style={styles.authTextInput}>
-        <TextInput
-          ref={input => {
-            this.secondTextInput = input;
-          }}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          textContentType="emailAddress"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-      </View>
-      <View style={styles.authTextInput}>
-        <TextInput
-          placeholder="First Name"
-          value={firstName}
-          onChangeText={setFirstName}
-          textContentType="name"
-        />
-      </View>
-      <View style={styles.authTextInput}>
-        <TextInput
-          placeholder="Last Name"
-          value={lastName}
-          onChangeText={setLastName}
-          textContentType="familyName"
-        />
-      </View>
-      <View style={styles.authTextInput}>
-        <TextInput
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          textContentType="telephoneNumber"
-          keyboardType="phone-pad"
-          autoCapitalize="none"
-        />
-      </View>
-      <View style={styles.authTextInput}>
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          textContentType="newPassword"
-          autoCapitalize="none"
-          secureTextEntry={true}
-          clearTextOnFocus={true}
-        />
-      </View>
-      <View style={styles.authButtonContainerMiddle}>
+          returnKeyType="done"
+      />
+      <TextInput
+        style={styles.authTextInput}
+        placeholder="Email"
+        placeholderTextColor="lightgrey"
+        value={email}
+        onChangeText={setEmail}
+        textContentType="emailAddress"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        returnKeyType="done"
+      />
+      <TextInput
+        style={styles.authTextInput}
+        placeholder="First Name"
+        placeholderTextColor="lightgrey"
+        value={firstName}
+        onChangeText={setFirstName}
+        textContentType="name"
+        returnKeyType="done"
+      />
+      <TextInput
+        style={styles.authTextInput}
+        placeholder="Last Name"
+        placeholderTextColor="lightgrey"
+        value={lastName}
+        onChangeText={setLastName}
+        textContentType="familyName"
+        returnKeyType="done"
+      />
+      <TextInput
+        style={styles.authTextInput}
+        placeholder="Phone Number"
+        placeholderTextColor="lightgrey"
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
+        textContentType="telephoneNumber"
+        keyboardType="phone-pad"
+        autoCapitalize="none"
+        returnKeyType="done"
+      />
+      <TextInput
+        style={styles.authTextInput}
+        placeholder="Password"
+        placeholderTextColor="lightgrey"
+        value={password}
+        onChangeText={setPassword}
+        textContentType="newPassword"
+        autoCapitalize="none"
+        secureTextEntry={true}
+        returnKeyType="done"
+      />
+      <View style={styles.authButtonContainer}>
         <View
           style={[
             styles.authButton,
-            styles.greyBackground,
-            styles.authButtonMargins,
+            styles.blackBackground,
           ]}
         >
           <Text style={styles.authButtonBlurredText}>Continue</Text>
         </View>
       </View>
-      <View style={styles.authButtonContainerMiddle}>
+      <View style={styles.authButtonContainer}>
         <TouchableOpacity
           activeOpacity={1}
           style={[styles.authButton, styles.authButtonBlackOverlay]}
@@ -120,10 +119,10 @@ const RegisterScreen = (props: any) => {
               });
           }}
         >
-          <Text style={styles.authButtonBlurredText}>Login</Text>
+          <Text style={styles.authButtonBlurredText}>Continue</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

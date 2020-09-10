@@ -31,8 +31,9 @@ const Navigation = (props: any) => {
       });
   }, []);
   return isLoading ?
+    (
     <Splash />
-  ) : (
+    ) : (
     <NavigationContainer>
       {AuthSelectors.isLoggedIn(props.state) ? (
         <AppNavigation />

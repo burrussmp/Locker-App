@@ -5,7 +5,7 @@
  */
 
 import React, {useState, useEffect} from 'react';
-import {TextInput, Text, TouchableOpacity, Image, View} from 'react-native';
+import {SafeAreaView, TextInput, Text, TouchableOpacity, Image, View} from 'react-native';
 import {connect} from 'react-redux';
 
 import AuthActions from 'store/actions/auth.actions';
@@ -18,38 +18,37 @@ const LoginScreen = (props: any) => {
   const [loginInfo, setLoginInfo] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <View style={styles.centered}>
+    <SafeAreaView style={styles.topCentered}>
       <Image source={logoImage} style={styles.authLogo}></Image>
-      <View style={styles.authTextInput}>
-        <TextInput
-          placeholder="Username, Email, or Phone Number"
-          value={loginInfo}
-          onChangeText={setLoginInfo}
-          textContentType="username"
-          autoCapitalize="none"
-        />
-      </View>
-      <View style={styles.authTextInput}>
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          textContentType="password"
-        />
-      </View>
-      <View style={styles.authButtonContainerMiddle}>
+      <TextInput
+        style={styles.authTextInput}
+        placeholder="Username, Email, or Phone Number"
+        placeholderTextColor="lightgrey"
+        value={loginInfo}
+        onChangeText={setLoginInfo}
+        textContentType="username"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.authTextInput}
+        placeholder="Password"
+        placeholderTextColor="lightgrey"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        textContentType="password"
+      />
+      <View style={styles.authButtonContainer}>
         <View
           style={[
             styles.authButton,
-            styles.greyBackground,
-            styles.authButtonMargins,
+            styles.blackBackground,
           ]}
         >
           <Text style={styles.authButtonBlurredText}>Login</Text>
         </View>
       </View>
-      <View style={styles.authButtonContainerMiddle}>
+      <View style={styles.authButtonContainer}>
         <TouchableOpacity
           activeOpacity={1}
           style={[styles.authButton, styles.authButtonBlackOverlay]}
@@ -71,7 +70,7 @@ const LoginScreen = (props: any) => {
           <Text style={styles.authButtonBlurredText}>Login</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

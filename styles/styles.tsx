@@ -9,34 +9,27 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    flex: 1
   },
   centered: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  topCentered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
   authBackgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   authButtonContainer: {
     position: 'absolute',
-    bottom: '15%',
+    bottom: 50,
+    height: 100,
     width: '100%',
-    justifyContent: 'center',
-  },
-  authButtonContainerMiddle: {
-    position: 'absolute',
-    bottom: '30%',
-    width: '100%',
-    justifyContent: 'center',
   },
   authButton: {
     height: 50,
@@ -45,20 +38,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   authButtonOverlay: {
-    backgroundColor: 'silver',
+    backgroundColor: 'tan',
     opacity: 0,
   },
   authButtonBlurredOverlay: {
-    backgroundColor: 'white',
+    backgroundColor: 'tan',
     opacity: 0,
   },
   authButtonBlackOverlay: {
-    backgroundColor: 'black',
+    backgroundColor: 'tan',
     opacity: 0,
   },
   authButtonText: {
     fontSize: 16,
-    color: 'grey',
+    color: '#63564B',
   },
   authButtonBlurredText: {
     fontSize: 16,
@@ -69,20 +62,30 @@ const styles = StyleSheet.create({
   },
   authLogo: {
     height: '10%',
-    bottom: 25,
+    top: 25,
+    marginBottom: 50,
     resizeMode: 'contain',
-    tintColor: 'grey',
+    tintColor: 'tan',
   },
   authTextInput: {
     position: 'relative',
     margin: -0.5,
     height: 35,
     width: '90%',
+    paddingLeft: 10,
+    paddingRight: 10,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ddd',
+    color: 'black'
+  },
+  authHeaderText: {
+    marginBottom: 25,
+    fontFamily: 'CircularStd',
+    fontSize: 24,
+    color: 'tan',
   },
   logoText: {
     position: 'relative',
@@ -91,8 +94,8 @@ const styles = StyleSheet.create({
   whiteBackground: {
     backgroundColor: 'white',
   },
-  greyBackground: {
-    backgroundColor: 'grey',
+  blackBackground: {
+    backgroundColor: 'black',
   },
   wrapperCustom: {
     borderRadius: 8,
@@ -128,6 +131,10 @@ const styles = StyleSheet.create({
   avatarPhoto: {
     marginBottom: 20,
   },
+  BarIcon: {
+    height: 40,
+    width: 40
+  }
 });
 
 export default styles;
