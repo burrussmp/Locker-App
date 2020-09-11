@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as React from 'react';
-import {Text, Image, View} from 'react-native';
+import {Button, Text, Image, View} from 'react-native';
 import {
   BottomTabBar,
   createBottomTabNavigator,
@@ -12,6 +12,7 @@ import styles from 'styles/styles';
 import {BlurView} from 'expo-blur';
 import {Avatar} from 'react-native-elements';
 
+import api from 'api/api';
 import icons from 'icons/icons';
 
 const ProfileTopTab = createMaterialTopTabNavigator();
@@ -71,9 +72,22 @@ function Profile() {
   );
 }
 
-function Notifications() {
+function Notifications(props: any) {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Button
+        title="LogOut"
+        onPress={async () =>
+          api
+            .Logout()
+            .then(() => {
+              props.Logout();
+            })
+            .catch(err => {
+              console.log(err);
+            })
+        }
+      />
       <Text>Notifications!</Text>
     </View>
   );

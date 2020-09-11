@@ -109,7 +109,7 @@ const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
 
 const borderRadiusAnimated = (index: number, scrollY: Animated.Value) => {
   return scrollY.interpolate({
-    inputRange: [index * 550, index * 550 + 550 * 0.3, index * 550 + 550 * 0.7],
+    inputRange: [index * 550, index * 550 + 550 * 0.4, index * 550 + 550 * 0.8],
     outputRange: [25, 25, 0],
   });
 };
@@ -118,8 +118,8 @@ const translateYAnimated = (index: number, scrollY: Animated.Value) => {
   return scrollY.interpolate({
     inputRange: [
       index * 550,
-      index * 550 + 550 * 0.3,
-      index * 550 + 550 * 0.7,
+      index * 550 + 550 * 0.4,
+      index * 550 + 550 * 0.8,
       (index + 1) * 550,
     ],
     outputRange: [0, 0, -50, -50],

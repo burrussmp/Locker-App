@@ -6,7 +6,7 @@
  * @desc Home screen
  */
 
-import React, {useRef} from 'react';
+import React, {useRef, createRef} from 'react';
 import {
   Animated,
   Alert,
@@ -17,49 +17,56 @@ import {
   ScrollView,
   NativeEventEmitter,
 } from 'react-native';
+import {BlurView} from 'expo-blur';
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBar,
+} from '@react-navigation/material-top-tabs';
+
 import AuthActions from 'store/actions/auth.actions';
+import scrollPosition from 'store/selectors/home.selectors';
 import Post from 'components/Post.tsx';
+
+import Feed from 'screens/Feed';
+
 import api from 'api/api';
 import styles from 'styles/styles';
 
+const headerMax = 48;
+const headerMin = 2;
+const headerScroll = 46;
+
 const HomeScreen = (props: any) => {
-  const postBorderRadius = useRef(new Animated.Value(25)).current;
-  const postTopMarging = useRef(new Animated.Value(-25)).current;
-
-  const postOut = () => {
-    Animated.timing(postBorderRadius, {
-      toValue: 0,
-      duration: 100,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const postIn = () => {
-    Animated.timing(postTopMarging, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
+  const HomeTopTab = createMaterialTopTabNavigator();
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const onScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {y: scrollY}}}],
-    {useNativeDriver: true}
-  );
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, headerScroll],
+    outputRange: [headerMax, headerMin],
+    extrapolate: 'clamp',
+  });
 
-  return (
-    <View style={styles.droidSafeArea}>
-      <Animated.ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'space-between',
+  const TabBar = (props: any) => {
+    return (
+      <Animated.View
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1,
+          height: headerHeight,
         }}
-        onScroll={onScroll}
-        scrollEventThrottle={1}
       >
-        <View style={{height: 30}} />
+        <MaterialTopTabBar {...props} />
+      </Animated.View>
+    );
+  };
+
+  const Logout = () => {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Button
           title="LogOut"
           onPress={async () =>
@@ -73,58 +80,37 @@ const HomeScreen = (props: any) => {
               })
           }
         />
-        <View style={{height: 50}} />
-        <Post index={0} scrollY={scrollY} />
-        <Post index={1} scrollY={scrollY} />
-        <Post index={2} scrollY={scrollY} />
-        <View
-          style={{
-            width: '100%',
-            height: 500,
-            marginTop: -25,
-            backgroundColor: 'steelblue',
-          }}
-        />
-        <View
-          style={{
-            height: 50,
-            backgroundColor: '#FFF',
-            borderBottomLeftRadius: 25,
-            borderBottomRightRadius: 25,
-            shadowColor: '#000',
-            shadowOpacity: 0.25,
-            shadowRadius: 0,
-            shadowOffset: {height: 1, width: 0},
-            zIndex: 1,
-          }}
-        />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-      </Animated.ScrollView>
+      </View>
+    );
+  };
+
+  return (
+    <View style={{flex: 1}}>
+      <View style={{height: 45}} />
+      <HomeTopTab.Navigator
+        tabBar={TabBar}
+        tabBarOptions={{
+          activeTintColor: '#000000',
+          inactiveTintColor: '#000000',
+          pressOpacity: 1,
+          style: {
+            borderBottomColor: '#000000',
+            backgroundColor: 'transparent',
+            elevation: 0,
+          },
+          indicatorStyle: {
+            backgroundColor: '#000000',
+            height: 2,
+          },
+          labelStyle: {
+            fontFamily: 'CircularBlack',
+          },
+        }}
+      >
+        <HomeTopTab.Screen name="Following" component={Feed} />
+        <HomeTopTab.Screen name="Products" component={Logout} />
+        <HomeTopTab.Screen name="Styles" component={Feed} />
+      </HomeTopTab.Navigator>
     </View>
   );
 };

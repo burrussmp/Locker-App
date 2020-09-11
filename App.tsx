@@ -1,5 +1,8 @@
+/* eslint-disable node/no-unpublished-require */
+
 import React from 'react';
 import {Provider} from 'react-redux';
+import * as SplashScreen from 'expo-splash-screen';
 import {useFonts} from 'expo-font';
 
 import store from 'store/index';
@@ -11,9 +14,15 @@ export default function App() {
     theme: 'light',
     authenticated: false,
   });
-  useFonts({
-    'CircularStd': require('/assets/fonts/CircularStd-Black.otf'),
+  const [fontsLoaded] = useFonts({
+    CircularBlack: require('/assets/fonts/CircularStd-Black.otf'),
+    CircularBook: require('/assets/fonts/CircularStd-Book.otf'),
   });
+  if (!fontsLoaded) {
+    SplashScreen.preventAutoHideAsync();
+  } else {
+    SplashScreen.hideAsync();
+  }
   return (
     <AppContext.Provider
       value={{
