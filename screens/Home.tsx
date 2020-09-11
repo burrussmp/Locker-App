@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
@@ -5,12 +7,20 @@
  */
 
 import React, {useRef} from 'react';
-import {Animated, Text, View, Button, SafeAreaView, ScrollView, NativeEventEmitter} from 'react-native';
+import {
+  Animated,
+  Alert,
+  Text,
+  View,
+  Button,
+  SafeAreaView,
+  ScrollView,
+  NativeEventEmitter,
+} from 'react-native';
 import AuthActions from 'store/actions/auth.actions';
-import Post from 'components/Post.tsx'
+import Post from 'components/Post.tsx';
 import api from 'api/api';
 import styles from 'styles/styles';
-
 
 const HomeScreen = (props: any) => {
   const postBorderRadius = useRef(new Animated.Value(25)).current;
@@ -20,7 +30,7 @@ const HomeScreen = (props: any) => {
     Animated.timing(postBorderRadius, {
       toValue: 0,
       duration: 100,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
   };
 
@@ -28,15 +38,15 @@ const HomeScreen = (props: any) => {
     Animated.timing(postTopMarging, {
       toValue: 0,
       duration: 1000,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
-  }
+  };
 
-  var scrollY = useRef(new Animated.Value(0)).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const onScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-    { useNativeDriver: true }
+    [{nativeEvent: {contentOffset: {y: scrollY}}}],
+    {useNativeDriver: true}
   );
 
   return (
@@ -49,7 +59,7 @@ const HomeScreen = (props: any) => {
         onScroll={onScroll}
         scrollEventThrottle={1}
       >
-        <View style={{height: 30}}/>
+        <View style={{height: 30}} />
         <Button
           title="LogOut"
           onPress={async () =>
@@ -62,59 +72,17 @@ const HomeScreen = (props: any) => {
                 console.log(err);
               })
           }
-          
         />
-        <View style={{height: 50}}/>
-        <Post
-          index={0}
-          scrollY={scrollY}
-        />
-        <Post
-          index={1}
-          scrollY={scrollY}
-        />
-        <Post
-          index={2}
-          scrollY={scrollY}
-        />
-        <View
-          style={{
-            width: '100%',
-            height: 500,
-            backgroundColor: 'powderblue'
-          }}
-        />
-        <Animated.View
-          style={[
-          {
-            height: 50,
-            backgroundColor: '#FFF',
-            borderBottomLeftRadius: 25,
-            borderBottomRightRadius: 25,
-            shadowColor: '#000',
-            shadowOpacity: .25,
-            shadowRadius: 0,
-            shadowOffset: {height: 1, width: 0},
-            zIndex: 1
-          },
-          {
-            borderBottomLeftRadius: postBorderRadius,
-            borderBottomRightRadius: postBorderRadius
-          }]}
-          onLayout={(event : any) => {
-            const layout = event.nativeEvent.layout;
-            console.log('height:', layout.height);
-            console.log('width:', layout.width);
-            console.log('x:', layout.x);
-            console.log('y:', layout.y);
-          }}
-        />
+        <View style={{height: 50}} />
+        <Post index={0} scrollY={scrollY} />
+        <Post index={1} scrollY={scrollY} />
+        <Post index={2} scrollY={scrollY} />
         <View
           style={{
             width: '100%',
             height: 500,
             marginTop: -25,
-            backgroundColor: 'steelblue'
+            backgroundColor: 'steelblue',
           }}
         />
         <View
@@ -124,10 +92,10 @@ const HomeScreen = (props: any) => {
             borderBottomLeftRadius: 25,
             borderBottomRightRadius: 25,
             shadowColor: '#000',
-            shadowOpacity: .25,
+            shadowOpacity: 0.25,
             shadowRadius: 0,
             shadowOffset: {height: 1, width: 0},
-            zIndex: 1
+            zIndex: 1,
           }}
         />
         <View
@@ -170,6 +138,6 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 import {connect} from 'react-redux';
-import { SafeAreaConsumer } from 'react-native-safe-area-context';
+import {SafeAreaConsumer} from 'react-native-safe-area-context';
 import Layout from 'constants/Layout';
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

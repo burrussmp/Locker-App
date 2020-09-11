@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
@@ -11,7 +14,6 @@ import {
   SafeAreaView,
   TextInput,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
   Platform,

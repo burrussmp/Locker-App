@@ -30,10 +30,9 @@ const Navigation = (props: any) => {
         console.log(err);
       });
   }, []);
-  return isLoading ?
-    (
+  return isLoading ? (
     <Splash />
-    ) : (
+  ) : (
     <NavigationContainer>
       {AuthSelectors.isLoggedIn(props.state) ? (
         <AppNavigation />
@@ -51,7 +50,9 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    'Login': (token: string) => {dispatch(AuthActions.Login(token))}
+    Login: (token: string) => {
+      dispatch(AuthActions.Login(token));
+    },
   };
 };
 
