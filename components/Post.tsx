@@ -53,7 +53,7 @@ const Post = (props : postProps) => {
 const borderRadiusAnimated = (index : number, scrollY : Animated.Value) => {
   return scrollY.interpolate({
       inputRange: [
-        (index) * 500,
+        (index - 1) * 500,
         (index + 1) * 500 * .7, 
         (index + 1) * 500 * .8
       ],
@@ -65,12 +65,11 @@ const borderRadiusAnimated = (index : number, scrollY : Animated.Value) => {
 const translateYAnimated = (index : number, scrollY : Animated.Value) => {
   return scrollY.interpolate({
       inputRange: [
-        (index) * 500,
-        (index + 1) * 500 * .7, 
-        (index + 1) * 500 * .8,
+        (index - 1) * 500,
+        (index + 1) * 500 * .5,
         (index + 1) * 500
       ],
-      outputRange: [0, 0, -50, -50],
+      outputRange: [0, 0, -50]
     }
   );
 };
