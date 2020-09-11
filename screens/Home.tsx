@@ -64,6 +64,7 @@ const HomeScreen = (props: any) => {
           }
           
         />
+        <View style={{height: 50}}/>
         <Post
           index={0}
           scrollY={scrollY}
