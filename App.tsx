@@ -6,10 +6,17 @@ import store from 'store/index';
 import AppContainer from 'navigation/index';
 
 import Amplify from 'aws-amplify';
-import awsExports from './aws-exports';
-Amplify.configure(awsExports);
+import {withAuthenticator} from '@aws-amplify/ui-react';
 
-export default function App() {
+Amplify.configure({
+  Auth: {
+    region: 'us-east-1',
+    userPoolId: 'us-east-1_ycpAdyf98',
+    userPoolWebClientId: 'kjplia9eusjqnbf1hjlv0nc11',
+  },
+});
+
+function App() {
   const AppContext = React.createContext({
     language: 'EN',
     theme: 'light',
@@ -32,3 +39,5 @@ export default function App() {
     </AppContext.Provider>
   );
 }
+
+export default App;

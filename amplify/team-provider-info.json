@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lockerapp-dev-103336-authRole",
+      "UnauthRoleArn": "arn:aws:iam::047429572273:role/amplify-lockerapp-dev-103336-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::047429572273:role/amplify-lockerapp-dev-103336-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-lockerapp-dev-103336-deployment",
+      "UnauthRoleName": "amplify-lockerapp-dev-103336-unauthRole",
+      "StackName": "amplify-lockerapp-dev-103336",
+      "StackId": "arn:aws:cloudformation:us-east-2:047429572273:stack/amplify-lockerapp-dev-103336/f3bb63c0-f504-11ea-baf1-06cfbd911168",
+      "AmplifyAppId": "d329szebu50u4m"
+    }
+  }
+}
