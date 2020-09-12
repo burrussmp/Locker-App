@@ -4,10 +4,16 @@
  * @desc Selectors are easy ways to retrieve certain information from the store
  */
 
-const headerHeight = (state: any): number => {
-  return state.home.headerHeight;
+import {Animated} from 'react-native';
+
+const homeScroll = (state: any): Animated.Value => {
+  if (state.home.scrollY !== undefined) {
+    return state.home.scrollY;
+  } else {
+    return new Animated.Value(0);
+  }
 };
 
 export default {
-  headerHeight,
+  homeScroll,
 };

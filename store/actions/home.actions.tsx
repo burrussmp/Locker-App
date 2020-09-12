@@ -8,10 +8,10 @@
 
 import {HomeActions, SCROLL} from 'store/types/home.types';
 
-const Scroll = (value: number): HomeActions => {
+const Scroll = (scrollY: number): HomeActions => {
   return {
     type: SCROLL,
-    value: value,
+    scrollY: scrollY,
   };
 };
 

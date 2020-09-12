@@ -8,7 +8,7 @@ export const SCROLL = 'scroll';
 
 interface ScrollAction {
   type: typeof SCROLL;
-  value: number;
+  scrollY: number;
 }
 
 export type HomeActions = ScrollAction;

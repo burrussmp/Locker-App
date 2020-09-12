@@ -24,7 +24,7 @@ import {
 } from '@react-navigation/material-top-tabs';
 
 import AuthActions from 'store/actions/auth.actions';
-import scrollPosition from 'store/selectors/home.selectors';
+import HomeSelectors from 'store/selectors/home.selectors';
 import Post from 'components/Post.tsx';
 
 import Feed from 'screens/Feed';
@@ -39,11 +39,10 @@ const headerScroll = 46;
 const HomeScreen = (props: any) => {
   const HomeTopTab = createMaterialTopTabNavigator();
 
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  const headerHeight = scrollY.interpolate({
-    inputRange: [0, headerScroll],
-    outputRange: [headerMax, headerMin],
+  const homeScrollPosition = HomeSelectors.homeScroll(props.state);
+  const headerHeight = homeScrollPosition.interpolate({
+    inputRange: [0, 46],
+    outputRange: [48, 2],
     extrapolate: 'clamp',
   });
 
@@ -115,7 +114,11 @@ const HomeScreen = (props: any) => {
   );
 };
 
-const mapStateToProps = (state: any) => state;
+const mapStateToProps = (state: any) => {
+  return {
+    state: state,
+  };
+};
 const mapDispatchToProps = (dispatch: any) => {
   return {
     Logout: () => {

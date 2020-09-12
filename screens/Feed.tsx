@@ -21,9 +21,7 @@ const Feed = (props: any) => {
     {
       useNativeDriver: true,
       listener: event => {
-        const offsetY = event.nativeEvent.contentOffset.y;
         props.Scroll(event.nativeEvent.contentOffset.y);
-        console.log(HomeSelectors.headerHeight(props.state));
       },
     }
   );
@@ -36,7 +34,7 @@ const Feed = (props: any) => {
           justifyContent: 'space-between',
         }}
         onScroll={onScroll}
-        scrollEventThrottle={16}
+        scrollEventThrottle={1}
         showsVerticalScrollIndicator={false}
       >
         <View style={{height: 98}} />
