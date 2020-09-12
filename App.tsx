@@ -5,6 +5,10 @@ import {useFonts} from 'expo-font';
 import store from 'store/index';
 import AppContainer from 'navigation/index';
 
+import Amplify from 'aws-amplify';
+import awsExports from './aws-exports';
+Amplify.configure(awsExports);
+
 export default function App() {
   const AppContext = React.createContext({
     language: 'EN',
@@ -12,7 +16,7 @@ export default function App() {
     authenticated: false,
   });
   useFonts({
-    'CircularStd': require('/assets/fonts/CircularStd-Black.otf'),
+    CircularStd: require('/assets/fonts/CircularStd-Black.otf'),
   });
   return (
     <AppContext.Provider
