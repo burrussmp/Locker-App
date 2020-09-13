@@ -13,16 +13,20 @@ import HomeActions from 'store/actions/home.actions';
 import HomeSelectors from 'store/selectors/home.selectors';
 import styles from 'styles/styles';
 
-const Feed = (props: any) => {
+const Feed = (props: any) => { 
+  React.useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      props.ChangeTab(scrollY);
+    });
+    return unsubscribe;
+  }, [props.navigation]);
+
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const onScroll = Animated.event(
     [{nativeEvent: {contentOffset: {y: scrollY}}}],
     {
-      useNativeDriver: true,
-      listener: event => {
-        props.Scroll(event.nativeEvent.contentOffset.y);
-      },
+      useNativeDriver: false,
     }
   );
 
@@ -34,7 +38,7 @@ const Feed = (props: any) => {
           justifyContent: 'space-between',
         }}
         onScroll={onScroll}
-        scrollEventThrottle={1}
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
       >
         <View style={{height: 98}} />
@@ -79,8 +83,8 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    Scroll: (value: number) => {
-      dispatch(HomeActions.Scroll(value));
+    ChangeTab: (scrollTracker: Animated.Value) => {
+      dispatch(HomeActions.ChangeTab(scrollTracker));
     },
   };
 };

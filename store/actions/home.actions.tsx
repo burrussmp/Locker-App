@@ -6,15 +6,16 @@
  * to change the state based on the current state and the dispatched action.
  */
 
-import {HomeActions, SCROLL} from 'store/types/home.types';
+import {Animated} from 'react-native'
+import {HomeActions, CHANGE_TAB} from 'store/types/home.types';
 
-const Scroll = (scrollY: number): HomeActions => {
+const ChangeTab = (scrollTracker: Animated.Value): HomeActions => {
   return {
-    type: SCROLL,
-    scrollY: scrollY,
+    type: CHANGE_TAB,
+    scrollTracker: scrollTracker,
   };
 };
 
 export default {
-  Scroll,
+  ChangeTab,
 };

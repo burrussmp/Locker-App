@@ -9,6 +9,7 @@
 import React, {useRef, createRef} from 'react';
 import {
   Animated,
+  Easing,
   Alert,
   Text,
   View,
@@ -38,8 +39,7 @@ const headerScroll = 46;
 
 const HomeScreen = (props: any) => {
   const HomeTopTab = createMaterialTopTabNavigator();
-
-  const homeScrollPosition = HomeSelectors.homeScroll(props.state);
+  const homeScrollPosition = HomeSelectors.homeScrollTracker(props.state);
   const headerHeight = homeScrollPosition.interpolate({
     inputRange: [0, 46],
     outputRange: [48, 2],
@@ -106,9 +106,57 @@ const HomeScreen = (props: any) => {
           },
         }}
       >
-        <HomeTopTab.Screen name="Following" component={Feed} />
-        <HomeTopTab.Screen name="Products" component={Logout} />
-        <HomeTopTab.Screen name="Styles" component={Feed} />
+        <HomeTopTab.Screen
+          name="Following"
+          component={Feed}
+          options={{
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={{
+                  fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
+                  left: focused ? 0 : 1,
+                  width: '200%',
+                }}
+              >
+                FOLLOWING
+              </Text>
+            ),
+          }}
+        />
+        <HomeTopTab.Screen
+          name="Products"
+          component={Logout}
+          options={{
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={{
+                  fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
+                  left: focused ? 0 : 0.75,
+                  width: '200%',
+                }}
+              >
+                PRODUCTS
+              </Text>
+            ),
+          }}
+        />
+        <HomeTopTab.Screen
+          name="Styles"
+          component={Feed}
+          options={{
+            tabBarLabel: ({focused}) => (
+              <Text
+                style={{
+                  fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
+                  left: focused ? 0 : 0.5,
+                  width: '200%',
+                }}
+              >
+                STYLES
+              </Text>
+            ),
+          }}
+        />
       </HomeTopTab.Navigator>
     </View>
   );
@@ -129,4 +177,5 @@ const mapDispatchToProps = (dispatch: any) => {
 import {connect} from 'react-redux';
 import {SafeAreaConsumer} from 'react-native-safe-area-context';
 import Layout from 'constants/Layout';
+import {EACCES} from 'constants';
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

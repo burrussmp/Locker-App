@@ -6,7 +6,7 @@
  */
 
 import {Animated} from 'react-native';
-import {HomeActions, SCROLL} from 'store/types/home.types';
+import {HomeActions, CHANGE_TAB} from 'store/types/home.types';
 
 interface HomeState {
   scrollY: Animated.Value;
@@ -21,9 +21,9 @@ const HomeReducer = (
   action: HomeActions
 ): HomeState => {
   switch (action.type) {
-    case SCROLL:
+    case CHANGE_TAB:
       return {
-        scrollY: new Animated.Value(action.scrollY),
+        scrollY: action.scrollTracker,
       };
     default:
       return state;

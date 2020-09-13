@@ -17,6 +17,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     CircularBlack: require('/assets/fonts/CircularStd-Black.otf'),
     CircularBook: require('/assets/fonts/CircularStd-Book.otf'),
+    CircularMedium: require('/assets/fonts/CircularStd-Medium.otf'),
   });
   if (!fontsLoaded) {
     SplashScreen.preventAutoHideAsync();

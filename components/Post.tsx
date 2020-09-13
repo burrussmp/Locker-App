@@ -1,3 +1,4 @@
+import {ALL} from 'dns';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 /**
@@ -7,36 +8,25 @@
  */
 
 import * as React from 'react';
-import {Alert, Animated, Dimensions, Text, TouchableOpacity, View} from 'react-native';
+import {useEffect, useRef, useState} from 'react';
+import {
+  Alert,
+  Animated,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import {
   LongPressGestureHandler,
   State,
   TapGestureHandler,
 } from 'react-native-gesture-handler';
-import { color } from 'react-native-reanimated';
+import {color} from 'react-native-reanimated';
+import {start} from 'repl';
 
 import styles from 'styles/styles';
-
-const doubleTapRef = React.createRef<TapGestureHandler>();
-
-const onHandlerStateChange = (event: any) => {
-  if (event.nativeEvent.state === State.ACTIVE) {
-    Alert.alert('Niiiiiiiice');
-  }
-};
-
-const onSingleTap = (event: any) => {
-  if (event.nativeEvent.state === State.ACTIVE) {
-    Alert.alert('Nice');
-  }
-};
-
-const onDoubleTap = (event: any) => {
-  if (event.nativeEvent.state === State.ACTIVE) {
-    Alert.alert('NiceNice');
-  }
-};
 
 interface PostProps {
   index: number;
@@ -44,26 +34,74 @@ interface PostProps {
 }
 
 const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
+  const [isFlipped, setFlipped] = useState(false);
+  const [rotationDegrees, setRotationDegrees] = useState(new Animated.Value(0));
+  const doubleTapRef = useRef(null);
+
+  const onSingleTap = (event: any) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      handleFlip();
+    }
+  };
+
+  const onDoubleTap = (event: any) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      Alert.alert('NiceNice');
+    }
+  };
+
+  function handleFlip() {
+    setFlipped(prev => !prev);
+  }
+
+  useEffect(() => {
+    if (!isFlipped) {
+      Animated.spring(rotationDegrees, {
+        toValue: 0,
+        friction: 6,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.spring(rotationDegrees, {
+        toValue: 180,
+        friction: 6,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isFlipped]);
+  const frontInterpolate = rotationDegrees.interpolate({
+    inputRange: [0, 180],
+    outputRange: ['0deg', '180deg'],
+  });
+  const backInterpolate = rotationDegrees.interpolate({
+    inputRange: [0, 180],
+    outputRange: ['180deg', '360deg'],
+  });
+  const frontTransform = {
+    transform: [{rotateY: frontInterpolate}],
+  };
+  const backTransform = {
+    transform: [{rotateY: backInterpolate}],
+  };
   return (
     <View style={{zIndex: -props.index, marginTop: -50}}>
-      <LongPressGestureHandler
-        onHandlerStateChange={onHandlerStateChange}
-        minDurationMs={800}>
+      <TapGestureHandler
+        onHandlerStateChange={onSingleTap}
+        waitFor={doubleTapRef}
+      >
         <TapGestureHandler
-          onHandlerStateChange={onSingleTap}
-          waitFor={doubleTapRef}
+          ref={doubleTapRef}
+          onHandlerStateChange={onDoubleTap}
+          numberOfTaps={2}
         >
-          <TapGestureHandler
-            ref={doubleTapRef}
-            onHandlerStateChange={onDoubleTap}
-            numberOfTaps={2}
-          >
+          <View style={{flex: 1}}>
             <Animated.View
               style={[
                 {
                   width: '100%',
                   height: 500,
                   backgroundColor: 'powderblue',
+                  backfaceVisibility: 'hidden',
                 },
                 {
                   transform: [
@@ -75,11 +113,34 @@ const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
                     },
                   ],
                 },
+                frontTransform,
               ]}
             />
-          </TapGestureHandler>
+            <Animated.View
+              style={[
+                {
+                  position: 'absolute',
+                  width: '100%',
+                  height: 500,
+                  backgroundColor: 'red',
+                  backfaceVisibility: 'hidden',
+                },
+                {
+                  transform: [
+                    {
+                      translateY: translateYAnimated(
+                        props.index,
+                        props.scrollY
+                      ),
+                    },
+                  ],
+                },
+                backTransform,
+              ]}
+            />
+          </View>
         </TapGestureHandler>
-      </LongPressGestureHandler>
+      </TapGestureHandler>
       <Animated.View
         style={[
           {
