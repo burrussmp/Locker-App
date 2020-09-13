@@ -13,7 +13,7 @@ import HomeActions from 'store/actions/home.actions';
 import HomeSelectors from 'store/selectors/home.selectors';
 import styles from 'styles/styles';
 
-const Feed = (props: any) => { 
+const Feed = (props: any) => {
   React.useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
       props.ChangeTab(scrollY);
