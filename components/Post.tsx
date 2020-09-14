@@ -8,27 +8,9 @@ import {ALL} from 'dns';
  */
 
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
-import {
-  Alert,
-  Animated,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Animated} from 'react-native';
 
-import {
-  LongPressGestureHandler,
-  State,
-  TapGestureHandler,
-} from 'react-native-gesture-handler';
-import {color} from 'react-native-reanimated';
-import {start} from 'repl';
-
-import styles from 'styles/styles';
-import LikeButton from 'components/Post.LikeButton';
-import LockButton from 'components/Post.LockButton';
+import PostNotExpanded from 'components/Post.NotExpanded';
 
 interface PostProps {
   index: number;
@@ -37,189 +19,13 @@ interface PostProps {
 }
 
 const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
-  const [isFlipped, setFlipped] = useState(false);
-  const [isExpanded, setExpanded] = useState(false);
-  const rotationDegrees = useRef(new Animated.Value(0)).current;
-  const doubleTapRef = useRef(null);
-
-  const onSingleTap = (event: any) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      console.log(props.scrollY);
-      handleFlip();
-    }
-  };
-
-  const onDoubleTap = (event: any) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      Alert.alert('NiceNice');
-    }
-  };
-
-  function handleFlip() {
-    setFlipped(prev => !prev);
-  }
-
-  useEffect(() => {
-    if (isFlipped) {
-      Animated.spring(rotationDegrees, {
-        toValue: 180,
-        friction: 6,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.spring(rotationDegrees, {
-        toValue: 0,
-        friction: 6,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [isFlipped]);
-  const frontInterpolate = rotationDegrees.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['0deg', '180deg'],
-  });
-  const backInterpolate = rotationDegrees.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['180deg', '360deg'],
-  });
-  const frontTransform = {
-    transform: [{rotateY: frontInterpolate}],
-  };
-  const backTransform = {
-    transform: [{rotateY: backInterpolate}],
-  };
-  const onTapEllipses = (event: any) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      setExpanded(prev => !prev);
-      props.onContentExpand(props.index);
-    }
-  };
   return (
-    <View style={{zIndex: -props.index, marginTop: -50}}>
-      <TapGestureHandler
-        onHandlerStateChange={onSingleTap}
-        waitFor={doubleTapRef}
-      >
-        <TapGestureHandler
-          ref={doubleTapRef}
-          onHandlerStateChange={onDoubleTap}
-          numberOfTaps={2}
-        >
-          <View style={{flex: 1}}>
-            <Animated.View
-              style={[
-                {
-                  width: '100%',
-                  height: 500,
-                  backgroundColor: 'powderblue',
-                  backfaceVisibility: 'hidden',
-                },
-                {
-                  transform: [
-                    {
-                      translateY: translateYAnimated(
-                        props.index,
-                        props.scrollY
-                      ),
-                    },
-                  ],
-                },
-                frontTransform,
-              ]}
-            />
-            <Animated.View
-              style={[
-                {
-                  position: 'absolute',
-                  width: '100%',
-                  height: 500,
-                  backgroundColor: 'red',
-                  backfaceVisibility: 'hidden',
-                },
-                {
-                  transform: [
-                    {
-                      translateY: translateYAnimated(
-                        props.index,
-                        props.scrollY
-                      ),
-                    },
-                  ],
-                },
-                backTransform,
-              ]}
-            />
-          </View>
-        </TapGestureHandler>
-      </TapGestureHandler>
-      <Animated.View
-        style={[
-          {
-            height: 50,
-            backgroundColor: '#FFF',
-          },
-          {
-            transform: [
-              {translateY: translateYAnimated(props.index, props.scrollY)},
-            ],
-          },
-          {
-            borderBottomLeftRadius: borderRadiusAnimated(
-              props.index,
-              props.scrollY
-            ),
-            borderBottomRightRadius: borderRadiusAnimated(
-              props.index,
-              props.scrollY
-            ),
-          },
-        ]}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: 15,
-          }}
-        >
-          <View style={{flex: 3}} />
-          <View style={{flex: 2}}>
-            <TapGestureHandler onHandlerStateChange={onTapEllipses}>
-              <View style={{flex: 1, backgroundColor: 'black'}} />
-            </TapGestureHandler>
-          </View>
-          <View
-            style={{
-              flex: 3,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <LikeButton style={{marginEnd: 5}} />
-            <LockButton />
-          </View>
-        </View>
-      </Animated.View>
-    </View>
+    <PostNotExpanded
+      index={props.index}
+      scrollY={props.scrollY}
+      onContentExpand={props.onContentExpand}
+    />
   );
-};
-
-const borderRadiusAnimated = (index: number, scrollY: Animated.Value) => {
-  return scrollY.interpolate({
-    inputRange: [index * 550, index * 550 + 550 * 0.4, index * 550 + 550 * 0.8],
-    outputRange: [25, 25, 1],
-    extrapolate: 'clamp',
-  });
-};
-
-const translateYAnimated = (index: number, scrollY: Animated.Value) => {
-  return scrollY.interpolate({
-    inputRange: [index * 550, index * 550 + 550 * 0.4, index * 550 + 550 * 0.8],
-    outputRange: [0, 0, -50],
-    extrapolate: 'clamp',
-  });
 };
 
 export default Post;
