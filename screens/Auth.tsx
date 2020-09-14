@@ -21,7 +21,7 @@ import {connect} from 'react-redux';
 import {BlurView} from 'expo-blur';
 
 import AuthActions from 'store/actions/auth.actions';
-import AuthButton from 'components/AuthButton.tsx';
+import AuthButton from 'components/Auth.Button';
 import styles from 'styles/styles';
 
 const backgroundImage = require('assets/images/splash.png');

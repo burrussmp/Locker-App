@@ -27,19 +27,24 @@ import {color} from 'react-native-reanimated';
 import {start} from 'repl';
 
 import styles from 'styles/styles';
+import LikeButton from 'components/Post.LikeButton';
+import LockButton from 'components/Post.LockButton';
 
 interface PostProps {
   index: number;
   scrollY: Animated.Value;
+  onContentExpand(index: number): void;
 }
 
 const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
   const [isFlipped, setFlipped] = useState(false);
-  const [rotationDegrees, setRotationDegrees] = useState(new Animated.Value(0));
+  const [isExpanded, setExpanded] = useState(false);
+  const rotationDegrees = useRef(new Animated.Value(0)).current;
   const doubleTapRef = useRef(null);
 
   const onSingleTap = (event: any) => {
     if (event.nativeEvent.state === State.ACTIVE) {
+      console.log(props.scrollY);
       handleFlip();
     }
   };
@@ -55,15 +60,15 @@ const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
   }
 
   useEffect(() => {
-    if (!isFlipped) {
+    if (isFlipped) {
       Animated.spring(rotationDegrees, {
-        toValue: 0,
+        toValue: 180,
         friction: 6,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.spring(rotationDegrees, {
-        toValue: 180,
+        toValue: 0,
         friction: 6,
         useNativeDriver: true,
       }).start();
@@ -82,6 +87,12 @@ const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
   };
   const backTransform = {
     transform: [{rotateY: backInterpolate}],
+  };
+  const onTapEllipses = (event: any) => {
+    if (event.nativeEvent.state === State.ACTIVE) {
+      setExpanded(prev => !prev);
+      props.onContentExpand(props.index);
+    }
   };
   return (
     <View style={{zIndex: -props.index, marginTop: -50}}>
@@ -163,7 +174,34 @@ const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
             ),
           },
         ]}
-      />
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 15,
+          }}
+        >
+          <View style={{flex: 3}} />
+          <View style={{flex: 2}}>
+            <TapGestureHandler onHandlerStateChange={onTapEllipses}>
+              <View style={{flex: 1, backgroundColor: 'black'}} />
+            </TapGestureHandler>
+          </View>
+          <View
+            style={{
+              flex: 3,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <LikeButton style={{marginEnd: 5}} />
+            <LockButton />
+          </View>
+        </View>
+      </Animated.View>
     </View>
   );
 };
@@ -171,19 +209,16 @@ const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
 const borderRadiusAnimated = (index: number, scrollY: Animated.Value) => {
   return scrollY.interpolate({
     inputRange: [index * 550, index * 550 + 550 * 0.4, index * 550 + 550 * 0.8],
-    outputRange: [25, 25, 0],
+    outputRange: [25, 25, 1],
+    extrapolate: 'clamp',
   });
 };
 
 const translateYAnimated = (index: number, scrollY: Animated.Value) => {
   return scrollY.interpolate({
-    inputRange: [
-      index * 550,
-      index * 550 + 550 * 0.4,
-      index * 550 + 550 * 0.8,
-      (index + 1) * 550,
-    ],
-    outputRange: [0, 0, -50, -50],
+    inputRange: [index * 550, index * 550 + 550 * 0.4, index * 550 + 550 * 0.8],
+    outputRange: [0, 0, -50],
+    extrapolate: 'clamp',
   });
 };
 

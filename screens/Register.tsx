@@ -20,7 +20,7 @@ import {
   View,
 } from 'react-native';
 import AuthActions from 'store/actions/auth.actions';
-import AuthButton from 'components/AuthButton';
+import AuthButton from 'components/Auth.Button';
 import api from 'api/api';
 import styles from 'styles/styles';
 

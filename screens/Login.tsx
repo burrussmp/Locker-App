@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import AuthActions from 'store/actions/auth.actions';
-import AuthButton from 'components/AuthButton.tsx';
+import AuthButton from 'components/Auth.Button';
 import api from 'api/api';
 import styles from 'styles/styles';
 

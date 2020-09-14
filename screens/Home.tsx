@@ -114,8 +114,7 @@ const HomeScreen = (props: any) => {
               <Text
                 style={{
                   fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
-                  left: focused ? 0 : 1,
-                  width: '200%',
+                  alignSelf: 'center',
                 }}
               >
                 FOLLOWING
@@ -131,8 +130,7 @@ const HomeScreen = (props: any) => {
               <Text
                 style={{
                   fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
-                  left: focused ? 0 : 0.75,
-                  width: '200%',
+                  alignSelf: 'center',
                 }}
               >
                 PRODUCTS
@@ -148,8 +146,7 @@ const HomeScreen = (props: any) => {
               <Text
                 style={{
                   fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
-                  left: focused ? 0 : 0.5,
-                  width: '200%',
+                  alignSelf: 'center',
                 }}
               >
                 STYLES
