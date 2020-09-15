@@ -20,6 +20,7 @@ const likeIcon = require('assets/icons/like.png');
 const likeIconSelected = require('assets/icons/liked.png');
 const lockIcon = require('assets/icons/lock.png');
 const lockIconSelected = require('assets/icons/locked.png');
+const moreIcon = require('assets/icons/more.png');
 
 const icons = {
   home: {
@@ -49,6 +50,9 @@ const icons = {
   lock: {
     locked: lockIconSelected,
     unlocked: lockIcon,
+  },
+  more: {
+    more: moreIcon,
   },
 };
 

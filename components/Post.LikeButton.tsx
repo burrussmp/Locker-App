@@ -11,20 +11,18 @@ import {Animated, View} from 'react-native';
 
 import {State, TapGestureHandler} from 'react-native-gesture-handler';
 
+import {
+  likeAnimation,
+  likeAnimationTransform,
+} from 'services/animations/ReactionAnimations';
 import icons from 'icons/icons';
 
 const LikeButton: React.FunctionComponent = (props: any) => {
   const [isLiked, setLiked] = useState(false);
-  const scale = useRef(new Animated.Value(1)).current;
+  const scaleRef = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    scale.setValue(0.8);
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 7,
-      tension: 200,
-      useNativeDriver: true,
-    }).start();
+    likeAnimation(scaleRef);
   }, [isLiked]);
 
   const onSingleTap = (event: any) => {
@@ -37,16 +35,12 @@ const LikeButton: React.FunctionComponent = (props: any) => {
     setLiked(prev => !prev);
   }
 
-  const scaleAnimationTransform = {
-    transform: [{scale: scale}],
-  };
-
   return (
     <View style={props.style}>
       <TapGestureHandler onHandlerStateChange={onSingleTap}>
         <Animated.Image
           source={isLiked ? icons.like.liked : icons.like.unliked}
-          style={scaleAnimationTransform}
+          style={likeAnimationTransform(scaleRef)}
         />
       </TapGestureHandler>
     </View>

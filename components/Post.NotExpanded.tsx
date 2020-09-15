@@ -10,7 +10,7 @@ import {ALL} from 'dns';
 import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
-import {Alert, Animated, View} from 'react-native';
+import {Alert, Animated, Image, View} from 'react-native';
 
 import {
   ScrollView,
@@ -21,8 +21,15 @@ import {useNavigation} from '@react-navigation/native';
 
 import LikeButton from 'components/Post.LikeButton';
 import LockButton from 'components/Post.LockButton';
+import icons from 'icons/icons';
 
 import PostActions from 'store/actions/post.actions';
+import {
+  flipAnimation,
+  borderRadiusAnimationStyle,
+  flipAnimationTransform,
+  pushOutAnimationTransform,
+} from 'services/animations/PostAnimations';
 
 interface PostProps {
   index: number;
@@ -35,24 +42,11 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
 ) => {
   const [isFlipped, setFlipped] = useState(false);
   const navigation = useNavigation();
-  const rotationDegrees = useRef(new Animated.Value(0)).current;
-  const bottomHeight = useRef(new Animated.Value(50)).current;
+  const rotationDegreesRef = useRef(new Animated.Value(0)).current;
   const doubleTapRef = useRef(null);
 
   useEffect(() => {
-    if (isFlipped) {
-      Animated.spring(rotationDegrees, {
-        toValue: 180,
-        friction: 6,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.spring(rotationDegrees, {
-        toValue: 0,
-        friction: 6,
-        useNativeDriver: true,
-      }).start();
-    }
+    flipAnimation(rotationDegreesRef, isFlipped);
   }, [isFlipped]);
 
   const onContentTap = (event: any) => {
@@ -72,53 +66,6 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
     setFlipped(prev => !prev);
   }
 
-  const borderRadiusInterpolate = props.scrollY.interpolate({
-    inputRange: [
-      props.index * 500,
-      props.index * 500 + 550 * 0.4,
-      props.index * 500 + 550 * 0.8,
-    ],
-    outputRange: [25, 25, 1],
-    extrapolate: 'clamp',
-  });
-
-  const pushOutInterpolate = props.scrollY.interpolate({
-    inputRange: [
-      props.index * 500,
-      props.index * 500 + 550 * 0.4,
-      props.index * 500 + 550 * 0.8,
-    ],
-    outputRange: [0, 0, -50],
-    extrapolate: 'clamp',
-  });
-
-  const frontFlipInterpolate = rotationDegrees.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['0deg', '180deg'],
-  });
-
-  const backFlipInterpolate = rotationDegrees.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['180deg', '360deg'],
-  });
-
-  const borderRadiusAnimationStyle = {
-    borderBottomLeftRadius: borderRadiusInterpolate,
-    borderBottomRightRadius: borderRadiusInterpolate,
-  };
-
-  const pushOutAnimationTransform = {
-    transform: [{translateY: pushOutInterpolate}],
-  };
-
-  const frontFlipAnimationTransform = {
-    transform: [{rotateY: frontFlipInterpolate}],
-  };
-
-  const backFlipAnimationTransform = {
-    transform: [{rotateY: backFlipInterpolate}],
-  };
-
   const onEllipsesTap = (event: any) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       props.onContentExpand(props.index);
@@ -126,6 +73,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
       navigation.navigate('PostExpanded');
     }
   };
+
   return (
     <View style={{zIndex: -props.index, marginTop: -50}}>
       <TapGestureHandler
@@ -146,8 +94,8 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                   backgroundColor: 'powderblue',
                   backfaceVisibility: 'hidden',
                 },
-                pushOutAnimationTransform,
-                frontFlipAnimationTransform,
+                pushOutAnimationTransform(props.scrollY, props.index),
+                flipAnimationTransform(rotationDegreesRef, true),
               ]}
             />
             <Animated.View
@@ -159,8 +107,8 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                   backgroundColor: 'red',
                   backfaceVisibility: 'hidden',
                 },
-                pushOutAnimationTransform,
-                backFlipAnimationTransform,
+                pushOutAnimationTransform(props.scrollY, props.index),
+                flipAnimationTransform(rotationDegreesRef, false),
               ]}
             />
           </View>
@@ -169,11 +117,11 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
       <Animated.View
         style={[
           {
-            height: bottomHeight,
+            height: 50,
             backgroundColor: '#FFF',
           },
-          pushOutAnimationTransform,
-          borderRadiusAnimationStyle,
+          pushOutAnimationTransform(props.scrollY, props.index),
+          borderRadiusAnimationStyle(props.scrollY, props.index),
         ]}
       >
         <View
@@ -188,7 +136,9 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
           <View style={{flex: 3}} />
           <View style={{flex: 2}}>
             <TapGestureHandler onHandlerStateChange={onEllipsesTap}>
-              <View style={{flex: 1, backgroundColor: 'black'}} />
+              <View style={{flex: 1, alignItems: 'center', paddingTop: 11}}>
+                <Image source={icons.more.more} style={{opacity: 0.25}} />
+              </View>
             </TapGestureHandler>
           </View>
           <View

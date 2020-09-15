@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import {createStackNavigator} from '@react-navigation/stack';
 
-import HomeFeed from 'components/Feed.Container';
+import FeedContainer from 'components/Feed.Container';
 import PostExpanded from 'components/Post.Expanded';
 
 const Feed = (props: any) => {
@@ -17,7 +17,7 @@ const Feed = (props: any) => {
     <FeedNavigator.Navigator headerMode="screen">
       <FeedNavigator.Screen
         name="Feed"
-        component={HomeFeed}
+        component={FeedContainer}
         options={{
           headerShown: false,
         }}

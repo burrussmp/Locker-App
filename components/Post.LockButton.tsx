@@ -12,27 +12,17 @@ import {Animated, View} from 'react-native';
 import {State, TapGestureHandler} from 'react-native-gesture-handler';
 
 import icons from 'icons/icons';
+import {lockAnimation, lockAnimationTransform, unlockAnimation} from 'services/animations/ReactionAnimations';
 
 const LockButton: React.FunctionComponent = (props: any) => {
   const [isLocked, setLocked] = useState(false);
-  const rotationDegrees = useRef(new Animated.Value(0)).current;
+  const rotationDegreesRef = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (isLocked) {
-      rotationDegrees.setValue(-45);
-      Animated.spring(rotationDegrees, {
-        toValue: 0,
-        bounciness: 15,
-        speed: 50,
-        useNativeDriver: true,
-      }).start();
+      lockAnimation(rotationDegreesRef);
     } else {
-      rotationDegrees.setValue(45);
-      Animated.spring(rotationDegrees, {
-        toValue: 0,
-        speed: 50,
-        useNativeDriver: true,
-      }).start();
+      unlockAnimation(rotationDegreesRef);
     }
   }, [isLocked]);
 
@@ -46,21 +36,12 @@ const LockButton: React.FunctionComponent = (props: any) => {
     setLocked(prev => !prev);
   }
 
-  const rotationInterpolate = rotationDegrees.interpolate({
-    inputRange: [-45, 45],
-    outputRange: ['-45deg', '45deg'],
-  });
-
-  const rotationAnimationTransform = {
-    transform: [{rotate: rotationInterpolate}],
-  };
-
   return (
     <View style={props.style}>
       <TapGestureHandler onHandlerStateChange={onSingleTap}>
         <Animated.Image
           source={isLocked ? icons.lock.locked : icons.lock.unlocked}
-          style={rotationAnimationTransform}
+          style={lockAnimationTransform(rotationDegreesRef)}
         />
       </TapGestureHandler>
     </View>

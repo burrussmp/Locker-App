@@ -5,11 +5,7 @@
  */
 
 const isExpanded = (state: any): boolean => {
-  if (state.post.isExpanded) {
-    return true;
-  } else {
-    return false;
-  }
+  return state.post.isExpanded;
 };
 
 export default {

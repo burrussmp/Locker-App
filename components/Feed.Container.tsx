@@ -16,13 +16,13 @@ import Post from 'components/Post.tsx';
 import styles from 'styles/styles';
 
 const FeedContainer: React.FunctionComponent = (props: any) => {
-  const scrollView = useRef<ScrollView>(null);
-  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollYRef = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
       props.ContractPost();
-      props.ChangeTab(scrollY);
+      props.ChangeTab(scrollYRef);
     });
     return unsubscribe;
   }, [props.navigation]);
@@ -32,15 +32,15 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   };
 
   const onScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {y: scrollY}}}],
+    [{nativeEvent: {contentOffset: {y: scrollYRef}}}],
     {
       useNativeDriver: false,
     }
   );
 
   const scrollTo = (index: number) => {
-    if (scrollView.current) {
-      scrollView.current.scrollTo({
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
         x: 0,
         y: convertIndexToY(index),
         animated: true,
@@ -55,7 +55,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   return (
     <View style={styles.droidSafeArea}>
       <Animated.ScrollView
-        ref={scrollView}
+        ref={scrollViewRef}
         contentContainerStyle={{
           flexGrow: 1,
         }}
@@ -66,17 +66,17 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
         <View style={{height: 98}} />
         <Post
           index={0}
-          scrollY={scrollY}
+          scrollY={scrollYRef}
           onContentExpand={handleContentExpand}
         />
         <Post
           index={1}
-          scrollY={scrollY}
+          scrollY={scrollYRef}
           onContentExpand={handleContentExpand}
         />
         <Post
           index={2}
-          scrollY={scrollY}
+          scrollY={scrollYRef}
           onContentExpand={handleContentExpand}
         />
         <View

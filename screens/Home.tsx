@@ -27,13 +27,13 @@ const HomeScreen = (props: any) => {
   const HomeTopTab = createMaterialTopTabNavigator();
   const homeScrollPosition = HomeSelectors.homeScrollTracker(props.state);
   const postIsExpanded = PostSelectors.isExpanded(props.state);
-  const headerHeight = homeScrollPosition.interpolate({
-    inputRange: [0, 46],
-    outputRange: [48, 2],
-    extrapolate: 'clamp',
-  });
 
   const TabBar = (props: any) => {
+    const headerHeight = homeScrollPosition.interpolate({
+      inputRange: [0, 46],
+      outputRange: [48, 2],
+      extrapolate: 'clamp',
+    });
     return (
       <Animated.View
         style={{
@@ -75,7 +75,7 @@ const HomeScreen = (props: any) => {
       <View style={{height: 45}} />
       <HomeTopTab.Navigator
         tabBar={TabBar}
-        swipeEnabled={postIsExpanded ? false : true}
+        swipeEnabled={!postIsExpanded}
         tabBarOptions={{
           activeTintColor: '#000000',
           inactiveTintColor: '#000000',
@@ -86,7 +86,7 @@ const HomeScreen = (props: any) => {
             elevation: 0,
           },
           indicatorStyle: {
-            backgroundColor: '#000000',
+            backgroundColor: postIsExpanded ? 'transparent' : '#000000',
             height: 2,
           },
           labelStyle: {

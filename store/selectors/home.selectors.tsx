@@ -7,11 +7,7 @@
 import {Animated} from 'react-native';
 
 const homeScrollTracker = (state: any): Animated.Value => {
-  if (state.home.scrollY !== undefined) {
-    return state.home.scrollY;
-  } else {
-    return new Animated.Value(0);
-  }
+  return state.home.scrollY;
 };
 
 export default {

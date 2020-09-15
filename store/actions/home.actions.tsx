@@ -6,7 +6,7 @@
  * to change the state based on the current state and the dispatched action.
  */
 
-import {Animated} from 'react-native'
+import {Animated} from 'react-native';
 import {HomeActions, CHANGE_TAB} from 'store/types/home.types';
 
 const ChangeTab = (scrollTracker: Animated.Value): HomeActions => {
