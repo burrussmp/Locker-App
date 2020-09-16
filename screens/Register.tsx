@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
@@ -11,12 +14,12 @@ import {
   SafeAreaView,
   TextInput,
   Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
   Platform,
   View,
 } from 'react-native';
+import {Auth} from 'aws-amplify';
 import AuthActions from 'store/actions/auth.actions';
 import AuthButton from 'components/AuthButton';
 import api from 'api/api';
@@ -111,7 +114,40 @@ const RegisterScreen = (props: any) => {
                     email: email,
                     phone_number: phoneNumber,
                   };
-                  console.log(data);
+                  Auth.signUp({
+                    username: username,
+                    password: password,
+                    attributes: {
+                      email: email,
+                      phone_number: phoneNumber,
+                    },
+                  }).catch(err => {
+                    console.log(err);
+                  });
+                  // .then(user => {
+                  //   Auth.currentSession()
+                  //     .then(data => console.log(data))
+                  //     .catch(err => console.log('hi'));
+                  // })
+                  // .catch(err => {
+                  //   console.log('hello');
+                  //   Auth.signIn({
+                  //     username: username,
+                  //     password: password,
+                  //   })
+                  //     .then(data => {
+                  //       console.log(data);
+                  //     })
+                  //     .catch(err => console.log('hi'));
+                  // Auth.currentSession()
+                  //   .then(data => {
+                  //     const user = data.getIdToken().decodePayload();
+                  //     const token = data.getIdToken().getJwtToken();
+                  //     console.log(user);
+                  //     console.log(token);
+                  //   })
+                  //   .catch(err => console.log(err));
+                  // });
                   api
                     .SignUp(data)
                     .then(token => {

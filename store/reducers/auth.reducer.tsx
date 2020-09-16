@@ -31,8 +31,8 @@ const AuthorizationReducer = (
       };
     case SIGN_UP:
       return {
-        token : action.token
-      }
+        token: action.token,
+      };
     case LOGIN:
       return {
         token: action.token,

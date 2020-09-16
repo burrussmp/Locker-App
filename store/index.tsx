@@ -8,6 +8,7 @@ import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
 import {createLogger} from 'redux-logger';
 
 import AuthReducer from 'store/reducers/auth.reducer';
+import HomeReducer from 'store/reducers/home.reducer';
 
 const middleware = [];
 if (process.env.NODE_ENV === 'development') {
@@ -17,6 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const Reducer = combineReducers({
   // create the combined reducer with all the reducer slices
+  home: HomeReducer,
   auth: AuthReducer,
 });
 

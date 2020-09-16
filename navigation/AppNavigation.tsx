@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import * as React from 'react';
-import {Text, Image, View} from 'react-native';
+import {Button, Text, Image, View} from 'react-native';
 import {
   BottomTabBar,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
 import HomeScreen from 'screens/Home';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import styles from 'styles/styles';
 import {BlurView} from 'expo-blur';
 import {Avatar} from 'react-native-elements';
 
+import api from 'api/api';
 import icons from 'icons/icons';
 
 const ProfileTopTab = createMaterialTopTabNavigator();
@@ -70,9 +72,22 @@ function Profile() {
   );
 }
 
-function Notifications() {
+function Notifications(props: any) {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Button
+        title="LogOut"
+        onPress={async () =>
+          api
+            .Logout()
+            .then(() => {
+              props.Logout();
+            })
+            .catch(err => {
+              console.log(err);
+            })
+        }
+      />
       <Text>Notifications!</Text>
     </View>
   );
@@ -119,7 +134,7 @@ const AppNavigation = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={focused ? icons.home.focused : icons.home.unfocused}
             />
@@ -131,7 +146,7 @@ const AppNavigation = () => {
         component={Notifications}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={focused ? icons.search.focused : icons.search.unfocused}
             />
@@ -143,7 +158,7 @@ const AppNavigation = () => {
         component={Notifications}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={focused ? icons.locker.focused : icons.locker.unfocused}
             />
@@ -155,7 +170,7 @@ const AppNavigation = () => {
         component={Notifications}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={focused ? icons.cart.focused : icons.cart.unfocused}
             />
@@ -167,7 +182,7 @@ const AppNavigation = () => {
         component={Profile}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({focused}) => (
             <Image
               source={focused ? icons.profile.focused : icons.profile.unfocused}
             />

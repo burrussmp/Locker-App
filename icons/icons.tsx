@@ -1,19 +1,21 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 /**
  * @author Paul H. Sullivan
  * @date Sep 2020
  * @desc This is where all of the icons are imported for easy imports in other files.
  */
 
-import homeIcon from 'assets/icons/home.png';
-import homeIconSelected from 'assets/icons/home_selected.png';
-import searchIcon from 'assets/icons/search.png';
-import searchIconSelected from 'assets/icons/search_selected.png';
-import lockerIcon from 'assets/icons/locker.png';
-import lockerIconSelected from 'assets/icons/locker_selected.png';
-import cartIcon from 'assets/icons/cart.png';
-import cartIconSelected from 'assets/icons/cart_selected.png';
-import profileIcon from 'assets/icons/profile.png';
-import profileIconSelected from 'assets/icons/profile_selected.png';
+const homeIcon = require('assets/icons/home.png');
+const homeIconSelected = require('assets/icons/home_selected.png');
+const searchIcon = require('assets/icons/search.png');
+const searchIconSelected = require('assets/icons/search_selected.png');
+const lockerIcon = require('assets/icons/locker.png');
+const lockerIconSelected = require('assets/icons/locker_selected.png');
+const cartIcon = require('assets/icons/cart.png');
+const cartIconSelected = require('assets/icons/cart_selected.png');
+const profileIcon = require('assets/icons/profile.png');
+const profileIconSelected = require('assets/icons/profile_selected.png');
 
 const icons = {
   home: {

@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   authHeaderText: {
     marginBottom: 25,
-    fontFamily: 'CircularStd',
+    fontFamily: 'CircularBlack',
     fontSize: 24,
     color: 'tan',
   },
