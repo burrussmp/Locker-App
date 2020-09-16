@@ -16,6 +16,11 @@ const cartIcon = require('assets/icons/cart.png');
 const cartIconSelected = require('assets/icons/cart_selected.png');
 const profileIcon = require('assets/icons/profile.png');
 const profileIconSelected = require('assets/icons/profile_selected.png');
+const likeIcon = require('assets/icons/like.png');
+const likeIconSelected = require('assets/icons/liked.png');
+const lockIcon = require('assets/icons/lock.png');
+const lockIconSelected = require('assets/icons/locked.png');
+const moreIcon = require('assets/icons/more.png');
 
 const icons = {
   home: {
@@ -37,6 +42,17 @@ const icons = {
   profile: {
     focused: profileIconSelected,
     unfocused: profileIcon,
+  },
+  like: {
+    liked: likeIconSelected,
+    unliked: likeIcon,
+  },
+  lock: {
+    locked: lockIconSelected,
+    unlocked: lockIcon,
+  },
+  more: {
+    more: moreIcon,
   },
 };
 

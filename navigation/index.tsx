@@ -33,7 +33,7 @@ const Navigation = (props: any) => {
   return isLoading ? (
     <Splash />
   ) : (
-    <NavigationContainer>
+    <NavigationContainer onStateChange={state => console.log(state)}>
       {AuthSelectors.isLoggedIn(props.state) ? (
         <AppNavigation />
       ) : (

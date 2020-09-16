@@ -4,87 +4,33 @@
  * @desc Authorization Screen
  */
 
-import React, {useRef} from 'react';
-import {connect} from 'react-redux';
-import {Animated, View} from 'react-native';
-import Post from 'components/Post.tsx';
+import * as React from 'react';
 
-import HomeActions from 'store/actions/home.actions';
-import HomeSelectors from 'store/selectors/home.selectors';
-import styles from 'styles/styles';
+import {createStackNavigator} from '@react-navigation/stack';
+
+import FeedContainer from 'components/Feed.Container';
+import PostExpanded from 'components/Post.Expanded';
 
 const Feed = (props: any) => {
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  const onScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {y: scrollY}}}],
-    {
-      useNativeDriver: true,
-      listener: event => {
-        const offsetY = event.nativeEvent.contentOffset.y;
-        props.Scroll(event.nativeEvent.contentOffset.y);
-        console.log(HomeSelectors.headerHeight(props.state));
-      },
-    }
-  );
-
+  const FeedNavigator = createStackNavigator();
   return (
-    <View style={styles.droidSafeArea}>
-      <Animated.ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'space-between',
+    <FeedNavigator.Navigator headerMode="screen">
+      <FeedNavigator.Screen
+        name="Feed"
+        component={FeedContainer}
+        options={{
+          headerShown: false,
         }}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={{height: 98}} />
-        <Post index={0} scrollY={scrollY} />
-        <Post index={1} scrollY={scrollY} />
-        <Post index={2} scrollY={scrollY} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-      </Animated.ScrollView>
-    </View>
+      />
+      <FeedNavigator.Screen
+        name="PostExpanded"
+        component={PostExpanded}
+        options={{
+          headerTransparent: true,
+        }}
+      />
+    </FeedNavigator.Navigator>
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    state: state,
-  };
-};
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    Scroll: (value: number) => {
-      dispatch(HomeActions.Scroll(value));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Feed);
+export default Feed;

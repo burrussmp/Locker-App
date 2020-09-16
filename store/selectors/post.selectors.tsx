@@ -4,12 +4,10 @@
  * @desc Selectors are easy ways to retrieve certain information from the store
  */
 
-import {Animated} from 'react-native';
-
-const homeScrollTracker = (state: any): Animated.Value => {
-  return state.home.scrollY;
+const isExpanded = (state: any): boolean => {
+  return state.post.isExpanded;
 };
 
 export default {
-  homeScrollTracker,
+  isExpanded,
 };

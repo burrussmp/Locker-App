@@ -4,11 +4,13 @@
  * @desc Necessary for typescript use of react redux. Specify the types that the actions/reducer needs to define appropriately
  */
 
-export const SCROLL = 'scroll';
+import {Animated} from 'react-native';
 
-interface ScrollAction {
-  type: typeof SCROLL;
-  value: number;
+export const CHANGE_TAB = 'home/change_tab';
+
+interface ChangeTabAction {
+  type: typeof CHANGE_TAB;
+  scrollTracker: Animated.Value;
 }
 
-export type HomeActions = ScrollAction;
+export type HomeActions = ChangeTabAction;
