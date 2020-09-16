@@ -38,8 +38,8 @@ const RegisterScreen = (props: any) => {
     <SafeAreaView style={styles.droidSafeArea}>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS == 'ios' ? -100 : 20}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? -100 : 20}
         enabled={Platform.OS === 'ios' ? true : false}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
