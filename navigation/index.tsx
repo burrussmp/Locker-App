@@ -14,17 +14,28 @@ import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/Splash';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
+import {Session} from 'store/types/auth.types';
 
 const Navigation = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
-    api
-      .getToken()
-      .then(token => {
-        if (token) {
-          props.Login(token);
+    api.session
+      .getSession()
+      .then(async session => {
+        if (session) {
+          props.Login(session);
+          try {
+            const isLoggedInFlag = await AuthSelectors.isLoggedIn(props.state);
+            console.log(isLoggedInFlag);
+            setLoggedIn(isLoggedInFlag);
+            setIsLoading(false);
+          } catch (err) {
+            console.log(err);
+          }
+        } else {
+          setIsLoading(false);
         }
-        setIsLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -33,8 +44,8 @@ const Navigation = (props: any) => {
   return isLoading ? (
     <Splash />
   ) : (
-    <NavigationContainer onStateChange={state => console.log(state)}>
-      {AuthSelectors.isLoggedIn(props.state) ? (
+    <NavigationContainer>
+      {loggedIn ? (
         <AppNavigation />
       ) : (
         <AuthNavigation />
@@ -50,8 +61,8 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    Login: (token: string) => {
-      dispatch(AuthActions.Login(token));
+    Login: (session: Session) => {
+      dispatch(AuthActions.Login(session));
     },
   };
 };

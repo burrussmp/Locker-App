@@ -11,19 +11,20 @@ import {
   SIGN_UP,
   LOGIN,
   LOGOUT,
+  Session,
 } from 'store/types/auth.types';
 
-const SignUp = (token: string): AuthorizationActions => {
+const SignUp = (payload: Session): AuthorizationActions => {
   return {
     type: SIGN_UP,
-    token: token,
+    session: payload,
   };
 };
 
-const Login = (token: string): AuthorizationActions => {
+const Login = (payload: Session): AuthorizationActions => {
   return {
     type: LOGIN,
-    token: token,
+    session: payload,
   };
 };
 

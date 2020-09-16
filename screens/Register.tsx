@@ -23,6 +23,7 @@ import {Auth} from 'aws-amplify';
 import AuthActions from 'store/actions/auth.actions';
 import AuthButton from 'components/Auth.Button';
 import api from 'api/api';
+import {Session} from 'store/types/auth.types';
 import styles from 'styles/styles';
 
 const logoImage = require('assets/images/logo.png');
@@ -148,12 +149,12 @@ const RegisterScreen = (props: any) => {
                   //   })
                   //   .catch(err => console.log(err));
                   // });
-                  api
+                  api.auth
                     .SignUp(data)
-                    .then(token => {
-                      props.SignUp(token);
+                    .then(session => {
+                      props.SignUp(session);
                     })
-                    .catch((err: any) => {
+                    .catch(err => {
                       console.log(err);
                     });
                 }}
@@ -170,8 +171,8 @@ const mapStateToProps = (state: any) => state;
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    SignUp: (token: string) => {
-      dispatch(AuthActions.SignUp(token));
+    SignUp: (session: Session) => {
+      dispatch(AuthActions.SignUp(session));
     },
   };
 };

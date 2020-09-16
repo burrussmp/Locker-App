@@ -7,20 +7,9 @@
  * @desc Authorization Screen
  */
 
-import React, {useState} from 'react';
-import {
-  ImageBackground,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  Alert,
-  SafeAreaView,
-} from 'react-native';
-import {connect} from 'react-redux';
-import {BlurView} from 'expo-blur';
+import React from 'react';
+import {ImageBackground, Image, View, SafeAreaView} from 'react-native';
 
-import AuthActions from 'store/actions/auth.actions';
 import AuthButton from 'components/Auth.Button';
 import styles from 'styles/styles';
 
@@ -61,12 +50,4 @@ const AuthScreen = (props: any) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    Login: (token: string) => {
-      dispatch(AuthActions.Login(token));
-    },
-  };
-};
-
-export default connect(null, mapDispatchToProps)(AuthScreen);
+export default AuthScreen;

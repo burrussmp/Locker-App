@@ -8,14 +8,21 @@ export const SIGN_UP = 'auth/sign_up';
 export const LOGIN = 'auth/login';
 export const LOGOUT = 'auth/logout';
 
+export interface Session {
+  access_token: string;
+  refresh_token: string;
+  id_token: string;
+  _id: string;
+}
+
 interface SignUpAction {
   type: typeof SIGN_UP;
-  token: string;
+  session: Session;
 }
 
 interface LoginAction {
   type: typeof LOGIN;
-  token: string;
+  session: Session;
 }
 
 interface LogOutAction {

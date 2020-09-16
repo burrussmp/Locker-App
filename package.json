@@ -1,10 +1,10 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "NODE_ENV=development expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "start": "ENV=development expo start",
+    "android": "ENV=development expo start --android",
+    "ios": "ENV=development expo start --ios",
+    "web": "ENV=development expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
     "check": "gts check",
@@ -45,6 +45,8 @@
     "expo-splash-screen": "~0.3.1",
     "expo-status-bar": "^1.0.2",
     "expo-web-browser": "~8.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.4",
     "lodash": "^4.17.20",
     "navigationbar-react-native": "0.0.5",
     "node-fetch": "^2.6.1",
@@ -53,6 +55,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-elements": "^2.3.0",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-pure-jwt": "^2.2.1",
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-safe-area-view": "^1.1.1",
@@ -66,13 +69,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/jwk-to-pem": "^2.0.0",
+    "@types/node": "^13.11.1",
     "@types/react": "~16.9.23",
     "@types/react-native": "~0.62.13",
     "babel-preset-expo": "~8.1.0",
-    "jest-expo": "~38.0.0",
-    "typescript": "~3.9.5",
     "gts": "^2.0.2",
-    "@types/node": "^13.11.1"
+    "jest-expo": "~38.0.0",
+    "typescript": "~3.9.5"
   },
   "private": true
 }

@@ -12,7 +12,7 @@ import HomeReducer from 'store/reducers/home.reducer';
 import PostReducer from 'store/reducers/post.reducer';
 
 const middleware = [];
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'development') {
   // Add logging if in development mode
   middleware.push(createLogger());
 }

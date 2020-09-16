@@ -6,12 +6,14 @@ import {
   BottomTabBar,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
+import {connect} from 'react-redux';
 import HomeScreen from 'screens/Home';
+import NotificationScreen from 'screens/Notifications';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import styles from 'styles/styles';
 import {BlurView} from 'expo-blur';
 import {Avatar} from 'react-native-elements';
-
+import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
 import icons from 'icons/icons';
 
@@ -72,27 +74,6 @@ function Profile() {
   );
 }
 
-function Notifications(props: any) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Button
-        title="LogOut"
-        onPress={async () =>
-          api
-            .Logout()
-            .then(() => {
-              props.Logout();
-            })
-            .catch(err => {
-              console.log(err);
-            })
-        }
-      />
-      <Text>Notifications!</Text>
-    </View>
-  );
-}
-
 const TabBar = (props: any) => {
   return (
     <BlurView
@@ -112,7 +93,7 @@ const TabBar = (props: any) => {
 
 const BottomTab = createBottomTabNavigator();
 
-const AppNavigation = () => {
+const AppNavigation = (props: any) => {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
@@ -143,7 +124,7 @@ const AppNavigation = () => {
       />
       <BottomTab.Screen
         name="Search"
-        component={Notifications}
+        component={NotificationScreen}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({focused}) => (
@@ -155,7 +136,7 @@ const AppNavigation = () => {
       />
       <BottomTab.Screen
         name="Locker"
-        component={Notifications}
+        component={NotificationScreen}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({focused}) => (
@@ -167,7 +148,7 @@ const AppNavigation = () => {
       />
       <BottomTab.Screen
         name="Cart"
-        component={Notifications}
+        component={NotificationScreen}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({focused}) => (

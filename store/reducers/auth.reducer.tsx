@@ -10,15 +10,12 @@ import {
   SIGN_UP,
   LOGIN,
   LOGOUT,
+  Session,
 } from 'store/types/auth.types';
 
-interface AuthState {
-  token: string;
-}
+type AuthState = Session | null;
 
-const AuthInitialState = {
-  token: '',
-};
+const AuthInitialState = null;
 
 const AuthorizationReducer = (
   state = AuthInitialState,
@@ -26,17 +23,11 @@ const AuthorizationReducer = (
 ): AuthState => {
   switch (action.type) {
     case LOGOUT:
-      return {
-        token: '',
-      };
+      return null;
     case SIGN_UP:
-      return {
-        token: action.token,
-      };
+      return action.session;
     case LOGIN:
-      return {
-        token: action.token,
-      };
+      return action.session;
     default:
       return state;
   }

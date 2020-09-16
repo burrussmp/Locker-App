@@ -22,6 +22,7 @@ import {connect} from 'react-redux';
 import AuthActions from 'store/actions/auth.actions';
 import AuthButton from 'components/Auth.Button';
 import api from 'api/api';
+import {Session} from 'store/types/auth.types';
 import styles from 'styles/styles';
 
 const logoImage = require('assets/images/logo.png');
@@ -67,10 +68,10 @@ const LoginScreen = (props: any) => {
                     login: loginInfo,
                     password: password,
                   };
-                  api
+                  api.auth
                     .Login(data)
-                    .then(token => {
-                      props.Login(token);
+                    .then(session => {
+                      props.Login(session);
                     })
                     .catch(err => {
                       console.log(err);
@@ -87,8 +88,8 @@ const LoginScreen = (props: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    Login: (token: string) => {
-      dispatch(AuthActions.Login(token));
+    Login: (session: Session) => {
+      dispatch(AuthActions.Login(session));
     },
   };
 };

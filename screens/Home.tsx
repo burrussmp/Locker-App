@@ -56,7 +56,7 @@ const HomeScreen = (props: any) => {
         <Button
           title="LogOut"
           onPress={async () =>
-            api
+            api.auth
               .Logout()
               .then(() => {
                 props.Logout();
