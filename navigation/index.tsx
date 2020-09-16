@@ -50,11 +50,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     Login: async (session: Session) => {
-      dispatch(AuthActions.Login(session));
-      if (session) {
-        const verified = await api.session.verifyToken(session['access_token']);
-        dispatch(AuthActions.VerifyToken(verified));
-      }
+      await AuthSelectors.Authenticate(dispatch, session);
     },
   };
 };

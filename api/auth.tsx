@@ -37,7 +37,6 @@ interface SignUpData {
  */
 const Login = async (data: LoginData): Promise<Session | Error> => {
   data = config.default_user;
-  console.log(data);
   const res = await global.fetch(`${config.server}/auth/login`, {
     method: 'POST',
     headers: {
@@ -49,25 +48,6 @@ const Login = async (data: LoginData): Promise<Session | Error> => {
     const session = await res.json();
     await apiSession.setSession(session);
     return session;
-  } else {
-    throw await apiHelper.handleError(res);
-  }
-};
-
-/**
- * @desc Verify Token API
- * @return A promise that can be handled. If resolved, the token is verified
- */
-const VerifyToken = async (token: string): Promise<boolean | Error> => {
-  const res = await global.fetch(
-    `${config.server}/auth/verify_token?token=${token}`,
-    {
-      method: 'HEAD',
-    }
-  );
-  console.log(res.ok);
-  if (res.ok) {
-    return true;
   } else {
     throw await apiHelper.handleError(res);
   }
@@ -120,5 +100,4 @@ export default {
   Login,
   Logout,
   SignUp,
-  VerifyToken,
 };

@@ -8,19 +8,11 @@
 
 import {
   AuthorizationActions,
-  SIGN_UP,
-  LOGIN,
+  SET_SESSION,
   LOGOUT,
   VERIFY_TOKEN,
   Session,
 } from 'store/types/auth.types';
-
-const SignUp = (payload: Session): AuthorizationActions => {
-  return {
-    type: SIGN_UP,
-    session: payload,
-  };
-};
 
 const VerifyToken = (verified: boolean): AuthorizationActions => {
   return {
@@ -29,9 +21,9 @@ const VerifyToken = (verified: boolean): AuthorizationActions => {
   };
 };
 
-const Login = (payload: Session): AuthorizationActions => {
+const SetSession = (payload: Session): AuthorizationActions => {
   return {
-    type: LOGIN,
+    type: SET_SESSION,
     session: payload,
   };
 };
@@ -43,8 +35,7 @@ const Logout = (): AuthorizationActions => {
 };
 
 export default {
-  Login,
   Logout,
-  SignUp,
+  SetSession,
   VerifyToken,
 };

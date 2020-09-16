@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
-import {Button, Text, Image, View} from 'react-native';
+import {Button, Text, View} from 'react-native';
 import api from 'api/api';
 import AuthActions from 'store/actions/auth.actions';
 
@@ -25,7 +26,7 @@ const NotificationScreen = (props: any) => {
       <Text>Notifications!</Text>
     </View>
   );
-}
+};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {

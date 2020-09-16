@@ -4,7 +4,7 @@
  * @desc Necessary for typescript use of react redux. Specify the types that the actions/reducer needs to define appropriately
  */
 
-export const SIGN_UP = 'auth/sign_up';
+export const SET_SESSION = 'auth/session';
 export const LOGIN = 'auth/login';
 export const LOGOUT = 'auth/logout';
 export const VERIFY_TOKEN = 'auth/verify_token';
@@ -16,16 +16,10 @@ export interface Session {
   _id: string;
 }
 
-interface SignUpAction {
-  type: typeof SIGN_UP;
+interface SetSession {
+  type: typeof SET_SESSION;
   session: Session;
 }
-
-interface LoginAction {
-  type: typeof LOGIN;
-  session: Session;
-}
-
 interface LogOutAction {
   type: typeof LOGOUT;
 }
@@ -36,7 +30,6 @@ interface VerifyTokenAction {
 }
 
 export type AuthorizationActions =
-  | SignUpAction
-  | LoginAction
+  | SetSession
   | LogOutAction
   | VerifyTokenAction;

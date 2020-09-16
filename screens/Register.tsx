@@ -24,6 +24,7 @@ import AuthButton from 'components/Auth.Button';
 import api from 'api/api';
 import {Session} from 'store/types/auth.types';
 import styles from 'styles/styles';
+import AuthSelectors from 'store/selectors/auth.selectors';
 
 const logoImage = require('assets/images/logo.png');
 
@@ -137,11 +138,7 @@ const mapStateToProps = (state: any) => state;
 const mapDispatchToProps = (dispatch: any) => {
   return {
     SignUp: async (session: Session) => {
-      dispatch(AuthActions.SignUp(session));
-      if (session) {
-        const verified = await api.session.verifyToken(session['access_token']);
-        dispatch(AuthActions.VerifyToken(verified));
-      }
+      await AuthSelectors.Authenticate(dispatch, session);
     },
   };
 };

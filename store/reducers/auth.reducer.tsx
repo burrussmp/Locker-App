@@ -7,8 +7,7 @@
 
 import {
   AuthorizationActions,
-  SIGN_UP,
-  LOGIN,
+  SET_SESSION,
   LOGOUT,
   VERIFY_TOKEN,
   Session,
@@ -27,11 +26,7 @@ const AuthorizationReducer = (
       return Object.assign({}, state, {
         session: null,
       });
-    case SIGN_UP:
-      return Object.assign({}, state, {
-        session: action.session,
-      });
-    case LOGIN:
+    case SET_SESSION:
       return Object.assign({}, state, {
         session: action.session,
       });

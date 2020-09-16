@@ -1,4 +1,6 @@
-import auth from 'api/auth';
+import {Session} from 'store/types/auth.types';
+import AuthActions from 'store/actions/auth.actions';
+import api from 'api/api';
 
 /**
  * @author Matthew P. Burruss
@@ -8,10 +10,22 @@ import auth from 'api/auth';
 
 const isLoggedIn = (state: any): boolean => {
   return (
-    state.auth.session && state.auth.verified && state.auth.session.access_token
+    state.auth &&
+    state.auth.session &&
+    state.auth.verified &&
+    state.auth.session.access_token
   );
+};
+
+const Authenticate = async (dispatch: any, session: Session) => {
+  dispatch(AuthActions.SetSession(session));
+  if (session) {
+    const verified = await api.session.verifyToken(session['access_token']);
+    dispatch(AuthActions.VerifyToken(verified));
+  }
 };
 
 export default {
   isLoggedIn,
+  Authenticate,
 };

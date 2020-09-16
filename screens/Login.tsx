@@ -19,11 +19,11 @@ import {
   Keyboard,
 } from 'react-native';
 import {connect} from 'react-redux';
-import AuthActions from 'store/actions/auth.actions';
-import AuthButton from 'components/Auth.Button';
-import api from 'api/api';
 import {Session} from 'store/types/auth.types';
 import styles from 'styles/styles';
+import AuthButton from 'components/Auth.Button';
+import AuthSelectors from 'store/selectors/auth.selectors';
+import api from 'api/api';
 
 const logoImage = require('assets/images/logo.png');
 
@@ -89,11 +89,7 @@ const LoginScreen = (props: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     Login: async (session: Session) => {
-      dispatch(AuthActions.Login(session));
-      if (session) {
-        const verified = await api.session.verifyToken(session['access_token']);
-        dispatch(AuthActions.VerifyToken(verified));
-      }
+      await AuthSelectors.Authenticate(dispatch, session);
     },
   };
 };
