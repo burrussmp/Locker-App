@@ -18,34 +18,22 @@ import {Session} from 'store/types/auth.types';
 
 const Navigation = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
-    api.session
-      .getSession()
-      .then(async session => {
-        if (session) {
-          props.Login(session);
-          try {
-            const isLoggedInFlag = await AuthSelectors.isLoggedIn(props.state);
-            console.log(isLoggedInFlag);
-            setLoggedIn(isLoggedInFlag);
-            setIsLoading(false);
-          } catch (err) {
-            console.log(err);
-          }
-        } else {
-          setIsLoading(false);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    (async () => {
+      try {
+        const session = await api.session.getSession();
+        await props.Login(session);
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+      }
+    })();
   }, []);
   return isLoading ? (
     <Splash />
   ) : (
     <NavigationContainer>
-      {loggedIn ? (
+      {AuthSelectors.isLoggedIn(props.state) ? (
         <AppNavigation />
       ) : (
         <AuthNavigation />
@@ -61,8 +49,12 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    Login: (session: Session) => {
+    Login: async (session: Session) => {
       dispatch(AuthActions.Login(session));
+      if (session) {
+        const verified = await api.session.verifyToken(session['access_token']);
+        dispatch(AuthActions.VerifyToken(verified));
+      }
     },
   };
 };

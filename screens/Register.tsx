@@ -19,7 +19,6 @@ import {
   Platform,
   View,
 } from 'react-native';
-import {Auth} from 'aws-amplify';
 import AuthActions from 'store/actions/auth.actions';
 import AuthButton from 'components/Auth.Button';
 import api from 'api/api';
@@ -115,40 +114,6 @@ const RegisterScreen = (props: any) => {
                     email: email,
                     phone_number: phoneNumber,
                   };
-                  Auth.signUp({
-                    username: username,
-                    password: password,
-                    attributes: {
-                      email: email,
-                      phone_number: phoneNumber,
-                    },
-                  }).catch(err => {
-                    console.log(err);
-                  });
-                  // .then(user => {
-                  //   Auth.currentSession()
-                  //     .then(data => console.log(data))
-                  //     .catch(err => console.log('hi'));
-                  // })
-                  // .catch(err => {
-                  //   console.log('hello');
-                  //   Auth.signIn({
-                  //     username: username,
-                  //     password: password,
-                  //   })
-                  //     .then(data => {
-                  //       console.log(data);
-                  //     })
-                  //     .catch(err => console.log('hi'));
-                  // Auth.currentSession()
-                  //   .then(data => {
-                  //     const user = data.getIdToken().decodePayload();
-                  //     const token = data.getIdToken().getJwtToken();
-                  //     console.log(user);
-                  //     console.log(token);
-                  //   })
-                  //   .catch(err => console.log(err));
-                  // });
                   api.auth
                     .SignUp(data)
                     .then(session => {
@@ -171,8 +136,12 @@ const mapStateToProps = (state: any) => state;
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    SignUp: (session: Session) => {
+    SignUp: async (session: Session) => {
       dispatch(AuthActions.SignUp(session));
+      if (session) {
+        const verified = await api.session.verifyToken(session['access_token']);
+        dispatch(AuthActions.VerifyToken(verified));
+      }
     },
   };
 };

@@ -6,15 +6,10 @@ import auth from 'api/auth';
  * @desc Selectors are easy ways to retrieve certain information from the store
  */
 
-const isLoggedIn = async (state: any): Promise<boolean> => {
-  try {
-    console.log(state.auth);
-    await auth.VerifyToken(state.auth.access_token);
-    return true;
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
+const isLoggedIn = (state: any): boolean => {
+  return (
+    state.auth.session && state.auth.verified && state.auth.session.access_token
+  );
 };
 
 export default {

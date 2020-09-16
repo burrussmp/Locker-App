@@ -10,6 +10,7 @@ import {
   SIGN_UP,
   LOGIN,
   LOGOUT,
+  VERIFY_TOKEN,
   Session,
 } from 'store/types/auth.types';
 
@@ -23,11 +24,21 @@ const AuthorizationReducer = (
 ): AuthState => {
   switch (action.type) {
     case LOGOUT:
-      return null;
+      return Object.assign({}, state, {
+        session: null,
+      });
     case SIGN_UP:
-      return action.session;
+      return Object.assign({}, state, {
+        session: action.session,
+      });
     case LOGIN:
-      return action.session;
+      return Object.assign({}, state, {
+        session: action.session,
+      });
+    case VERIFY_TOKEN:
+      return Object.assign({}, state, {
+        verified: action.verified,
+      });
     default:
       return state;
   }

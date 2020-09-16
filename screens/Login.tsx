@@ -88,8 +88,12 @@ const LoginScreen = (props: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    Login: (session: Session) => {
+    Login: async (session: Session) => {
       dispatch(AuthActions.Login(session));
+      if (session) {
+        const verified = await api.session.verifyToken(session['access_token']);
+        dispatch(AuthActions.VerifyToken(verified));
+      }
     },
   };
 };

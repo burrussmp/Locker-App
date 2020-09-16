@@ -7,6 +7,7 @@
 export const SIGN_UP = 'auth/sign_up';
 export const LOGIN = 'auth/login';
 export const LOGOUT = 'auth/logout';
+export const VERIFY_TOKEN = 'auth/verify_token';
 
 export interface Session {
   access_token: string;
@@ -29,4 +30,13 @@ interface LogOutAction {
   type: typeof LOGOUT;
 }
 
-export type AuthorizationActions = SignUpAction | LoginAction | LogOutAction;
+interface VerifyTokenAction {
+  type: typeof VERIFY_TOKEN;
+  verified: boolean;
+}
+
+export type AuthorizationActions =
+  | SignUpAction
+  | LoginAction
+  | LogOutAction
+  | VerifyTokenAction;

@@ -1,50 +1,33 @@
 /* eslint-disable node/no-unpublished-require */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
-import * as SplashScreen from 'expo-splash-screen';
-import {useFonts} from 'expo-font';
-
+import SplashScreen from 'screens/Splash';
+import * as Font from 'expo-font';
 import store from 'store/index';
 import AppContainer from 'navigation/index';
 
-// import Amplify from 'aws-amplify';
-
-// No MFA
-// Amplify.configure({
-//   Auth: {
-//     region: 'us-east-1',
-//     userPoolId: 'us-east-1_uzv0nGVUa',
-//     userPoolWebClientId: '3fr2io4a9vldqnain9r10pho41',
-//   },
-// });
-
-// WITH MFA
-// Amplify.configure({
-//   Auth: {
-//     region: 'us-east-1',
-//     userPoolId: 'us-east-1_4Tq6zjGDl',
-//     userPoolWebClientId: '6up3042bbq4pciuelka6ame3qk',
-//   },
-// });
-
-function App() {
+const App = () => {
   const AppContext = React.createContext({
     language: 'EN',
     theme: 'light',
     authenticated: false,
   });
-  const [fontsLoaded] = useFonts({
-    CircularBlack: require('/assets/fonts/CircularStd-Black.otf'),
-    CircularBook: require('/assets/fonts/CircularStd-Book.otf'),
-    CircularMedium: require('/assets/fonts/CircularStd-Medium.otf'),
-  });
-  if (!fontsLoaded) {
-    SplashScreen.preventAutoHideAsync();
-  } else {
-    SplashScreen.hideAsync();
-  }
-  return (
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      await Font.loadAsync({
+        CircularBlack: require('/assets/fonts/CircularStd-Black.otf'),
+        CircularBook: require('/assets/fonts/CircularStd-Book.otf'),
+        CircularMedium: require('/assets/fonts/CircularStd-Medium.otf'),
+      });
+      setFontLoaded(true);
+    })();
+  }, []);
+  return !fontLoaded ? (
+    <SplashScreen />
+  ) : (
     <AppContext.Provider
       value={{
         language: 'EN',
@@ -57,6 +40,6 @@ function App() {
       </Provider>
     </AppContext.Provider>
   );
-}
+};
 
 export default App;
