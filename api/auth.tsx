@@ -29,11 +29,16 @@ interface SignUpData {
 /**
  * @desc Login API
  * @param data : Object - Contains the login info and password of the
- * Example: {
- *   login: "userA",
- *   password: "password123$"
- * }
  * @return A promise that can be handled. If resolved, the user's token is returned (String) else an error is returned
+ * @success
+```
+{
+    "access_token": "XXXX",
+    "id_token": "YYYY",
+    "refresh_token" : "ZZZZ",
+    "_id": "WWWW"
+}
+```
  */
 const Login = async (data: LoginData): Promise<Session | Error> => {
   data = config.default_user;
@@ -56,11 +61,18 @@ const Login = async (data: LoginData): Promise<Session | Error> => {
 /**
  * @desc Logout API
  * @return A promise that can be handled. If resolved, the user's token has been deleted else error can be caught
+ * @success
+```
+  {
+    "message": "Logged out"
+  }
+```
  */
-const Logout = async (): Promise<void | Error> => {
+const Logout = async (): Promise<{message: string} | Error> => {
   const res = await global.fetch(`${config.server}/auth/logout`);
   if (res.ok) {
     await apiSession.setSession(null);
+    return await res.json();
   } else {
     throw await apiHelper.handleError(res);
   }
@@ -69,15 +81,16 @@ const Logout = async (): Promise<void | Error> => {
 /**
  * @desc Signup API
  * @param data : Object - Contains the login info and password of the
- * Example: {
- *   username: "userA",
- *   email : "userA@mail.com",
- *   first_name : "userA first name",
- *   last_name : "userA last name",
- *   phone_number: "000-111-2222"
- *   password: "password123$"
- * }
  * @return A promise that can be handled. If resolved, void else throws error
+  * @success
+```
+{
+    "access_token": "XXXX",
+    "id_token": "YYYY",
+    "refresh_token" : "ZZZZ",
+    "_id": "WWWW"
+}
+```
  */
 const SignUp = async (data: SignUpData): Promise<Session | Error> => {
   const res = await global.fetch(`${config.server}/api/users`, {
