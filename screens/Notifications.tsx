@@ -13,8 +13,7 @@ const NotificationScreen = (props: any) => {
       <Button
         title="LogOut"
         onPress={async () =>
-          api.auth
-            .Logout()
+          api.Auth.Logout()
             .then(() => {
               props.Logout();
             })

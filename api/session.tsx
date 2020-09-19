@@ -33,6 +33,26 @@ const getSession = async (): Promise<{[key: string]: string} | null> => {
   }
 };
 
+/**
+ * @desc Verify Token API
+ * @return A promise that can be handled. If resolved, the token is verified
+ */
+const VerifyToken = async (token: string): Promise<boolean> => {
+  const res = await global.fetch(
+    `${config.server}/auth/verify_token?token=${token}`,
+    {
+      method: 'HEAD',
+    }
+  );
+  return res.ok;
+};
+
+/**
+ * @desc Helper function to retrieve a key from session
+ * @param key : string : The key to query in the session object
+ * @return The key if it exists, otherwise nothing
+ *
+ */
 const retrieveFromSession = async (
   key: string
 ): Promise<string | undefined> => {
@@ -49,47 +69,6 @@ const retrieveFromSession = async (
 const getAccessToken = async (): Promise<string | undefined> => {
   return retrieveFromSession('access_token');
 };
-
-interface VerifiedSession {
-  session: Session;
-  verified: boolean;
-}
-
-/**
- * @desc Verify Token API
- * @return A promise that can be handled. If resolved, the token is verified
- */
-const verifyToken = async (token: string): Promise<boolean> => {
-  const res = await global.fetch(
-    `${config.server}/auth/verify_token?token=${token}`,
-    {
-      method: 'HEAD',
-    }
-  );
-  return res.ok;
-};
-
-// const verifyAndGetSession = async (): Promise<VerifiedSession | undefined> => {
-//   const access_token = await getAccessToken();
-//   const session = await getSession();
-//   if (access_token) {
-//     VerifyToken(access_token)
-//       .then(async () => {
-//         return {
-//           session: session,
-//           verified: true,
-//         };
-//       })
-//       .catch(err => {
-//         return {
-//           session: session,
-//           verified: false,
-//         };
-//       });
-//   } else {
-//     return undefined;
-//   }
-// };
 
 /**
  * @desc Retrieves the user JWT token from memory
@@ -122,5 +101,5 @@ export default {
   getRefreshToken,
   setSession,
   getSession,
-  verifyToken,
+  VerifyToken,
 };

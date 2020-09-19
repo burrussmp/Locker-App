@@ -115,8 +115,7 @@ const RegisterScreen = (props: any) => {
                     email: email,
                     phone_number: phoneNumber,
                   };
-                  api.auth
-                    .SignUp(data)
+                  api.Auth.SignUp(data)
                     .then(session => {
                       props.SignUp(session);
                     })

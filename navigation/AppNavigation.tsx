@@ -76,6 +76,8 @@ const AppNavigation = (props: any) => {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
       tabBar={MainTabBar}
       tabBarOptions={{
         activeTintColor: '#000000',
