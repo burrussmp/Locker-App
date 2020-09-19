@@ -37,7 +37,7 @@ const getSession = async (): Promise<{[key: string]: string} | null> => {
  * @desc Verify Token API
  * @return A promise that can be handled. If resolved, the token is verified
  */
-const verifyToken = async (token: string): Promise<boolean> => {
+const VerifyToken = async (token: string): Promise<boolean> => {
   const res = await global.fetch(
     `${config.server}/auth/verify_token?token=${token}`,
     {
@@ -101,5 +101,5 @@ export default {
   getRefreshToken,
   setSession,
   getSession,
-  verifyToken,
+  VerifyToken,
 };

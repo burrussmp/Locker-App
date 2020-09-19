@@ -23,6 +23,9 @@ import Feed from 'screens/Feed';
 
 import api from 'api/api';
 
+import util from 'react-native-util';
+console.log(api);
+
 const HomeScreen = (props: any) => {
   const HomeTopTab = createMaterialTopTabNavigator();
   const homeScrollPosition = HomeSelectors.homeScrollTracker(props.state);

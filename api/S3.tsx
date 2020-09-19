@@ -12,7 +12,7 @@ import apiHelper from 'api/helper';
   <img src={URL.createObjectURL(img_src)} />
   ```
  */
-const getMedia = async (key: string): Promise<string | Error> => {
+const GetMedia = async (key: string): Promise<string | Error> => {
   const id_and_token = apiHelper.get_id_and_token_redux();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
@@ -29,5 +29,5 @@ const getMedia = async (key: string): Promise<string | Error> => {
 };
 
 export default {
-  getMedia,
+  GetMedia,
 };

@@ -32,7 +32,7 @@ ImagePicker.showImagePicker(options, (response) => {
   <img src={URL.createObjectURL(img_src)} />
   ```
  */
-const getAvatar = async (userId: string): Promise<string | Error> => {
+const Get = async (userId: string): Promise<string | Error> => {
   const id_and_token = apiHelper.get_id_and_token_redux();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
@@ -66,9 +66,7 @@ type media = {
   ```
  */
 
-const updateAvatar = async (
-  media: media
-): Promise<{message: string} | Error> => {
+const Update = async (media: media): Promise<{message: string} | Error> => {
   if (media.type !== 'image/jpeg' && media.type !== 'image/png') {
     throw 'Cannot upload anything besides an image to a profile';
   }
@@ -104,7 +102,7 @@ const updateAvatar = async (
 }
   ```
  */
-const deleteAvatar = async (): Promise<{message: string} | Error> => {
+const Delete = async (): Promise<{message: string} | Error> => {
   const id_and_token = apiHelper.get_id_and_token_redux();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
@@ -123,7 +121,7 @@ const deleteAvatar = async (): Promise<{message: string} | Error> => {
 };
 
 export default {
-  updateAvatar,
-  getAvatar,
-  deleteAvatar,
+  Update,
+  Get,
+  Delete,
 };
