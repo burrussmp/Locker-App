@@ -1,12 +1,11 @@
 /**
  * @author Paul H. Sullivan
  * @date Sep 2020
- * @desc Authorization Screen
  */
 
 import * as React from 'react';
 
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import {Animated, ScrollView, View} from 'react-native';
 
@@ -14,6 +13,7 @@ import HomeActions from 'store/actions/home.actions';
 import PostActions from 'store/actions/post.actions';
 import Post from 'components/Post.tsx';
 import styles from 'styles/styles';
+import {Easing} from 'react-native';
 
 const FeedContainer: React.FunctionComponent = (props: any) => {
   const scrollViewRef = useRef<ScrollView>(null);
@@ -22,7 +22,6 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
       props.ContractPost();
-      props.ChangeTab(scrollYRef);
     });
     return unsubscribe;
   }, [props.navigation]);
@@ -43,7 +42,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
       scrollViewRef.current.scrollTo({
         x: 0,
         y: convertIndexToY(index),
-        animated: true,
+        animated: false,
       });
     }
   };
@@ -66,6 +65,11 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
         <View style={{height: 98}} />
         <Post
           index={0}
+          image={require('assets/images/mock/1.jpeg')}
+          cardColor={'#ECECEC'}
+          title={'Palisades Patchwork Buttondown'}
+          author={'freepeople'}
+          authorAvatar={require('assets/images/mock/freepeople.jpeg')}
           scrollY={scrollYRef}
           onContentExpand={handleContentExpand}
         />

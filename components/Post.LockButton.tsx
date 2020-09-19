@@ -12,7 +12,11 @@ import {Animated, View} from 'react-native';
 import {State, TapGestureHandler} from 'react-native-gesture-handler';
 
 import icons from 'icons/icons';
-import {lockAnimation, lockAnimationTransform, unlockAnimation} from 'services/animations/ReactionAnimations';
+import {
+  lockAnimation,
+  lockAnimationTransform,
+  unlockAnimation,
+} from 'services/animations/ReactionAnimations';
 
 const LockButton: React.FunctionComponent = (props: any) => {
   const [isLocked, setLocked] = useState(false);

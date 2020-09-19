@@ -14,6 +14,11 @@ import PostNotExpanded from 'components/Post.NotExpanded';
 
 interface PostProps {
   index: number;
+  image: any;
+  cardColor: string;
+  author: string;
+  authorAvatar: any;
+  title: string;
   scrollY: Animated.Value;
   onContentExpand(index: number): void;
 }
@@ -22,6 +27,11 @@ const Post: React.FunctionComponent<PostProps> = (props: PostProps) => {
   return (
     <PostNotExpanded
       index={props.index}
+      image={props.image}
+      cardColor={props.cardColor}
+      author={props.author}
+      authorAvatar={props.authorAvatar}
+      title={props.title}
       scrollY={props.scrollY}
       onContentExpand={props.onContentExpand}
     />
