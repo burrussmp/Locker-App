@@ -68,8 +68,7 @@ const LoginScreen = (props: any) => {
                     login: loginInfo,
                     password: password,
                   };
-                  api.auth
-                    .Login(data)
+                  api.Auth.Login(data)
                     .then(session => {
                       props.Login(session);
                     })

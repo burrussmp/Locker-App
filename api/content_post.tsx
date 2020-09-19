@@ -26,7 +26,7 @@ type ContentPostData = {
 }
   ```
 */
-const CreateContentPost = async (
+const Create = async (
   media: media,
   data: ContentPostData
 ): Promise<{_id: string} | Error> => {
@@ -71,5 +71,5 @@ export type ContentPostType = {
 };
 
 export default {
-  CreateContentPost,
+  Create,
 };

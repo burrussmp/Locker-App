@@ -56,7 +56,7 @@ const HomeScreen = (props: any) => {
         <Button
           title="LogOut"
           onPress={async () => {
-            api.user.UpdatePassword('Pass@1234', 'Pass@123').then(() => {
+            api.User.UpdatePassword('Pass@1234', 'Pass@123').then(() => {
               console.log();
             });
             // api.auth

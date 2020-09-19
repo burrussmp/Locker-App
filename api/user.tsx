@@ -132,7 +132,7 @@ type ListFollowingType = {
 }
 ```
  */
-const ListFollowing = async (
+const GetFollowing = async (
   userID: string
 ): Promise<ListFollowingType | Error> => {
   const id_and_token = apiHelper.get_id_and_token_redux();
@@ -150,36 +150,35 @@ const ListFollowing = async (
   }
 };
 
-type ListAllUsersType = Array<{
-  _id: string;
-  username: string;
-  updated: string;
-  created: string;
-}>;
+type ListAllUsersType = [
+  {
+    _id: string;
+    username: string;
+    updated: string;
+    created: string;
+  }
+];
 
 /**
  * @desc List all users
  * @return a promise that resolves if the API went through otherwise the error
  * @success
-  ```javascript
-[
- {
-   "_id": "5f34821b0c46f63b28831230",
-   "username": "userA",
-   "updated": "2020-08-12T23:58:19.944Z",
-   "created": "2020-08-12T23:58:19.944Z"
- },
- :
- {
-   "_id": "5f34821c0c46f63b28831231",
-   "username": "userB",
-   "updated": "2020-08-12T23:58:20.137Z",
-   "created": "2020-08-12T23:58:20.137Z"
- },
-]
+  ```
+[{
+    "_id": "5f34821b0c46f63b28831230",
+    "username": "userA",
+    "updated": "2020-08-12T23:58:19.944Z",
+    "created": "2020-08-12T23:58:19.944Z"
+  },
+  {
+    "_id": "5f34821c0c46f63b28831231",
+    "username": "userB",
+    "updated": "2020-08-12T23:58:20.137Z",
+    "created": "2020-08-12T23:58:20.137Z"
+  }]
 ```
  */
-const ListAllUsers = async (): Promise<ListAllUsersType | Error> => {
+const GetAll = async (): Promise<ListAllUsersType | Error> => {
   const id_and_token = apiHelper.get_id_and_token_redux();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
@@ -290,8 +289,8 @@ export default {
   UpdatePassword,
   Follow,
   Unfollow,
-  ListFollowing,
-  ListAllUsers,
+  GetFollowing,
+  GetAll,
   GetByID,
   DeleteMe,
 };

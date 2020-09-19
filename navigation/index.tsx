@@ -21,7 +21,7 @@ const Navigation = (props: any) => {
   useEffect(() => {
     (async () => {
       try {
-        const session = await api.session.getSession();
+        const session = await api.Session.getSession();
         await props.Login(session);
         setIsLoading(false);
       } catch (err) {
