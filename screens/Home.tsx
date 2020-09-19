@@ -50,21 +50,24 @@ const HomeScreen = (props: any) => {
     );
   };
 
-  const Logout = () => {
+  const Logout = (props: any) => {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Button
           title="LogOut"
-          onPress={async () =>
-            api.auth
-              .Logout()
-              .then(() => {
-                props.Logout();
-              })
-              .catch(err => {
-                console.log(err);
-              })
-          }
+          onPress={async () => {
+            api.user.UpdatePassword('Pass@1234', 'Pass@123').then(() => {
+              console.log();
+            });
+            // api.auth
+            //   .Logout()
+            //   .then(() => {
+            //     props.Logout();
+            //   })
+            //   .catch(err => {
+            //     console.log(err);
+            //   })
+          }}
         />
       </View>
     );

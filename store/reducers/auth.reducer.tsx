@@ -13,9 +13,20 @@ import {
   Session,
 } from 'store/types/auth.types';
 
-type AuthState = Session | null;
+type AuthState = {
+  session: Session;
+  verified: boolean;
+};
 
-const AuthInitialState = null;
+const AuthInitialState = {
+  session: {
+    access_token: '',
+    id_token: '',
+    refresh_token: '',
+    _id: '',
+  },
+  verified: false,
+};
 
 const AuthorizationReducer = (
   state = AuthInitialState,
