@@ -26,6 +26,8 @@ const HomeScreen = (props: any) => {
       <SafeAreaView style={{flex: 0, backgroundColor: '#FFFFFF'}} />
       <View style={{flex: 1}}>
         <HomeTopTab.Navigator
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // @ts-ignore
           tabBar={TopTabBar}
           swipeEnabled={!postIsExpanded}
           tabBarOptions={{
