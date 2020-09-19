@@ -9,7 +9,6 @@ import PostActions from 'store/actions/post.actions';
 const PostExpanded: React.FunctionComponent = (props: any) => {
   React.useEffect(() => {
     const unsubscribe = props.navigation.addListener('transitionEnd', e => {
-      // Do something
     });
 
     return unsubscribe;

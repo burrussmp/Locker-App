@@ -1,20 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import * as React from 'react';
-import {Button, Text, Image, View} from 'react-native';
-import {
-  BottomTabBar,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
-import {connect} from 'react-redux';
+import {Text, Image, View} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import HomeScreen from 'screens/Home';
 import NotificationScreen from 'screens/Notifications';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import styles from 'styles/styles';
-import {BlurView} from 'expo-blur';
 import {Avatar} from 'react-native-elements';
-import AuthActions from 'store/actions/auth.actions';
-import api from 'api/api';
+
+import MainTabBar from 'components/Navigation.MainTabBar';
 import icons from 'icons/icons';
 
 const ProfileTopTab = createMaterialTopTabNavigator();
@@ -74,30 +70,13 @@ function Profile() {
   );
 }
 
-const TabBar = (props: any) => {
-  return (
-    <BlurView
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-      }}
-      tint="default"
-      intensity={100}
-    >
-      <BottomTabBar {...props} />
-    </BlurView>
-  );
-};
-
 const BottomTab = createBottomTabNavigator();
 
 const AppNavigation = (props: any) => {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBar={TabBar}
+      tabBar={MainTabBar}
       tabBarOptions={{
         activeTintColor: '#000000',
         inactiveTintColor: '#000000',
