@@ -1,11 +1,13 @@
 'use strict';
 
 import React, {useEffect, useState} from 'react';
-import {Text, View, ImageURISource, StyleSheet} from 'react-native';
+import {Text, View, ImageURISource, StyleSheet, Platform} from 'react-native';
 import {Avatar} from 'react-native-elements';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 
 import api from 'api/api';
-// import ImagePicker from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import {UserInfoType} from 'api/user';
 
 const options = {
@@ -18,6 +20,15 @@ const options = {
 };
 
 const borderColor = '#888';
+
+const getPermissionAsync = async () => {
+  if (Platform.OS !== 'web') {
+    const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status !== 'granted') {
+      global.alert('Sorry, we need camera roll permissions to make this work!');
+    }
+  }
+};
 
 const ProfileStyles = StyleSheet.create({
   container: {
@@ -84,6 +95,29 @@ const ProfileHeader = (props: any) => {
   const isMyProfile = props.isMyProfile;
   const [avatarURI, setAvatarURI] = useState('');
   const [userInfo, setUserInfo] = useState(undefined as UserInfoType);
+
+  const _pickImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!result.cancelled) {
+        const media = {
+          name: 'profile_photo',
+          type: 'image/png',
+          uri: result.uri,
+        };
+        await api.Avatar.Update(media);
+        setAvatarURI(result.uri);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     api.Avatar.Get(userId, 'large')
       .then(uri => {
@@ -122,23 +156,11 @@ const ProfileHeader = (props: any) => {
             rounded
             containerStyle={ProfileStyles.avatarImageContainer}
             source={(avatarURI ? {uri: avatarURI} : null) as ImageURISource}
-            onPress={() => {
-              // ImagePicker.showImagePicker(options, response => {
-              //   console.log('Response = ', response);
-
-              //   if (response.didCancel) {
-              //     console.log('User cancelled image picker');
-              //   } else if (response.error) {
-              //     console.log('ImagePicker Error: ', response.error);
-              //   } else if (response.customButton) {
-              //     console.log(
-              //       'User tapped custom button: ',
-              //       response.customButton
-              //     );
-              //   } else {
-              //     setAvatarURI(response.uri);
-              //   }
-              // });
+            onPress={async () => {
+              if (isMyProfile){
+                await getPermissionAsync();
+                await _pickImage();
+              }
             }}
           ></Avatar>
         </View>
