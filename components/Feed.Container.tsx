@@ -21,10 +21,10 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   const scrollYRef = useRef(new Animated.Value(0)).current;
   const [feedData, setFeedData] = useState([]);
 
-  useEffect(() => {
-    const unsubscribe = getFeedData();
-    return unsubscribe;
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = getFeedData();
+  //   return unsubscribe;
+  // }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -89,10 +89,10 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
             onContentExpand={handleContentExpand}
           />
         )}
-        getItemLayout={(data, index) => ({
-          offset: 550 * index,
-          index,
-        })}
+        // getItemLayout={(data, index) => ({
+        //   offset: 550 * index,
+        //   index,
+        // })}
       >
         {/* <View style={{height: 98}} />
         <Post
