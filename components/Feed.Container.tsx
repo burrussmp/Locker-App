@@ -21,10 +21,10 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   const scrollYRef = useRef(new Animated.Value(0)).current;
   const [feedData, setFeedData] = useState([]);
 
-  // useEffect(() => {
-  //   const unsubscribe = getFeedData();
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    const unsubscribe = getFeedData();
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -61,7 +61,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   const getFeedData = () => {
     api.Post.Basic.GetAll()
       .then(res => {
-        setFeedData([...feedData, ...[res]]);
+        setFeedData(res);
       })
       .catch(err => {
         console.log(err);
