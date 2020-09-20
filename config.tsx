@@ -1,7 +1,7 @@
 'use strict';
 
 const config = {
-  server: 'http://10.0.0.232:3000',
+  server: 'http://192.168.1.107:3000',
   default_user: {
     login: 'mattthewpburruss',
     password: 'Pass@123',
