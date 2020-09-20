@@ -3,7 +3,6 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, ImageURISource, StyleSheet, Platform} from 'react-native';
 import {Avatar} from 'react-native-elements';
-import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 
 import api from 'api/api';
@@ -157,7 +156,7 @@ const ProfileHeader = (props: any) => {
             containerStyle={ProfileStyles.avatarImageContainer}
             source={(avatarURI ? {uri: avatarURI} : null) as ImageURISource}
             onPress={async () => {
-              if (isMyProfile){
+              if (isMyProfile) {
                 await getPermissionAsync();
                 await _pickImage();
               }
