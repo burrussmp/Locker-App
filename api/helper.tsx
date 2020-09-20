@@ -1,5 +1,5 @@
 'use strict';
-
+import {Platform} from 'react-native';
 import session from './session';
 import store from 'store/index';
 
@@ -64,13 +64,19 @@ const getHeaders = async (): Promise<{}> => {
  */
 const createURI = async (res: Response): Promise<string> => {
   const blob = await res.blob();
-  const fileReaderInstance = new global.FileReader();
-  fileReaderInstance.readAsDataURL(blob);
-  return new Promise(resolve => {
-    fileReaderInstance.onload = () => {
-      resolve(fileReaderInstance.result as string);
-    };
-  });
+  if (Platform.OS === 'ios') {
+    return (global.URL || global.webkitURL || global || {}).createObjectURL(
+      blob
+    );
+  } else {
+    const fileReaderInstance = new global.FileReader();
+    fileReaderInstance.readAsDataURL(blob);
+    return new Promise(resolve => {
+      fileReaderInstance.onload = () => {
+        resolve(fileReaderInstance.result as string);
+      };
+    });
+  }
 };
 
 const validateSizeParam = (size: string): boolean => {

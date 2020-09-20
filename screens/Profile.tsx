@@ -1,12 +1,7 @@
 'use strict';
 
 import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  SafeAreaView,
-  View,
-  StyleSheet,
-} from 'react-native';
+import {Text, SafeAreaView, View, StyleSheet} from 'react-native';
 import styles from 'styles/styles';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
