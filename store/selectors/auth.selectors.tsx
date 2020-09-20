@@ -1,6 +1,7 @@
 import {Session} from 'store/types/auth.types';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
+import store from 'store/index';
 
 /**
  * @author Matthew P. Burruss
@@ -25,7 +26,21 @@ const Authenticate = async (dispatch: any, session: Session) => {
   }
 };
 
+/**
+ * @desc Retrieve the my userID from redux
+ * @return "{
+ *  "id" : user ID,
+ * } if it exists otherwise throws an error
+ */
+const getMyID = (): undefined | string => {
+  const state = store.getState();
+  if (state.auth && state.auth.session) {
+    return state.auth.session._id;
+  }
+};
+
 export default {
   isLoggedIn,
   Authenticate,
+  getMyID,
 };

@@ -2,6 +2,7 @@
 import config from 'config';
 import apiHelper from 'api/helper';
 import FormData from 'form-data';
+import api from './api';
 
 /*
 ImagePicker.showImagePicker(options, (response) => {
@@ -24,7 +25,8 @@ ImagePicker.showImagePicker(options, (response) => {
 
 /**
  * @desc Get the avatar of a specific user
- * @param userID : string : The user ID of the person who's information you want to retrieve
+ * @param userID : string : The user ID of the person who's information you want to retrieve. If undefined, retrieve user profile.
+ * @param size : string : either small, medium, large, or xlarge
  * @return a promise that resolves if the API went through otherwise the error
  * @success
   ```
@@ -32,17 +34,24 @@ ImagePicker.showImagePicker(options, (response) => {
   <img src={URL.createObjectURL(img_src)} />
   ```
  */
-const Get = async (userId: string): Promise<string | Error> => {
+const Get = async (userId?: string, size?: string): Promise<string | Error> => {
   const id_and_token = apiHelper.get_id_and_token_redux();
+  if (size && !apiHelper.validateSizeParam(size)) {
+    throw 'Size parameter invalid';
+  }
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
+  if (!userId) {
+    userId = id_and_token.id;
+  }
   const res = await global.fetch(
-    `${config.server}/api/users/${userId}/avatar?access_token=${id_and_token.access_token}`
+    `${config.server}/api/users/${userId}/avatar?access_token=${
+      id_and_token.access_token
+    }${size ? `&size=${size}` : ''}`
   );
   if (res.ok) {
-    const blob = res.blob();
-    return URL.createObjectURL(blob);
+    return await apiHelper.createURI(res);
   } else {
     throw await apiHelper.handleError(res);
   }

@@ -194,6 +194,33 @@ const GetAll = async (): Promise<ListAllUsersType | Error> => {
   }
 };
 
+export type UserInfoType =
+  | {
+      about: string;
+      following: [
+        {
+          _id: string;
+        }
+      ];
+      followers: [
+        {
+          _id: string;
+        }
+      ];
+      _id: string;
+      cognito_username: string;
+      username: string;
+      first_name?: string;
+      last_name?: string;
+      createdAt: string;
+      updatedAt: string;
+      profile_photo?: {
+        _id: string;
+        key: string;
+        mimetype: string;
+      };
+    }
+  | undefined;
 /**
  * @desc Get specific user's information
  * @param userID : string : The user ID of the person who's information you want to retrieve
@@ -204,7 +231,6 @@ const GetAll = async (): Promise<ListAllUsersType | Error> => {
         "about": "This is a bio",
         "following": [{
             "_id" : "5f6565f0c1708f4ad08477c7",
-            "username" : "user1"
         }],
         "followers": [],
         "_id": "5f6565f0c1708f4ad08477c7",
@@ -221,9 +247,7 @@ const GetAll = async (): Promise<ListAllUsersType | Error> => {
     }
   ```
  */
-const GetByID = async (
-  userId: string
-): Promise<Record<string, any> | Error> => {
+const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
   const id_and_token = apiHelper.get_id_and_token_redux();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';

@@ -3,73 +3,14 @@
 import * as React from 'react';
 import {Text, Image, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import HomeScreen from 'screens/Home';
-import NotificationScreen from 'screens/Notifications';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import styles from 'styles/styles';
-import {Avatar} from 'react-native-elements';
-
 import MainTabBar from 'components/Navigation.MainTabBar';
 import icons from 'icons/icons';
 
-const ProfileTopTab = createMaterialTopTabNavigator();
-
-const ProfileOnDisplay = () => {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>ON DISPLAY!</Text>
-    </View>
-  );
-};
-const ProfilePosts = () => {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>ON DISPLAY!</Text>
-    </View>
-  );
-};
-
-const ProfileStylePosts = () => {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>ON DISPLAY!</Text>
-    </View>
-  );
-};
-
-function Profile() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <View style={styles.profileBioView}>
-          <Text style={styles.profileName}>Paula Sullivan</Text>
-          <Text style={styles.profileLiner}>100 Followers • 150 Following</Text>
-          <Text style={styles.profileHandle}>@paula_sullivan</Text>
-        </View>
-        <View style={styles.avatarPhoto}>
-          <Avatar
-            size="large"
-            rounded
-            source={{
-              uri:
-                'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-            }}
-            onPress={() => {
-              console.log('avatar pressed');
-            }}
-          />
-        </View>
-      </View>
-      <ProfileTopTab.Navigator>
-        <ProfileTopTab.Screen name="On Display" component={ProfileOnDisplay} />
-        <ProfileTopTab.Screen name="Posts" component={ProfilePosts} />
-        <ProfileTopTab.Screen name="Style" component={ProfileStylePosts} />
-      </ProfileTopTab.Navigator>
-    </View>
-  );
-}
-
+import styles from 'styles/styles';
+import NotificationScreen from 'screens/Notifications';
+import HomeScreen from 'screens/Home';
+import ProfileScreen from 'screens/Profile';
+import authSelectors from 'store/selectors/auth.selectors';
 const BottomTab = createBottomTabNavigator();
 
 const AppNavigation = (props: any) => {
@@ -141,7 +82,7 @@ const AppNavigation = (props: any) => {
       />
       <BottomTab.Screen
         name="Profile"
-        component={Profile}
+        children={() => <ProfileScreen userId={authSelectors.getMyID()} />}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({focused}) => (
