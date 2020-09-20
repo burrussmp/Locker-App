@@ -7,17 +7,24 @@ import * as React from 'react';
 
 import {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
-import {Animated, ScrollView, View} from 'react-native';
+import {Animated, FlatList, Text, TouchableHighlight, View} from 'react-native';
 
 import HomeActions from 'store/actions/home.actions';
 import PostActions from 'store/actions/post.actions';
 import Post from 'components/Post.tsx';
 import styles from 'styles/styles';
-import {Easing} from 'react-native';
+
+import api from 'api/api';
 
 const FeedContainer: React.FunctionComponent = (props: any) => {
-  const scrollViewRef = useRef<ScrollView>(null);
+  const feedRef = useRef<FlatList>(null);
   const scrollYRef = useRef(new Animated.Value(0)).current;
+  const [feedData, setFeedData] = useState([]);
+
+  // useEffect(() => {
+  //   const unsubscribe = getFeedData();
+  //   return unsubscribe;
+  // }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -38,8 +45,8 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   );
 
   const scrollTo = (index: number) => {
-    if (scrollViewRef.current) {
-      scrollViewRef.current.scrollTo({
+    if (feedRef.current) {
+      feedRef.current.scrollTo({
         x: 0,
         y: convertIndexToY(index),
         animated: false,
@@ -51,18 +58,43 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
     return (index - 1) * 500 + 550;
   };
 
+  const getFeedData = () => {
+    api.Post.Basic.GetAll()
+      .then(res => {
+        setFeedData([...feedData, ...[res]]);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <View style={styles.droidSafeArea}>
-      <Animated.ScrollView
-        ref={scrollViewRef}
+      <FlatList
+        ref={feedRef}
         contentContainerStyle={{
           flexGrow: 1,
         }}
         onScroll={onScroll}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={<View style={{height: 98}} />}
+        ListFooterComponent={<View style={{height: 150}} />}
+        data={feedData}
+        keyExtractor={item => item._id}
+        CellRendererComponent={({item, index}) => (
+          <Post
+            index={index}
+            scrollY={scrollYRef}
+            onContentExpand={handleContentExpand}
+          />
+        )}
+        // getItemLayout={(data, index) => ({
+        //   offset: 550 * index,
+        //   index,
+        // })}
       >
-        <View style={{height: 98}} />
+        {/* <View style={{height: 98}} />
         <Post
           index={0}
           image={require('assets/images/mock/1.jpeg')}
@@ -108,8 +140,8 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
           style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
         />
         <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-      </Animated.ScrollView>
+        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} /> */}
+      </FlatList>
     </View>
   );
 };
