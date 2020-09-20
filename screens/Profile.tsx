@@ -1,13 +1,17 @@
 'use strict';
 
 import React, {useEffect, useState} from 'react';
-import {Text, Image, View, ImageURISource} from 'react-native';
+import {
+  Text,
+  SafeAreaView,
+  View,
+  StyleSheet,
+} from 'react-native';
 import styles from 'styles/styles';
-import {Avatar} from 'react-native-elements';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import api from 'api/api';
-import {UserInfoType} from 'api/user';
+import authSelectors from 'store/selectors/auth.selectors';
+import ProfileHeader from 'components/Profile/profile.header';
 
 const ProfileTopTab = createMaterialTopTabNavigator();
 
@@ -35,55 +39,38 @@ const ProfileStylePosts = () => {
 };
 
 const ProfileScreen = (props: any) => {
-  const [avatarURI, setAvatarURI] = useState('');
-  const [userInfo, setUserInfo] = useState(undefined as UserInfoType);
   const userId = props.userId;
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const uri = (await api.Avatar.Get(userId, 'large')) as string;
-        setAvatarURI(uri);
-        const userInfo = (await api.User.GetByID(userId)) as UserInfoType;
-        setUserInfo(userInfo);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []);
+  const isMyProfile = userId === authSelectors.getMyID();
   return (
-    <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <View style={styles.profileBioView}>
-          <Text style={styles.profileName}>
-            {userInfo ? userInfo.first_name : ''}{' '}
-            {userInfo ? userInfo.last_name : ''}
-          </Text>
-          <Text style={styles.profileLiner}>
-            {userInfo ? userInfo.followers.length : ''} Followers •{' '}
-            {userInfo ? userInfo.following.length : ''} Following
-          </Text>
-          <Text style={styles.profileHandle}>
-            @{userInfo ? userInfo.username : ''}
-          </Text>
-        </View>
-        <View style={styles.avatarPhoto}>
-          <Avatar
-            size="large"
-            rounded
-            source={(avatarURI ? {uri: avatarURI} : null) as ImageURISource}
-            onPress={() => {
-              console.log('avatar pressed');
-            }}
-          />
-        </View>
-      </View>
-      <ProfileTopTab.Navigator>
+    <SafeAreaView style={styles.droidSafeArea}>
+      <ProfileHeader isMyProfile={isMyProfile} userId={userId} />
+      <ProfileTopTab.Navigator
+        tabBarOptions={{
+          activeTintColor: '#0c0b0b',
+          inactiveTintColor: '#737373',
+          pressOpacity: 1,
+          style: {
+            borderBottomColor: '#c6b9bb',
+            borderBottomWidth: 1,
+            backgroundColor: '#f1e4e6ab',
+            elevation: 0,
+            paddingLeft: 35,
+            paddingRight: 35,
+          },
+          indicatorStyle: {
+            backgroundColor: '#000000',
+            height: 2,
+          },
+          labelStyle: {
+            fontFamily: 'CircularBlack',
+          },
+        }}
+      >
         <ProfileTopTab.Screen name="On Display" component={ProfileOnDisplay} />
         <ProfileTopTab.Screen name="Posts" component={ProfilePosts} />
         <ProfileTopTab.Screen name="Style" component={ProfileStylePosts} />
       </ProfileTopTab.Navigator>
-    </View>
+    </SafeAreaView>
   );
 };
 

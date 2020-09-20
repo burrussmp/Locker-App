@@ -102,36 +102,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 6,
   },
-  avatarContainer: {
-    height: 125,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignContent: 'flex-start',
-    alignItems: 'flex-end',
-  },
-  profileBioView: {
-    marginBottom: 20,
-  },
-  profileName: {
-    fontSize: 18,
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  profileLiner: {
-    color: '#000',
-    fontSize: 11,
-    marginTop: 1,
-    fontStyle: 'italic',
-  },
-  profileHandle: {
-    color: '#000',
-    marginTop: 3,
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  avatarPhoto: {
-    marginBottom: 20,
-  },
 });
 
 export default styles;
