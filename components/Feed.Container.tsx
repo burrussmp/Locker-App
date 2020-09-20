@@ -22,7 +22,8 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   const [feedData, setFeedData] = useState([]);
 
   useEffect(() => {
-    getFeedData();
+    const unsubscribe = getFeedData();
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   const getFeedData = () => {
     api.Post.Basic.GetAll()
       .then(res => {
-        setFeedData(res);
+        setFeedData([...feedData, ...[res]]);
       })
       .catch(err => {
         console.log(err);
