@@ -75,7 +75,12 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
   };
 
   return (
-    <View style={{zIndex: -props.index, marginTop: -50}}>
+    <View
+      style={{
+        zIndex: props.index,
+        marginTop: -50,
+      }}
+    >
       <View style={{backgroundColor: props.cardColor}}>
         <TapGestureHandler
           onHandlerStateChange={onContentTap}
@@ -98,6 +103,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                   flipAnimationTransform(rotationDegreesRef, true),
                 ]}
               >
+<<<<<<< HEAD
                 <Animated.Image
                   source={props.image ? {uri: props.image} : null}
                   style={[
@@ -105,6 +111,14 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                     pushOutAnimationTransform(props.scrollY, props.index),
                   ]}
                 />
+=======
+                {props.image ? (
+                  <Image
+                    source={{uri: props.image}}
+                    style={{flex: 1, width: '100%', resizeMode: 'cover'}}
+                  />
+                ) : undefined}
+>>>>>>> 180f8d0f3d8ff6c63ddd62a8bebe3a9dab57d881
               </Animated.View>
               <Animated.View
                 style={[

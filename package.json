@@ -47,7 +47,11 @@
     "expo-web-browser": "~8.3.1",
     "form-data": "^3.0.0",
     "fs": "0.0.1-security",
+<<<<<<< HEAD
     "install": "^0.13.0",
+=======
+    "get-pixels": "^3.3.2",
+>>>>>>> 180f8d0f3d8ff6c63ddd62a8bebe3a9dab57d881
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.4",
     "lodash": "^4.17.20",

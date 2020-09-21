@@ -24,20 +24,19 @@ interface PostContainerProps {
 const PostContainer: React.FunctionComponent<PostContainerProps> = (
   props: PostContainerProps
 ) => {
+  const [isFlipped,Flip] = useState(false);
+  
   const isCancelled = useRef(false);
   const [postData, setPostData] = useState([]);
   const [postContent, setPostContent] = useState([]);
   const [postImageURI, setPostImageURI] = useState('');
+<<<<<<< HEAD
   const [cardColor, setCardColor] = useState('#FFFFFF');
 
+=======
+  const [index, setIndex] = useState(-1 * props.index);
+>>>>>>> 180f8d0f3d8ff6c63ddd62a8bebe3a9dab57d881
   useEffect(() => {
-    getPostData();
-    return () => {
-      isCancelled.current = true;
-    };
-  }, []);
-
-  const getPostData = () => {
     api.Post.Basic.GetByID(props.id)
       .then(res => {
         if (!isCancelled.current) {
@@ -46,12 +45,16 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
           api.S3.GetMedia(res.content.media.key).then(res => {
             setPostImageURI(res);
           });
+          setIndex(index + 1);
         }
       })
       .catch(err => {
         console.log(err);
       });
-  };
+    return () => {
+      isCancelled.current = true;
+    };
+  }, []);
 
   return (
     <PostNotExpanded
