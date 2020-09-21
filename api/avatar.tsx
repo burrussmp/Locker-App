@@ -51,11 +51,7 @@ const Get = async (userId?: string, size?: string): Promise<string | Error> => {
     }${size ? `&size=${size}` : ''}`
   );
   if (res.ok) {
-    try {
-      return await apiHelper.createURI(res);
-    } catch (err) {
-      console.log(err);
-    }
+    return await apiHelper.createURI(res);
   } else {
     throw await apiHelper.handleError(res);
   }

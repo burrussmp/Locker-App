@@ -41,7 +41,6 @@ interface PostProps {
 const PostNotExpanded: React.FunctionComponent<PostProps> = (
   props: PostProps
 ) => {
-  console.log(props.image);
   const [isFlipped, setFlipped] = useState(false);
   const navigation = useNavigation();
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
@@ -100,7 +99,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                 ]}
               >
                 <Image
-                  source={props.image}
+                  source={{uri:props.image}}
                   style={{flex: 1, width: '100%', resizeMode: 'cover'}}
                 />
               </Animated.View>
