@@ -7,11 +7,18 @@ import * as React from 'react';
 
 import {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
-import {Animated, FlatList, Text, TouchableHighlight, View} from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 
 import HomeActions from 'store/actions/home.actions';
 import PostActions from 'store/actions/post.actions';
-import Post from 'components/Post.tsx';
+import PostContainer from 'components/Post.Container';
 import styles from 'styles/styles';
 
 import api from 'api/api';
@@ -19,11 +26,14 @@ import api from 'api/api';
 const FeedContainer: React.FunctionComponent = (props: any) => {
   const feedRef = useRef<FlatList>(null);
   const scrollYRef = useRef(new Animated.Value(0)).current;
+  const isCancelled = useRef(false);
   const [feedData, setFeedData] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = getFeedData();
-    return unsubscribe;
+    getFeedData();
+    return () => {
+      isCancelled.current = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -61,7 +71,9 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   const getFeedData = () => {
     api.Post.Basic.GetAll()
       .then(res => {
-        setFeedData(res);
+        if (!isCancelled.current) {
+          setFeedData(res);
+        }
       })
       .catch(err => {
         console.log(err);
@@ -82,66 +94,21 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
         ListFooterComponent={<View style={{height: 150}} />}
         data={feedData}
         keyExtractor={item => item._id}
+        renderItem={null}
         CellRendererComponent={({item, index}) => (
-          <Post
+          <PostContainer
             index={index}
+            id={item._id}
             scrollY={scrollYRef}
             onContentExpand={handleContentExpand}
           />
         )}
-        // getItemLayout={(data, index) => ({
-        //   offset: 550 * index,
-        //   index,
-        // })}
-      >
-        {/* <View style={{height: 98}} />
-        <Post
-          index={0}
-          image={require('assets/images/mock/1.jpeg')}
-          cardColor={'#ECECEC'}
-          title={'Palisades Patchwork Buttondown'}
-          author={'freepeople'}
-          authorAvatar={require('assets/images/mock/freepeople.jpeg')}
-          scrollY={scrollYRef}
-          onContentExpand={handleContentExpand}
-        />
-        <Post
-          index={1}
-          scrollY={scrollYRef}
-          onContentExpand={handleContentExpand}
-        />
-        <Post
-          index={2}
-          scrollY={scrollYRef}
-          onContentExpand={handleContentExpand}
-        />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} />
-        <View
-          style={{width: 200, height: 200, backgroundColor: 'powderblue'}}
-        />
-        <View style={{width: 200, height: 200, backgroundColor: 'skyblue'}} />
-        <View style={{width: 200, height: 200, backgroundColor: 'steelblue'}} /> */}
-      </FlatList>
+        getItemLayout={(data, index) => ({
+          length: 550,
+          offset: 550 * index,
+          index,
+        })}
+      />
     </View>
   );
 };

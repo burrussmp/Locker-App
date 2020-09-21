@@ -21,10 +21,6 @@ const LikeButton: React.FunctionComponent = (props: any) => {
   const [isLiked, setLiked] = useState(false);
   const scaleRef = useRef(new Animated.Value(1)).current;
 
-  useEffect(() => {
-    likeAnimation(scaleRef);
-  }, [isLiked]);
-
   const onSingleTap = (event: any) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       handleLike();
@@ -33,6 +29,7 @@ const LikeButton: React.FunctionComponent = (props: any) => {
 
   function handleLike() {
     setLiked(prev => !prev);
+    likeAnimation(scaleRef);
   }
 
   return (

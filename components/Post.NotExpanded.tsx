@@ -31,11 +31,9 @@ import {BlurView} from 'expo-blur';
 
 interface PostProps {
   index: number;
-  image: any;
-  cardColor: string;
-  author: string;
-  authorAvatar: any;
-  title: string;
+  data: any;
+  content: any;
+  image: string;
   scrollY: Animated.Value;
   onContentExpand(index: number): void;
 }
@@ -43,6 +41,7 @@ interface PostProps {
 const PostNotExpanded: React.FunctionComponent<PostProps> = (
   props: PostProps
 ) => {
+  console.log(props.image);
   const [isFlipped, setFlipped] = useState(false);
   const navigation = useNavigation();
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
@@ -136,7 +135,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                   >
                     <View style={{flex: 2}}>
                       <Text style={{fontSize: 24, fontWeight: '700'}}>
-                        {props.title}
+                        {props.data.caption}
                       </Text>
                       <Text
                         style={{
@@ -145,7 +144,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                           marginTop: 5,
                         }}
                       >
-                        $148.00
+                        {props.content.price}
                       </Text>
                     </View>
                     <Avatar
