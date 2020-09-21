@@ -44,7 +44,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   }, [props.navigation]);
 
   const handleContentExpand = (index: number) => {
-    scrollTo(index);
+    //
   };
 
   const onScroll = Animated.event(
@@ -53,20 +53,6 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
       useNativeDriver: false,
     }
   );
-
-  const scrollTo = (index: number) => {
-    if (feedRef.current) {
-      feedRef.current.scrollTo({
-        x: 0,
-        y: convertIndexToY(index),
-        animated: false,
-      });
-    }
-  };
-
-  const convertIndexToY = (index: number) => {
-    return (index - 1) * 500 + 550;
-  };
 
   const getFeedData = () => {
     api.Post.Basic.GetAll()

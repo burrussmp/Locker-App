@@ -3,21 +3,10 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, ImageURISource, StyleSheet, Platform} from 'react-native';
 import {Avatar} from 'react-native-elements';
-import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 
 import api from 'api/api';
 import * as ImagePicker from 'expo-image-picker';
-import {UserInfoType} from 'api/user';
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
 
 const borderColor = '#888';
 
@@ -91,11 +80,9 @@ const ProfileStyles = StyleSheet.create({
 });
 
 const ProfileHeader = (props: any) => {
-  const userId = props.userId;
   const isMyProfile = props.isMyProfile;
-  const [avatarURI, setAvatarURI] = useState('');
-  const [userInfo, setUserInfo] = useState(undefined as UserInfoType);
-
+  const userInfo = props.userInfo;
+  const [avatarURI, setAvatarURI] = useState(props.avatarURI);
   const _pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -118,22 +105,6 @@ const ProfileHeader = (props: any) => {
     }
   };
 
-  useEffect(() => {
-    api.Avatar.Get(userId, 'large')
-      .then(uri => {
-        setAvatarURI(uri as string);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    api.User.GetByID(userId)
-      .then(userInfo => {
-        setUserInfo(userInfo as UserInfoType);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
   return (
     <View style={ProfileStyles.container}>
       <View style={ProfileStyles.topContainer}>
@@ -157,7 +128,7 @@ const ProfileHeader = (props: any) => {
             containerStyle={ProfileStyles.avatarImageContainer}
             source={(avatarURI ? {uri: avatarURI} : null) as ImageURISource}
             onPress={async () => {
-              if (isMyProfile){
+              if (isMyProfile) {
                 await getPermissionAsync();
                 await _pickImage();
               }

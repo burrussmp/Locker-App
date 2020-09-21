@@ -1,5 +1,4 @@
 'use strict';
-
 import {Platform} from 'react-native';
 import session from './session';
 import store from 'store/index';
@@ -66,7 +65,9 @@ const getHeaders = async (): Promise<{}> => {
 const createURI = async (res: Response): Promise<string> => {
   const blob = await res.blob();
   if (Platform.OS === 'ios') {
-    return URL.createObjectURL(blob);
+    return (global.URL || global.webkitURL || global || {}).createObjectURL(
+      blob
+    );
   } else {
     const fileReaderInstance = new global.FileReader();
     fileReaderInstance.readAsDataURL(blob);
