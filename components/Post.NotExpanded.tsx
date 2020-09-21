@@ -41,7 +41,6 @@ interface PostProps {
 const PostNotExpanded: React.FunctionComponent<PostProps> = (
   props: PostProps
 ) => {
-  console.log('rendered');
   const [isFlipped, setFlipped] = useState(false);
   const navigation = useNavigation();
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
