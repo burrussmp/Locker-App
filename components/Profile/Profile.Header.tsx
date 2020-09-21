@@ -18,51 +18,59 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
   if (!props.data) {
     throw 'Cannot render Profile Header without data';
   }
+  // props
   const isMyProfile = props.data.isMyProfile;
   const userInfo = props.data.userInfo;
+  // state
   const [avatarURI, setAvatarURI] = useState(props.data.avatarURI);
+  // variables that depend on state or props
+  const followingText = userInfo
+    ? `${userInfo.followers.length} Followers • ${userInfo.following.length} Following`
+    : '';
+  const nameText = userInfo
+    ? `${userInfo.first_name} ${userInfo.last_name}`
+    : '';
+  const handleText = userInfo ? `@${userInfo.username}` : '';
+  const aboutText = userInfo ? userInfo.about : '';
+  const avatarSource = (avatarURI ? {uri: avatarURI} : null) as ImageURISource;
+  // style
   const ComponentStyles = styles.Header;
+  /**
+   * @desc what happens when the avatar is pressed
+   */
+  const on_avatar_press = () => {
+    if (isMyProfile) {
+      services
+        .pickImageFromLibrary()
+        .then(media => {
+          setAvatarURI(media.uri);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <View style={ComponentStyles.container}>
       <View style={ComponentStyles.topContainer}>
         <View style={ComponentStyles.infoContainer}>
-          <Text style={ComponentStyles.nameText}>
-            {userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : ''}
-          </Text>
-          <Text style={ComponentStyles.followersText}>
-            {userInfo
-              ? `${userInfo.followers.length} Followers • ${userInfo.following.length} Following`
-              : ''}
-          </Text>
-          <Text style={ComponentStyles.handleText}>
-            {userInfo ? `@${userInfo.username}` : ''}
-          </Text>
+          <Text style={ComponentStyles.nameText}>{nameText}</Text>
+          <Text style={ComponentStyles.followersText}>{followingText}</Text>
+          <Text style={ComponentStyles.handleText}>{handleText}</Text>
         </View>
         <View style={ComponentStyles.avatarContainer}>
           <Avatar
             size="xlarge"
             rounded
             containerStyle={ComponentStyles.avatarImageContainer}
-            source={(avatarURI ? {uri: avatarURI} : null) as ImageURISource}
-            onPress={() => {
-              if (isMyProfile) {
-                services
-                  .pickImageFromLibrary()
-                  .then(media => {
-                    setAvatarURI(media.uri);
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
-              }
-            }}
+            source={avatarSource}
+            onPress={on_avatar_press}
           ></Avatar>
         </View>
       </View>
       <View style={ComponentStyles.bottomContainer}>
-        <Text style={ComponentStyles.aboutText}>
-          {userInfo && userInfo.about ? `${userInfo.about}` : ''}
-        </Text>
+        <Text style={ComponentStyles.aboutText}>{aboutText}</Text>
       </View>
     </View>
   );

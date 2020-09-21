@@ -15,7 +15,7 @@ import styles from 'styles/styles';
 // types
 import {ProfileHeaderData} from 'components/Profile/Profile.Types';
 
-const ProfileScreen = (props: any) => {
+const ProfileScreen = (props: {userId: string}) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [headerData, setHeaderData] = useState(null as ProfileHeaderData);
   const userId = props.userId;
