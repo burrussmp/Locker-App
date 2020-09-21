@@ -41,6 +41,7 @@ interface PostProps {
 const PostNotExpanded: React.FunctionComponent<PostProps> = (
   props: PostProps
 ) => {
+  console.log('rendered');
   const [isFlipped, setFlipped] = useState(false);
   const navigation = useNavigation();
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
@@ -75,7 +76,12 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
   };
 
   return (
-    <View style={{zIndex: -props.index, marginTop: -50}}>
+    <View
+      style={{
+        zIndex: props.index,
+        marginTop: -50,
+      }}
+    >
       <View style={{backgroundColor: props.cardColor}}>
         <TapGestureHandler
           onHandlerStateChange={onContentTap}
@@ -98,10 +104,12 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                   flipAnimationTransform(rotationDegreesRef, true),
                 ]}
               >
-                <Image
-                  source={{uri: props.image}}
-                  style={{flex: 1, width: '100%', resizeMode: 'cover'}}
-                />
+                {props.image ? (
+                  <Image
+                    source={{uri: props.image}}
+                    style={{flex: 1, width: '100%', resizeMode: 'cover'}}
+                  />
+                ) : undefined}
               </Animated.View>
               <Animated.View
                 style={[

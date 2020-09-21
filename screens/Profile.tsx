@@ -9,7 +9,8 @@ import api from 'api/api';
 import authSelectors from 'store/selectors/auth.selectors';
 import ProfileHeader from 'components/Profile/Profile.Header';
 import ProfileLoading from 'components/Profile/Profile.Loading';
-import {UserInfoType} from 'api/user';
+
+import {ProfileHeaderData} from 'components/Profile/Profile.Types';
 
 const ProfileTopTab = createMaterialTopTabNavigator();
 
@@ -38,19 +39,22 @@ const ProfileStylePosts = () => {
 
 const ProfileScreen = (props: any) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [avatarURI, setAvatarURI] = useState('' as string);
-  const [userInfo, setUserInfo] = useState(undefined as UserInfoType);
+  const [headerData, setHeaderData] = useState(null as ProfileHeaderData);
   const userId = props.userId;
   const isMyProfile = userId === authSelectors.getMyID();
   useEffect(() => {
     (async () => {
       try {
-        await api.Avatar.Get(userId, 'large').then(uri => {
-          setAvatarURI(uri as string);
+        await api.Avatar.Get(userId, 'large').then(async uri => {
+          await api.User.GetByID(userId).then(userInfo => {
+            setHeaderData({
+              avatarURI: uri,
+              userInfo: userInfo,
+              isMyProfile: isMyProfile,
+            } as ProfileHeaderData);
+          });
         });
-        await api.User.GetByID(userId).then(userInfo => {
-          setUserInfo(userInfo as UserInfoType);
-        });
+
         setIsLoaded(true);
       } catch (err) {
         console.log(err);
@@ -61,11 +65,7 @@ const ProfileScreen = (props: any) => {
     <ProfileLoading />
   ) : (
     <SafeAreaView style={styles.droidSafeArea}>
-      <ProfileHeader
-        isMyProfile={isMyProfile}
-        userInfo={userInfo}
-        avatarURI={avatarURI}
-      />
+      <ProfileHeader data={headerData} />
       <ProfileTopTab.Navigator
         tabBarOptions={{
           activeTintColor: '#0c0b0b',

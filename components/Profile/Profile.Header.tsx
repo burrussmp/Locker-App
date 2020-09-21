@@ -8,6 +8,8 @@ import * as Permissions from 'expo-permissions';
 import api from 'api/api';
 import * as ImagePicker from 'expo-image-picker';
 
+import {ProfileHeaderData} from 'components/Profile/Profile.Types';
+
 const borderColor = '#888';
 
 const getPermissionAsync = async () => {
@@ -79,10 +81,17 @@ const ProfileStyles = StyleSheet.create({
   },
 });
 
-const ProfileHeader = (props: any) => {
-  const isMyProfile = props.isMyProfile;
-  const userInfo = props.userInfo;
-  const [avatarURI, setAvatarURI] = useState(props.avatarURI);
+type ProfileHeaderProps = {
+  data: ProfileHeaderData;
+};
+
+const ProfileHeader = (props: ProfileHeaderProps) => {
+  if (!props.data) {
+    throw 'Cannot render Profile Header without data';
+  }
+  const isMyProfile = props.data.isMyProfile;
+  const userInfo = props.data.userInfo;
+  const [avatarURI, setAvatarURI] = useState(props.data.avatarURI);
   const _pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
