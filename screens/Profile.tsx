@@ -1,13 +1,16 @@
 'use strict';
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, SafeAreaView, View, StyleSheet} from 'react-native';
 import styles from 'styles/styles';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
+import api from 'api/api';
 import authSelectors from 'store/selectors/auth.selectors';
 import ProfileHeader from 'components/Profile/Profile.Header';
 import ProfileLoading from 'components/Profile/Profile.Loading';
+import {UserInfoType} from 'api/user';
+
 const ProfileTopTab = createMaterialTopTabNavigator();
 
 const ProfileOnDisplay = () => {
@@ -35,13 +38,34 @@ const ProfileStylePosts = () => {
 
 const ProfileScreen = (props: any) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [avatarURI, setAvatarURI] = useState('' as string);
+  const [userInfo, setUserInfo] = useState(undefined as UserInfoType);
   const userId = props.userId;
   const isMyProfile = userId === authSelectors.getMyID();
-  return isLoaded ? (
+  useEffect(() => {
+    (async () => {
+      try {
+        await api.Avatar.Get(userId, 'large').then(uri => {
+          setAvatarURI(uri as string);
+        });
+        await api.User.GetByID(userId).then(userInfo => {
+          setUserInfo(userInfo as UserInfoType);
+        });
+        setIsLoaded(true);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
+  return !isLoaded ? (
     <ProfileLoading />
   ) : (
     <SafeAreaView style={styles.droidSafeArea}>
-      <ProfileHeader isMyProfile={isMyProfile} userId={userId} />
+      <ProfileHeader
+        isMyProfile={isMyProfile}
+        userInfo={userInfo}
+        avatarURI={avatarURI}
+      />
       <ProfileTopTab.Navigator
         tabBarOptions={{
           activeTintColor: '#0c0b0b',

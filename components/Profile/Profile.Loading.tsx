@@ -1,8 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import Loading from 'react-native-whc-loading';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 
 const ComponentStyles = StyleSheet.create({
   container: {
@@ -12,13 +11,10 @@ const ComponentStyles = StyleSheet.create({
   },
 });
 
-const ProfileLoading = (props: any) => {
+const ProfileLoading = () => {
   return (
     <View style={ComponentStyles.container}>
-      <Loading
-        ref="loading3"
-        show={props.isLoaded ? props.isLoaded : true}
-      ></Loading>
+      <ActivityIndicator size="large" color="#ccc"></ActivityIndicator>
     </View>
   );
 };

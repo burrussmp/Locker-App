@@ -43,7 +43,6 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
           setPostData(res);
           setPostContent(res.content);
           api.S3.GetMedia(res.content.media.key).then(res => {
-            console.log(res);
             setPostImageURI(res);
           });
         }

@@ -99,7 +99,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                 ]}
               >
                 <Image
-                  source={{uri:props.image}}
+                  source={{uri: props.image}}
                   style={{flex: 1, width: '100%', resizeMode: 'cover'}}
                 />
               </Animated.View>
