@@ -1,13 +1,13 @@
 'use strict';
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Text, SafeAreaView, View, StyleSheet} from 'react-native';
 import styles from 'styles/styles';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 import authSelectors from 'store/selectors/auth.selectors';
-import ProfileHeader from 'components/Profile/profile.header';
-
+import ProfileHeader from 'components/Profile/Profile.Header';
+import ProfileLoading from 'components/Profile/Profile.Loading';
 const ProfileTopTab = createMaterialTopTabNavigator();
 
 const ProfileOnDisplay = () => {
@@ -34,9 +34,12 @@ const ProfileStylePosts = () => {
 };
 
 const ProfileScreen = (props: any) => {
+  const [isLoaded, setIsLoaded] = useState(false);
   const userId = props.userId;
   const isMyProfile = userId === authSelectors.getMyID();
-  return (
+  return isLoaded ? (
+    <ProfileLoading />
+  ) : (
     <SafeAreaView style={styles.droidSafeArea}>
       <ProfileHeader isMyProfile={isMyProfile} userId={userId} />
       <ProfileTopTab.Navigator

@@ -22,14 +22,6 @@ const LockButton: React.FunctionComponent = (props: any) => {
   const [isLocked, setLocked] = useState(false);
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
-    if (isLocked) {
-      lockAnimation(rotationDegreesRef);
-    } else {
-      unlockAnimation(rotationDegreesRef);
-    }
-  }, [isLocked]);
-
   const onSingleTap = (event: any) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       handleLock();
@@ -38,6 +30,11 @@ const LockButton: React.FunctionComponent = (props: any) => {
 
   function handleLock() {
     setLocked(prev => !prev);
+    if (isLocked) {
+      lockAnimation(rotationDegreesRef);
+    } else {
+      unlockAnimation(rotationDegreesRef);
+    }
   }
 
   return (

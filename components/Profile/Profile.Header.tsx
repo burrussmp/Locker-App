@@ -8,16 +8,6 @@ import * as Permissions from 'expo-permissions';
 import api from 'api/api';
 import * as ImagePicker from 'expo-image-picker';
 import {UserInfoType} from 'api/user';
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
-
 const borderColor = '#888';
 
 const getPermissionAsync = async () => {
@@ -94,7 +84,6 @@ const ProfileHeader = (props: any) => {
   const isMyProfile = props.isMyProfile;
   const [avatarURI, setAvatarURI] = useState('');
   const [userInfo, setUserInfo] = useState(undefined as UserInfoType);
-
   const _pickImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
