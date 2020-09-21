@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import {Animated} from 'react-native';
 
 const flipAnimation = (rotationDegrees: Animated.Value, isFlipped: boolean) => {

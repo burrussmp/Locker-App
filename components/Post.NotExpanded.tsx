@@ -41,7 +41,6 @@ interface PostProps {
 const PostNotExpanded: React.FunctionComponent<PostProps> = (
   props: PostProps
 ) => {
-  console.log(props.image);
   const [isFlipped, setFlipped] = useState(false);
   const navigation = useNavigation();
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
@@ -99,9 +98,12 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                   flipAnimationTransform(rotationDegreesRef, true),
                 ]}
               >
-                <Image
-                  source={props.image}
-                  style={{flex: 1, width: '100%', resizeMode: 'cover'}}
+                <Animated.Image
+                  source={props.image ? {uri: props.image} : null}
+                  style={[
+                    {flex: 1, width: '100%', resizeMode: 'cover'},
+                    pushOutAnimationTransform(props.scrollY, props.index),
+                  ]}
                 />
               </Animated.View>
               <Animated.View
@@ -148,7 +150,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                       </Text>
                     </View>
                     <Avatar
-                      source={props.image}
+                      source={props.image ? {uri: props.image} : null}
                       rounded
                       containerStyle={{
                         height: 100,

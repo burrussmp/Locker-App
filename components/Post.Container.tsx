@@ -10,6 +10,8 @@ import {ALL} from 'dns';
 import * as React from 'react';
 import {Animated} from 'react-native';
 
+import ImageColors from 'react-native-image-colors';
+
 import PostNotExpanded from 'components/Post.NotExpanded';
 import api from 'api/api';
 import {useEffect, useRef, useState} from 'react';
@@ -28,6 +30,7 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
   const [postData, setPostData] = useState([]);
   const [postContent, setPostContent] = useState([]);
   const [postImageURI, setPostImageURI] = useState('');
+  const [cardColor, setCardColor] = useState('#FFFFFF');
 
   useEffect(() => {
     getPostData();
@@ -44,6 +47,12 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
           setPostContent(res.content);
           api.S3.GetMedia(res.content.media.key).then(res => {
             setPostImageURI(res);
+            ImageColors.getColors(postImageURI, {}).then(res => {
+              console.log(res);
+              // const color =
+              //   res.platform === 'ios' ? res.background : res.dominant;
+              // setCardColor(color);
+            });
           });
         }
       })
@@ -58,6 +67,7 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
       data={postData}
       content={postContent}
       image={postImageURI}
+      cardColor={cardColor}
       scrollY={props.scrollY}
       onContentExpand={props.onContentExpand}
     />
