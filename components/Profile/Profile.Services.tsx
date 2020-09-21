@@ -73,6 +73,3 @@ const pickImageFromLibrary = async (): Promise<media> => {
 export default {
   pickImageFromLibrary,
 };
-
-// await api.Avatar.Update(media);
-// callback(result.uri);

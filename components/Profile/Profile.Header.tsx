@@ -10,6 +10,10 @@ import {ProfileHeaderData} from 'components/Profile/Profile.Types';
 
 import styles from 'components/Profile/Profile.Styles';
 
+/**
+ * @desc Renders the header of the user profile
+ * @props The 'data' attribute specifies the avatarURI and userInfo contains from API
+ */
 const ProfileHeader = (props: {data: ProfileHeaderData}) => {
   if (!props.data) {
     throw 'Cannot render Profile Header without data';

@@ -5,6 +5,9 @@ import {View, ActivityIndicator} from 'react-native';
 
 import styles from 'components/Profile/Profile.Styles';
 
+/**
+ * @desc Renders the original loading container
+ */
 const ProfileLoading = () => {
   const ComponentStyles = styles.Loading;
   return (

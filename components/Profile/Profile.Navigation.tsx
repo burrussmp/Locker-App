@@ -6,6 +6,9 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import ProfileOnDisplay from 'components/Profile/Profile.OnDisplay';
 import ProfilePosts from 'components/Profile/Profile.Posts';
 
+/**
+ * @desc Renders the tab bar navigation below the profile header
+ */
 const ProfileNavigation = () => {
   const ProfileTopTab = createMaterialTopTabNavigator();
   return (
