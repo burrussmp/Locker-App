@@ -1,33 +1,38 @@
-/**
- * @author Paul H. Sullivan
- * @date Sep 2020
- * @desc This is the the component for the lock button
- */
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+'use strict';
+// External
 import * as React from 'react';
-
-import {useEffect, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {Animated, View} from 'react-native';
-
-import {State, TapGestureHandler} from 'react-native-gesture-handler';
-
-import icons from 'icons/icons';
+import {
+  State,
+  TapGestureHandler,
+  TapGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
+// Services
 import {
   lockAnimation,
   lockAnimationTransform,
   unlockAnimation,
 } from 'services/animations/ReactionAnimations';
+import icons from 'icons/icons';
 
-const LockButton: React.FunctionComponent = (props: any) => {
+/**
+ * @desc Renders a lock button
+ * @props The 'data' attribute specifies the post data to render
+ */
+const LockButton: React.FunctionComponent = () => {
+  // State
   const [isLocked, setLocked] = useState(false);
+  const icon = isLocked ? icons.lock.locked : icons.lock.unlocked;
+  // Refs
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
-
-  const onSingleTap = (event: any) => {
+  // Functions
+  const onSingleTap = (event: TapGestureHandlerGestureEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       handleLock();
     }
   };
-
   function handleLock() {
     setLocked(prev => !prev);
     if (isLocked) {
@@ -36,12 +41,11 @@ const LockButton: React.FunctionComponent = (props: any) => {
       unlockAnimation(rotationDegreesRef);
     }
   }
-
   return (
-    <View style={props.style}>
+    <View>
       <TapGestureHandler onHandlerStateChange={onSingleTap}>
         <Animated.Image
-          source={isLocked ? icons.lock.locked : icons.lock.unlocked}
+          source={icon}
           style={lockAnimationTransform(rotationDegreesRef)}
         />
       </TapGestureHandler>

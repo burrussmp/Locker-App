@@ -4,7 +4,7 @@ import apiHelper from 'api/helper';
 import {ContentPostType} from './content_post';
 import {CommentType} from './comments';
 
-type PostType = {
+export type PostType = {
   caption: string;
   tags: Array<Record<string, string>>;
   _id: string;

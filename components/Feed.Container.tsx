@@ -18,7 +18,7 @@ import {
 
 import HomeActions from 'store/actions/home.actions';
 import PostActions from 'store/actions/post.actions';
-import PostContainer from 'components/Post.Container';
+import PostContainer from 'components/Post/Post.Container';
 import styles from 'styles/styles';
 
 import api from 'api/api';
@@ -82,12 +82,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
         keyExtractor={item => item._id}
         renderItem={null}
         CellRendererComponent={({item, index}) => (
-          <PostContainer
-            index={index}
-            id={item._id}
-            scrollY={scrollYRef}
-            onContentExpand={handleContentExpand}
-          />
+          <PostContainer index={index} id={item._id} scrollY={scrollYRef} />
         )}
         getItemLayout={(data, index) => ({
           length: 550,
