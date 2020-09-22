@@ -5,6 +5,7 @@ import {Text, View, ImageURISource, StyleSheet, Platform} from 'react-native';
 import {Avatar} from 'react-native-elements';
 
 import services from 'components/Profile/Profile.Services';
+import api from 'api/api';
 
 import {ProfileHeaderData} from 'components/Profile/Profile.Types';
 
@@ -42,7 +43,8 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
     if (isMyProfile) {
       services
         .pickImageFromLibrary()
-        .then(media => {
+        .then(async media => {
+          await api.Avatar.Update(media);
           setAvatarURI(media.uri);
         })
         .catch(err => {

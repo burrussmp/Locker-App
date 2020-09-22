@@ -7,12 +7,17 @@ import {ALL} from 'dns';
  * @desc This is the the component for a basic post
  */
 
-import * as React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 
 import PostNotExpanded from 'components/Post.NotExpanded';
 import api from 'api/api';
-import {useEffect, useRef, useState} from 'react';
+import {
+  flipAnimation,
+  borderRadiusAnimationStyle,
+  flipAnimationTransform,
+  pushOutAnimationTransform,
+} from 'services/animations/PostAnimations';
 
 interface PostContainerProps {
   index: number;
@@ -24,8 +29,8 @@ interface PostContainerProps {
 const PostContainer: React.FunctionComponent<PostContainerProps> = (
   props: PostContainerProps
 ) => {
-  const [isFlipped,Flip] = useState(false);
-  
+  const [isFlipped, Flip] = useState(false);
+
   const isCancelled = useRef(false);
   const [postData, setPostData] = useState([]);
   const [postContent, setPostContent] = useState([]);
