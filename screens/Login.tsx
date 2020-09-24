@@ -7,7 +7,7 @@
  * @desc Login Screen
  */
 
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {
   SafeAreaView,
   TextInput,
@@ -31,7 +31,8 @@ const LoginScreen = (props: any) => {
   const [loginInfo, setLoginInfo] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <SafeAreaView style={styles.droidSafeArea}>
+    <Fragment>
+      <SafeAreaView style={styles.safeArea} />
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -81,7 +82,7 @@ const LoginScreen = (props: any) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </Fragment>
   );
 };
 

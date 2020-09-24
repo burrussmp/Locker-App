@@ -9,6 +9,7 @@ import post from './post';
 import content_post from './content_post';
 import comments from './comments';
 import replies from './replies';
+import search from './search';
 
 type PostAPIType = {
   Basic: typeof post;
@@ -24,6 +25,7 @@ type APIType = {
   Post: PostAPIType;
   Comments: typeof comments;
   Replies: typeof replies;
+  Search: typeof search;
 };
 
 const post_api: PostAPIType = {
@@ -40,6 +42,7 @@ const api: APIType = {
   Post: post_api,
   Comments: comments,
   Replies: replies,
+  Search: search,
 };
 
 export default api;

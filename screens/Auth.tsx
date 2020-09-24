@@ -7,7 +7,7 @@
  * @desc Authorization Screen
  */
 
-import React from 'react';
+import React, {Fragment} from 'react';
 import {ImageBackground, Image, View, SafeAreaView} from 'react-native';
 
 import AuthButton from 'components/Auth.Button';
@@ -19,12 +19,13 @@ const logoImage = require('assets/images/logo.png');
 
 const AuthScreen = (props: any) => {
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={backgroundImage}
-        style={styles.authBackgroundImage}
-      >
-        <SafeAreaView style={styles.droidSafeArea}>
+    <Fragment>
+      <SafeAreaView style={styles.safeArea} />
+      <View style={styles.container}>
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.authBackgroundImage}
+        >
           <View style={styles.centered}>
             <Image source={logoTextImage} style={styles.logoText}></Image>
             <Image source={logoImage}></Image>
@@ -44,9 +45,9 @@ const AuthScreen = (props: any) => {
               }}
             />
           </View>
-        </SafeAreaView>
-      </ImageBackground>
-    </View>
+        </ImageBackground>
+      </View>
+    </Fragment>
   );
 };
 

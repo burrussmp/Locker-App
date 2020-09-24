@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 // outside imports
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {SafeAreaView, Image} from 'react-native';
 
 // services
@@ -38,10 +38,11 @@ const ProfileScreen = (props: {userId: string}) => {
   return !isLoaded ? (
     <ProfileLoading />
   ) : (
-    <SafeAreaView style={styles.droidSafeArea}>
+    <Fragment>
+      <SafeAreaView style={styles.safeArea} />
       <ProfileHeader data={headerData} />
       <ProfileNavigation />
-    </SafeAreaView>
+    </Fragment>
   );
 };
 

@@ -2,26 +2,6 @@
 import config from 'config';
 import apiHelper from 'api/helper';
 import FormData from 'form-data';
-import api from './api';
-
-/*
-ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {}
-      else if (response.error) {}
-      else if (response.customButton) {}
-      else {
-        const photo = { // leads to handleAddPhoto()
-          fileName: response.fileName,
-          path: response.path,
-          type: response.type,
-          uri: response.uri,
-          width: response.width,
-          height: response.height,
-        };
-        await api.avatar.updateAvatar(photo);
-      }
-    });
-*/
 
 /**
  * @desc Get the avatar of a specific user
