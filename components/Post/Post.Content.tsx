@@ -32,8 +32,10 @@ const PostContent = (props: {postData: PostData}) => {
   const info = props.postData.apiResponse;
   const mediaKey = props.postData.apiResponse.content.media.key;
   const blur_hash = props.postData.apiResponse.content.media.blurhash;
+  const bottomTabData = props.postData.apiResponse.postedBy;
   const scrollY = props.postData.scrollY;
   const index = props.postData.index;
+  const cardColor = BlurHashService.BlurHashDecoder(blur_hash).getTabColor(10);
   // Styles
   const ComponentStyles = styles.Content({index: index});
   // State
@@ -73,8 +75,13 @@ const PostContent = (props: {postData: PostData}) => {
 
   return (
     <View style={ComponentStyles.container}>
-      <View>
-        {/* Change above View to card color */}
+      <View
+        style={{
+          backgroundColor: `rgb(${cardColor})`,
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+        }}
+      >
         <PostContentBack
           info={info}
           image={image}
@@ -92,6 +99,8 @@ const PostContent = (props: {postData: PostData}) => {
         />
       </View>
       <PostBottomTab
+        bottomTabData={bottomTabData}
+        cardColor={cardColor}
         index={index}
         scrollY={scrollY}
         rotationDegrees={rotationDegrees}

@@ -71,7 +71,7 @@ const BottomTabStyles = (props: any) =>
   StyleSheet.create({
     container: {
       height: 50,
-      backgroundColor: '#FFFFFF',
+      backgroundColor: `rgb(${props.cardColor || '255, 255, 255'})`,
     },
     containerShadow: {
       position: 'absolute',

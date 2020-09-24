@@ -82,7 +82,7 @@ const get_average_pixels = (
     rgb[2] += data[start_iter + 2];
     start_iter += channels;
   }
-  const total = width - x + width * (height - y);
+  const total = (width - x) * (height - y);
   return [~~(rgb[0] / total), ~~(rgb[1] / total), ~~(rgb[2] / total)];
 };
 

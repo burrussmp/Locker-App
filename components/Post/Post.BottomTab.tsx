@@ -18,11 +18,11 @@ import icons from 'icons/icons';
 import styles from 'components/Post/Post.Styles';
 
 interface PostBottomTabProps {
+  bottomTabData: any;
+  cardColor: string;
   index: number;
   scrollY: Animated.Value;
   rotationDegrees: Animated.Value;
-  author: string;
-  authorAvatar: string;
 }
 
 /**
