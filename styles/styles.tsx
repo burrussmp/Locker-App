@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   safeArea:
     Platform.OS === 'ios'
       ? {flex: 0, backgroundColor: '#FFFFFF'}
-      : {paddingTop: StatusBar.currentHeight, backgroundColor: '#FFFFFF'},
+      : {height: StatusBar.currentHeight, backgroundColor: '#FFFFFF'},
   container: {
     flex: 1,
   },
