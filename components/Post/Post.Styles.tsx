@@ -5,8 +5,11 @@ const borderColor = '#888';
 
 const ContentStyles = (props: any) =>
   StyleSheet.create({
-    container: {
-      zIndex: props.index,
+    topContainer: {
+      backgroundColor: `rgb(${props.cardColor || '255, 255, 255'})`,
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+      marginHorizontal: 10,
     },
   });
 
@@ -25,7 +28,8 @@ const ContentFrontStyles = StyleSheet.create({
 const ContentBackStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    width: '100%',
+    right: 0,
+    left: 0,
     height: 500,
     backgroundColor: '#FFFFFF',
     backfaceVisibility: 'hidden',
@@ -71,12 +75,14 @@ const BottomTabStyles = (props: any) =>
   StyleSheet.create({
     container: {
       height: 50,
+      marginHorizontal: 10,
       backgroundColor: `rgb(${props.cardColor || '255, 255, 255'})`,
     },
     containerShadow: {
       position: 'absolute',
       top: 1,
-      width: '100%',
+      right: 10,
+      left: 10,
       height: '100%',
       opacity: 0.25,
       backgroundColor: '#000000',

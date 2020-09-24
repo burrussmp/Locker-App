@@ -37,7 +37,7 @@ const PostContent = (props: {postData: PostData}) => {
   const index = props.postData.index;
   const cardColor = BlurHashService.BlurHashDecoder(blur_hash).getTabColor(10);
   // Styles
-  const ComponentStyles = styles.Content({index: index});
+  const ComponentStyles = styles.Content({cardColor: cardColor});
   // State
   const [image, setImage] = useState('');
   const [isFlipped, setFlipped] = useState(false);
@@ -74,14 +74,8 @@ const PostContent = (props: {postData: PostData}) => {
   };
 
   return (
-    <View style={ComponentStyles.container}>
-      <View
-        style={{
-          backgroundColor: `rgb(${cardColor})`,
-          borderTopLeftRadius: 25,
-          borderTopRightRadius: 25,
-        }}
-      >
+    <View>
+      <View style={ComponentStyles.topContainer}>
         <PostContentBack
           info={info}
           image={image}

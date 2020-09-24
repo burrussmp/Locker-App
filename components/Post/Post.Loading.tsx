@@ -24,7 +24,6 @@ const PostLoading = (props: any) => {
           style={ComponentStyles.indicator}
         />
       </View>
-      <PostBottomTab index={index} scrollY={scrollY} />
     </View>
   );
 };

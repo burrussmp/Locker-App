@@ -2,7 +2,8 @@
 'use strict';
 // External
 import * as React from 'react';
-import {Animated, Image, Text, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {Animated, Image, Platform, Text, View} from 'react-native';
 import {Avatar} from 'react-native-elements';
 // Internal
 import LikeButton from 'components/Post/Post.LikeButton';
@@ -13,13 +14,15 @@ import {
   flipAnimationTransform,
   pushOutAnimationTransform,
 } from 'services/animations/PostAnimations';
+import BlurHashService from 'services/BlurHashDecoder';
 import icons from 'icons/icons';
 // Styles
 import styles from 'components/Post/Post.Styles';
+import api from 'api/api';
 
 interface PostBottomTabProps {
   bottomTabData: any;
-  cardColor: string;
+  cardColor: number[];
   index: number;
   scrollY: Animated.Value;
   rotationDegrees: Animated.Value;
@@ -36,14 +39,31 @@ const PostBottomTab: React.FunctionComponent<PostBottomTabProps> = (
   // Styles
   const ComponentStyles = styles.BottomTab(props);
   // Extract props
+  const bottomTabData = props.bottomTabData;
   const index = props.index;
   const scrollY = props.scrollY;
   const rotationDegrees = props.rotationDegrees;
-  const author = props.author;
-  const authorAvatar = props.authorAvatar;
+  const author = bottomTabData.username;
+  const blur_hash = bottomTabData.profile_photo.blur_hash;
+  const id = bottomTabData._id;
+  // State
+  const [avatarURI, setAvatarURI] = useState('');
+  const avatarSource = avatarURI ? {uri: avatarURI} : undefined;
   // Animations
   const scrollAnimation = borderRadiusAnimationStyle(scrollY, index);
   const flipAnimation = flipAnimationTransform(rotationDegrees, false);
+  useEffect(() => {
+    (async () => {
+      const blur_hash_uri = blur_hash
+        ? BlurHashService.BlurHashDecoder(blur_hash).getURI()
+        : undefined;
+      if (blur_hash_uri) {
+        setAvatarURI(blur_hash_uri);
+      }
+      const profile_uri = (await api.Avatar.Get(id, 'xlarge')) as string;
+      setAvatarURI(profile_uri);
+    })();
+  }, []);
   return (
     <View>
       <Animated.View style={[ComponentStyles.container, scrollAnimation]}>
@@ -57,7 +77,7 @@ const PostBottomTab: React.FunctionComponent<PostBottomTabProps> = (
         <View style={ComponentStyles.alignmentView}>
           <View style={ComponentStyles.userContainer}>
             <Avatar
-              source={{uri: authorAvatar}}
+              source={{uri: avatarURI}}
               rounded
               containerStyle={ComponentStyles.avatarContainer}
             />
@@ -87,8 +107,6 @@ PostBottomTab.defaultProps = {
   index: 0,
   scrollY: new Animated.Value(0),
   rotationDegrees: new Animated.Value(0),
-  author: '',
-  authorAvatar: undefined,
 };
 
 export default PostBottomTab;
