@@ -16,73 +16,47 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import TopTabBar from 'components/Navigation.TopTabBar';
 import PostSelectors from 'store/selectors/post.selectors';
 import Feed from 'screens/Feed';
+import styles from 'styles/styles';
+import { TabBar } from 'react-native-tab-view';
 
+const TabBarOptions = {
+  activeTintColor: '#0c0b0b',
+  inactiveTintColor: '#737373',
+  pressOpacity: 1,
+  style: {
+    borderBottomColor: '#c6b9bb',
+    borderBottomWidth: 1,
+    backgroundColor: '#f1e4e6ab',
+    elevation: 0,
+    paddingLeft: 35,
+    paddingRight: 35,
+  },
+  indicatorStyle: {
+    backgroundColor: '#000000',
+    height: 2,
+  },
+  labelStyle: {
+    fontFamily: 'CircularBlack',
+    fontSize: 14,
+  },
+};
 const HomeScreen = (props: any) => {
   const HomeTopTab = createMaterialTopTabNavigator();
   const postIsExpanded = PostSelectors.isExpanded(props.state);
 
   return (
-    <Fragment>
-      <SafeAreaView style={{flex: 0, backgroundColor: '#FFFFFF'}} />
+    <SafeAreaView style={styles.droidSafeArea}>
       <View style={{flex: 1}}>
         <HomeTopTab.Navigator
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-          // @ts-ignore
           tabBar={TopTabBar}
           swipeEnabled={!postIsExpanded}
-          tabBarOptions={{
-            activeTintColor: '#000000',
-            inactiveTintColor: '#000000',
-            pressOpacity: 1,
-            style: {
-              borderBottomColor: '#000000',
-              backgroundColor: 'transparent',
-              elevation: 0,
-            },
-            indicatorStyle: {
-              backgroundColor: postIsExpanded ? 'transparent' : '#000000',
-              height: 2,
-            },
-            labelStyle: {
-              fontFamily: 'CircularBlack',
-            },
-          }}
+          tabBarOptions={TabBarOptions}
         >
-          <HomeTopTab.Screen
-            name="Following"
-            component={Feed}
-            options={{
-              tabBarLabel: ({focused}) => (
-                <Text
-                  style={{
-                    fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
-                    alignSelf: 'center',
-                  }}
-                >
-                  FOLLOWING
-                </Text>
-              ),
-            }}
-          />
-          <HomeTopTab.Screen
-            name="For You"
-            component={Feed}
-            options={{
-              tabBarLabel: ({focused}) => (
-                <Text
-                  style={{
-                    fontFamily: focused ? 'CircularBlack' : 'CircularMedium',
-                    alignSelf: 'center',
-                  }}
-                >
-                  FOR YOU
-                </Text>
-              ),
-            }}
-          />
+          <HomeTopTab.Screen name="Following" component={Feed} />
+          <HomeTopTab.Screen name="For You" component={Feed} />
         </HomeTopTab.Navigator>
       </View>
-    </Fragment>
+    </SafeAreaView>
   );
 };
 

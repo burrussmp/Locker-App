@@ -76,13 +76,14 @@ const get_average_pixels = (
   }
   const rgb = [0, 0, 0];
   let start_iter = channels * (y * width + x);
+  let total = 0;
   while (start_iter < data.length) {
     rgb[0] += data[start_iter];
     rgb[1] += data[start_iter + 1];
     rgb[2] += data[start_iter + 2];
     start_iter += channels;
+    total += 1;
   }
-  const total = (width - x) * (height - y);
   return [~~(rgb[0] / total), ~~(rgb[1] / total), ~~(rgb[2] / total)];
 };
 
