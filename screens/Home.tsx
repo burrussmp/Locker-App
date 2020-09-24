@@ -17,6 +17,7 @@ import TopTabBar from 'components/Navigation.TopTabBar';
 import PostSelectors from 'store/selectors/post.selectors';
 import Feed from 'screens/Feed';
 import styles from 'styles/styles';
+import { TabBar } from 'react-native-tab-view';
 
 const TabBarOptions = {
   activeTintColor: '#0c0b0b',
