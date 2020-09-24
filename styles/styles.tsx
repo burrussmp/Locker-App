@@ -8,10 +8,10 @@
 import {StyleSheet, Platform, StatusBar} from 'react-native';
 
 const styles = StyleSheet.create({
-  droidSafeArea: {
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
+  safeArea:
+    Platform.OS === 'ios'
+      ? {flex: 0, backgroundColor: '#FFFFFF'}
+      : {paddingTop: StatusBar.currentHeight, backgroundColor: '#FFFFFF'},
   container: {
     flex: 1,
   },
