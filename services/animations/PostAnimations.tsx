@@ -32,12 +32,27 @@ const flipAnimationTransform = (
 const borderRadiusAnimationStyle = (scrollY: Animated.Value, index: number) => {
   const borderRadiusInterpolate = scrollY.interpolate({
     inputRange: [index * 500, index * 500 + 550 * 0.4, index * 500 + 550 * 0.8],
-    outputRange: [25, 25, 1],
+    outputRange: [25, 25, 25],
     extrapolate: 'clamp',
   });
   return {
     borderBottomLeftRadius: borderRadiusInterpolate,
     borderBottomRightRadius: borderRadiusInterpolate,
+  };
+};
+
+const borderTopRadiusAnimationStyle = (
+  scrollY: Animated.Value,
+  index: number
+) => {
+  const borderRadiusInterpolate = scrollY.interpolate({
+    inputRange: [index * 500, index * 500 + 550 * 0.4, index * 500 + 550 * 0.8],
+    outputRange: [25, 25, 25],
+    extrapolate: 'clamp',
+  });
+  return {
+    borderTopLeftRadius: borderRadiusInterpolate,
+    borderTopRightRadius: borderRadiusInterpolate,
   };
 };
 
@@ -53,6 +68,7 @@ const pushOutAnimationTransform = (scrollY: Animated.Value, index: number) => {
 export {
   flipAnimation,
   borderRadiusAnimationStyle,
+  borderTopRadiusAnimationStyle,
   pushOutAnimationTransform,
   flipAnimationTransform,
 };

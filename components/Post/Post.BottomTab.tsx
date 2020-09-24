@@ -42,10 +42,7 @@ const PostBottomTab: React.FunctionComponent<PostBottomTabProps> = (
   const author = props.author;
   const authorAvatar = props.authorAvatar;
   // Animations
-  const scrollAnimation = [
-    pushOutAnimationTransform(scrollY, index),
-    borderRadiusAnimationStyle(scrollY, index),
-  ];
+  const scrollAnimation = borderRadiusAnimationStyle(scrollY, index);
   const flipAnimation = flipAnimationTransform(rotationDegrees, false);
   return (
     <View>

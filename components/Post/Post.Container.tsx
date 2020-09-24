@@ -4,17 +4,17 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {Animated} from 'react-native';
+// Internal
+import PostLoading from 'components/Post/Post.Loading';
+import PostTypeHandler from 'components/Post/Post.TypeHandler';
 // Services
 import api from 'api/api';
-// Containers
-import PostContent from 'components/Post/Post.Content';
 // Types
 import {PostData} from 'components/Post/Post.Types';
-import PostLoading from 'components/Post/Post.Loading';
 
 interface PostContainerProps {
-  index: number;
   id: string;
+  index: number;
   scrollY: Animated.Value;
 }
 
@@ -35,15 +35,9 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
   useEffect(() => {
     (async () => {
       try {
-        const postInfo = await api.Post.Basic.GetByID(props.id);
-        const postMedia = await api.S3.GetMedia(postInfo.content.media.key);
-        const userInfo = await api.User.GetByID(postInfo.postedBy);
-        const avatarURI = await api.Avatar.Get(userInfo._id, 'small');
+        const postData = await api.Post.Basic.GetByID(props.id);
         setPostData({
-          postInfo: postInfo,
-          userInfo: userInfo,
-          media: postMedia,
-          avatar: avatarURI,
+          apiResponse: postData,
           index: index,
           scrollY: scrollY,
         } as PostData);
@@ -57,7 +51,7 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
   return !isLoaded ? (
     <PostLoading index={index} scrollY={scrollY} />
   ) : (
-    <PostContent data={postData} />
+    <PostTypeHandler postData={postData} />
   );
 };
 

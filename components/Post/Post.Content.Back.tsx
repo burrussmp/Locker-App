@@ -6,6 +6,7 @@ import {Animated, Text, View} from 'react-native';
 import {Avatar, Divider} from 'react-native-elements';
 // Services
 import {
+  borderTopRadiusAnimationStyle,
   flipAnimationTransform,
   pushOutAnimationTransform,
 } from 'services/animations/PostAnimations';
@@ -27,7 +28,7 @@ const PostContentBack = (props: {
   scrollY: Animated.Value;
   handleFlip(): void;
 }) => {
-  if (!props.info || !props.image) {
+  if (!props.info) {
     throw (
       'Cannot render Post.Content.Back without data\nProps: ' +
       JSON.stringify(props)
@@ -43,13 +44,12 @@ const PostContentBack = (props: {
   const scrollY = props.scrollY;
   const rotationDegrees = props.rotationDegrees;
   // Animation
-  const flipAnimation = [
-    pushOutAnimationTransform(scrollY, index),
-    flipAnimationTransform(rotationDegrees, false),
-  ];
-
+  const flipAnimation = flipAnimationTransform(rotationDegrees, false);
+  const scrollAnimation = borderTopRadiusAnimationStyle(scrollY, index);
   return (
-    <Animated.View style={[ComponentStyles.container, flipAnimation]}>
+    <Animated.View
+      style={[ComponentStyles.container, flipAnimation, scrollAnimation]}
+    >
       <View style={ComponentStyles.headerContainer}>
         <View style={ComponentStyles.captionContainer}>
           <Text style={ComponentStyles.captionText}>{caption}</Text>

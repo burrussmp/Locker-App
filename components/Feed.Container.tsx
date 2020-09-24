@@ -76,12 +76,14 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
         onScroll={onScroll}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<View style={{height: 98}} />}
+        ListHeaderComponent={<View style={{height: 48}} />}
         ListFooterComponent={<View style={{height: 150}} />}
         data={feedData}
         keyExtractor={item => item._id}
-        renderItem={null}
-        CellRendererComponent={({item, index}) => (
+        ItemSeparatorComponent={() => {
+          return <View style={{height: 25}} />;
+        }}
+        renderItem={({item, index}) => (
           <PostContainer index={index} id={item._id} scrollY={scrollYRef} />
         )}
         getItemLayout={(data, index) => ({

@@ -11,6 +11,7 @@ import {
 } from 'react-native-gesture-handler';
 // Services
 import {
+  borderTopRadiusAnimationStyle,
   flipAnimationTransform,
   pushOutAnimationTransform,
 } from 'services/animations/PostAnimations';
@@ -45,8 +46,8 @@ const PostContentFront = (props: {
       // like action goes here
     }
   };
-  const imageAnimation = pushOutAnimationTransform(scrollY, index);
   const flipAnimation = flipAnimationTransform(rotationDegrees, true);
+  const scrollAnimation = borderTopRadiusAnimationStyle(scrollY, index);
   return (
     <View>
       <TapGestureHandler
@@ -59,15 +60,11 @@ const PostContentFront = (props: {
           numberOfTaps={2}
         >
           <Animated.View
-            style={[
-              ComponentStyles.imageContainer,
-              imageAnimation,
-              flipAnimation,
-            ]}
+            style={[ComponentStyles.imageContainer, flipAnimation]}
           >
             <Animated.Image
               source={{uri: image}}
-              style={[ComponentStyles.image, imageAnimation]}
+              style={[ComponentStyles.image, scrollAnimation]}
             />
           </Animated.View>
         </TapGestureHandler>

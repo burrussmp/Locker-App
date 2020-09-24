@@ -6,8 +6,7 @@ const borderColor = '#888';
 const ContentStyles = (props: any) =>
   StyleSheet.create({
     container: {
-      zIndex: -props.index,
-      marginTop: -50,
+      zIndex: props.index,
     },
   });
 
@@ -34,6 +33,8 @@ const ContentBackStyles = StyleSheet.create({
   headerContainer: {
     height: 150,
     width: '100%',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     paddingTop: 25,
     paddingLeft: 25,
     flexDirection: 'row',

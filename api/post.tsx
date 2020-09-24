@@ -9,7 +9,7 @@ export type PostType = {
   tags: Array<Record<string, string>>;
   _id: string;
   type: string;
-  content: ContentPostType | string;
+  content: ContentPostType;
   postedBy: string;
   createdAt: string;
   updatedAt: string;
