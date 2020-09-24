@@ -29,7 +29,7 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
 
   // state
   const [avatarURI, setAvatarURI] = useState('');
-  const avatarSource = avatarURI ? {uri: avatarURI} : null;
+  const avatarSource = avatarURI ? {uri: avatarURI} : undefined;
 
   // variables that depend on state or props
   const followingText = userInfo
