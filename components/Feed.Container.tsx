@@ -18,7 +18,7 @@ import {
 
 import HomeActions from 'store/actions/home.actions';
 import PostActions from 'store/actions/post.actions';
-import PostContainer from 'components/Post.Container';
+import PostContainer from 'components/Post/Post.Container';
 import styles from 'styles/styles';
 
 import api from 'api/api';
@@ -44,7 +44,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   }, [props.navigation]);
 
   const handleContentExpand = (index: number) => {
-    scrollTo(index);
+    //
   };
 
   const onScroll = Animated.event(
@@ -53,20 +53,6 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
       useNativeDriver: false,
     }
   );
-
-  const scrollTo = (index: number) => {
-    if (feedRef.current) {
-      feedRef.current.scrollTo({
-        x: 0,
-        y: convertIndexToY(index),
-        animated: false,
-      });
-    }
-  };
-
-  const convertIndexToY = (index: number) => {
-    return (index - 1) * 500 + 550;
-  };
 
   const getFeedData = () => {
     api.Post.Basic.GetAll()
@@ -96,12 +82,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
         keyExtractor={item => item._id}
         renderItem={null}
         CellRendererComponent={({item, index}) => (
-          <PostContainer
-            index={index}
-            id={item._id}
-            scrollY={scrollYRef}
-            onContentExpand={handleContentExpand}
-          />
+          <PostContainer index={index} id={item._id} scrollY={scrollYRef} />
         )}
         getItemLayout={(data, index) => ({
           length: 550,

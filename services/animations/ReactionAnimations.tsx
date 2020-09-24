@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import {Animated} from 'react-native';
 
 const likeAnimation = (scale: Animated.Value) => {
@@ -19,7 +17,6 @@ const likeAnimationTransform = (scale: Animated.Value) => {
 };
 
 const lockAnimation = (rotationDegrees: Animated.Value) => {
-  rotationDegrees.setValue(45);
   Animated.spring(rotationDegrees, {
     toValue: 0,
     bounciness: 10,
@@ -29,9 +26,8 @@ const lockAnimation = (rotationDegrees: Animated.Value) => {
 };
 
 const unlockAnimation = (rotationDegrees: Animated.Value) => {
-  rotationDegrees.setValue(-45);
   Animated.spring(rotationDegrees, {
-    toValue: 0,
+    toValue: 90,
     bounciness: 10,
     speed: 50,
     useNativeDriver: true,

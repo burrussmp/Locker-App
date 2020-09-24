@@ -1,10 +1,29 @@
 'use strict';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 import RnPng from 'react-native-png';
 import pako from 'pako';
 import base64js from 'base64-js';
 import {decode, isBlurhashValid} from 'blurhash';
+import * as ImageManipulator from 'expo-image-manipulator';
 
+const asyncImageResize = async (
+  uri: string,
+  width?: number,
+  height?: number
+): Promise<string> => {
+  const new_size = {
+    width: width ? width : undefined,
+    height: height ? height : undefined,
+  };
+  const manipResult = await ImageManipulator.manipulateAsync(
+    uri,
+    [{resize: new_size}],
+    {compress: 1, format: ImageManipulator.SaveFormat.PNG}
+  );
+  return manipResult.uri;
+};
 /**
  * @desc Returns the decoded blur hash
  * @param {string} blur_hash : The blur hash
@@ -49,13 +68,13 @@ const get_average_pixels = (
   if (width < 0 || height < 0) {
     throw 'Error: Width and/or height are zero';
   }
-  if (!data || data.length == 0) {
+  if (!data || data.length === 0) {
     throw 'Error: The byte array is undefined or empty';
   }
-  if (channels != 3 && channels != 4) {
+  if (channels !== 3 && channels !== 4) {
     throw 'Channels must be either 3 or 4';
   }
-  let rgb = [0, 0, 0];
+  const rgb = [0, 0, 0];
   let start_iter = channels * (y * width + x);
   while (start_iter < data.length) {
     rgb[0] += data[start_iter];
@@ -79,17 +98,17 @@ const pixel_array_to_uri = (
   width: number,
   height: number
 ): string => {
-  let png = new RnPng({
+  const png = new RnPng({
     width: width,
     height: height,
     zlibLib: pako,
   });
   for (let y = 0; y < height; ++y) {
     for (let x = 0; x < width; ++x) {
-      let index = 4 * (x + width * y);
-      let r = pixel_array[index];
-      let g = pixel_array[index + 1];
-      let b = pixel_array[index + 2];
+      const index = 4 * (x + width * y);
+      const r = pixel_array[index];
+      const g = pixel_array[index + 1];
+      const b = pixel_array[index + 2];
       png.setPixelAt([x, y], [r, g, b]);
     }
   }
@@ -104,8 +123,8 @@ const pixel_array_to_uri = (
  * @return {function} getURI
  */
 const BlurHashDecoder = (blur_hash: string) => {
-  const height = 15;
-  const width = 15;
+  const height = 16;
+  const width = 16;
   const pixel_array = decode_blur_hash(blur_hash, width, height);
   return {
     /**
@@ -135,4 +154,5 @@ const BlurHashDecoder = (blur_hash: string) => {
 };
 export default {
   BlurHashDecoder,
+  asyncImageResize,
 };

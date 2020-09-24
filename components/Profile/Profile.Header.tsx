@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, ImageURISource, StyleSheet, Platform} from 'react-native';
 import {Avatar} from 'react-native-elements';
 
@@ -10,6 +10,7 @@ import api from 'api/api';
 import {ProfileHeaderData} from 'components/Profile/Profile.Types';
 
 import styles from 'components/Profile/Profile.Styles';
+import BlurHashService from 'services/BlurHashDecoder';
 
 /**
  * @desc Renders the header of the user profile
@@ -22,8 +23,14 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
   // props
   const isMyProfile = props.data.isMyProfile;
   const userInfo = props.data.userInfo;
+  // get blur hash
+  const profile_photo = props.data.userInfo.profile_photo;
+  const blur_hash = profile_photo?.blurhash;
+
   // state
-  const [avatarURI, setAvatarURI] = useState(props.data.avatarURI);
+  const [avatarURI, setAvatarURI] = useState('');
+  const avatarSource = avatarURI ? {uri: avatarURI} : null;
+
   // variables that depend on state or props
   const followingText = userInfo
     ? `${userInfo.followers.length} Followers • ${userInfo.following.length} Following`
@@ -33,12 +40,14 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
     : '';
   const handleText = userInfo ? `@${userInfo.username}` : '';
   const aboutText = userInfo ? userInfo.about : '';
-  const avatarSource = (avatarURI ? {uri: avatarURI} : null) as ImageURISource;
+
   // style
   const ComponentStyles = styles.Header;
+
   /**
    * @desc what happens when the avatar is pressed
    */
+
   const on_avatar_press = () => {
     if (isMyProfile) {
       services
@@ -52,6 +61,26 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
         });
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const blur_hash_uri = blur_hash
+        ? BlurHashService.BlurHashDecoder(blur_hash).getURI()
+        : undefined;
+      if (blur_hash_uri) {
+        const resized_uri = await BlurHashService.asyncImageResize(
+          blur_hash_uri,
+          200
+        );
+        setAvatarURI(resized_uri);
+      }
+      const profile_uri = (await api.Avatar.Get(
+        userInfo._id,
+        'xlarge'
+      )) as string;
+      setAvatarURI(profile_uri);
+    })();
+  }, []);
 
   return (
     <View style={ComponentStyles.container}>

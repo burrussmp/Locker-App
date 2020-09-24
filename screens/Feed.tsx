@@ -9,7 +9,7 @@ import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import FeedContainer from 'components/Feed.Container';
-import PostExpanded from 'components/Post.Expanded';
+import PostExpanded from 'components/Post/Post.Expanded';
 
 const Feed = (props: any) => {
   const FeedNavigator = createStackNavigator();

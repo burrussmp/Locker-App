@@ -24,10 +24,8 @@ const ProfileScreen = (props: {userId: string}) => {
   useEffect(() => {
     (async () => {
       try {
-        const avatarURI = (await api.Avatar.Get(userId, 'medium')) as string;
         const userInfo = await api.User.GetByID(userId);
         setHeaderData({
-          avatarURI: avatarURI,
           userInfo: userInfo,
           isMyProfile: isMyProfile,
         } as ProfileHeaderData);

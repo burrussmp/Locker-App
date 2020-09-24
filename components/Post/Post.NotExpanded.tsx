@@ -103,12 +103,13 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                   flipAnimationTransform(rotationDegreesRef, true),
                 ]}
               >
-                {props.image ? (
-                  <Image
-                    source={{uri: props.image}}
-                    style={{flex: 1, width: '100%', resizeMode: 'cover'}}
-                  />
-                ) : undefined}
+                <Animated.Image
+                  source={props.image ? {uri: props.image} : null}
+                  style={[
+                    {flex: 1, width: '100%', resizeMode: 'cover'},
+                    pushOutAnimationTransform(props.scrollY, props.index),
+                  ]}
+                />
               </Animated.View>
               <Animated.View
                 style={[
@@ -154,7 +155,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                       </Text>
                     </View>
                     <Avatar
-                      source={props.image}
+                      source={props.image ? {uri: props.image} : null}
                       rounded
                       containerStyle={{
                         height: 100,
