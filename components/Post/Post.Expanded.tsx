@@ -17,6 +17,7 @@ const PostExpanded: React.FunctionComponent = (props: any) => {
   return <View />;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mapDispatchToProps = (dispatch: any) => {
   return {
     Contract: () => {
