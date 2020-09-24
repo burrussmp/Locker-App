@@ -2,7 +2,8 @@
 'use strict';
 // outside imports
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, Image} from 'react-native';
+
 // services
 import api from 'api/api';
 import authSelectors from 'store/selectors/auth.selectors';
@@ -20,14 +21,11 @@ const ProfileScreen = (props: {userId: string}) => {
   const [headerData, setHeaderData] = useState(null as ProfileHeaderData);
   const userId = props.userId;
   const isMyProfile = userId === authSelectors.getMyID();
-
   useEffect(() => {
     (async () => {
       try {
-        const avatarURI = await api.Avatar.Get(userId, 'large');
         const userInfo = await api.User.GetByID(userId);
         setHeaderData({
-          avatarURI: avatarURI,
           userInfo: userInfo,
           isMyProfile: isMyProfile,
         } as ProfileHeaderData);

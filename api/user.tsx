@@ -194,33 +194,32 @@ const GetAll = async (): Promise<ListAllUsersType | Error> => {
   }
 };
 
-export type UserInfoType =
-  | {
-      about: string;
-      following: [
-        {
-          _id: string;
-        }
-      ];
-      followers: [
-        {
-          _id: string;
-        }
-      ];
+export type UserInfoType = {
+  about: string;
+  following: [
+    {
       _id: string;
-      cognito_username: string;
-      username: string;
-      first_name?: string;
-      last_name?: string;
-      createdAt: string;
-      updatedAt: string;
-      profile_photo?: {
-        _id: string;
-        key: string;
-        mimetype: string;
-      };
     }
-  | undefined;
+  ];
+  followers: [
+    {
+      _id: string;
+    }
+  ];
+  _id: string;
+  cognito_username: string;
+  username: string;
+  first_name?: string;
+  last_name?: string;
+  createdAt: string;
+  updatedAt: string;
+  profile_photo?: {
+    _id: string;
+    key: string;
+    mimetype: string;
+    blurhash: string;
+  };
+};
 /**
  * @desc Get specific user's information
  * @param userID : string : The user ID of the person who's information you want to retrieve
