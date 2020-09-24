@@ -67,12 +67,14 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
       const blur_hash_uri = blur_hash
         ? BlurHashService.BlurHashDecoder(blur_hash).getURI()
         : undefined;
-      if (blur_hash_uri) {
+      if (blur_hash_uri && Platform.OS === 'android') {
         const resized_uri = await BlurHashService.asyncImageResize(
           blur_hash_uri,
           200
         );
         setAvatarURI(resized_uri);
+      } else if (blur_hash_uri && Platform.OS === 'ios') {
+        setAvatarURI(blur_hash_uri);
       }
       const profile_uri = (await api.Avatar.Get(
         userInfo._id,

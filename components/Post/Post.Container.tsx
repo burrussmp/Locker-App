@@ -36,6 +36,7 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
     (async () => {
       try {
         const postData = await api.Post.Basic.GetByID(props.id);
+        console.log(postData);
         setPostData({
           apiResponse: postData,
           index: index,
