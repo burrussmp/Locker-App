@@ -23,6 +23,7 @@ import ConfirmationCodeTextInput from 'components/Auth/ConfirmationCodeTextInput
 import AuthButton from 'components/Auth.Button';
 import SafeArea from 'components/Common/SafeArea';
 import LoadingAll from 'components/Common/LoadingAll';
+import LinkText from 'components/Auth/LinkText';
 
 import {useNavigation} from '@react-navigation/native';
 import api from 'api/api';
@@ -77,8 +78,8 @@ const ResetPassword = (props: any) => {
       keyboardAvoidView
       children={
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={AuthStyles.TopContainer}>
-            <Image source={logoImage} style={AuthStyles.logo}></Image>
+          <View style={AuthStyles.TopCentered}>
+            <Image source={logoImage} style={AuthStyles.Logo}></Image>
             <View style={AuthStyles.InputContainerMain}>
               <ConfirmationCodeTextInput
                 onChangeText={setConfirmationCode}
@@ -91,11 +92,13 @@ const ResetPassword = (props: any) => {
                 setPassword={setPassword}
                 confirmPassword={confirmPassword}
               />
-              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={AuthStyles.TextLink}>{BackToLoginText}</Text>
-              </TouchableOpacity>
+              <LinkText
+                screen={'Login'}
+                styles={{marginTop: 5, marginLeft: 5}}
+                placeHolder={BackToLoginText}
+              />
             </View>
-            <View style={AuthStyles.authButtonContainer}>
+            <View style={AuthStyles.AuthButtonContainer}>
               <AuthButton
                 text={submitButtonText}
                 mode="dark"

@@ -13,8 +13,18 @@ const ResetPasswordStyles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  logo: {
-    height: 80,
+  TopCentered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  RowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  Logo: {
+    height: 60,
     top: 25,
     marginBottom: 50,
     resizeMode: 'contain',
@@ -46,12 +56,7 @@ const ResetPasswordStyles = StyleSheet.create({
     fontFamily: 'CircularBlack',
     marginRight: 2,
   },
-  TextLink: {
-    color: '#12cccc',
-    marginTop: 4,
-    marginLeft: 10,
-  },
-  authButtonContainer: {
+  AuthButtonContainer: {
     position: 'relative',
     marginTop: 50,
     height: 100,

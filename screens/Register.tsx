@@ -9,22 +9,20 @@
 
 import React, {useState, Fragment} from 'react';
 import {
-  KeyboardAvoidingView,
   Keyboard,
-  SafeAreaView,
   TextInput,
   Text,
   TouchableWithoutFeedback,
   Image,
-  Platform,
   View,
 } from 'react-native';
-import AuthActions from 'store/actions/auth.actions';
 import AuthButton from 'components/Auth.Button';
+import SafeArea from 'components/Common/SafeArea';
 import api from 'api/api';
 import {Session} from 'store/types/auth.types';
-import styles from 'styles/styles';
 import AuthSelectors from 'store/selectors/auth.selectors';
+import styles from 'styles/styles';
+import AuthStyles from 'styles/Auth/Auth.Styles';
 
 const logoImage = require('assets/images/logo.png');
 
@@ -35,19 +33,16 @@ const RegisterScreen = (props: any) => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+
+  const headerText = 'W E L C O M E';
   return (
-    <Fragment>
-      <SafeAreaView style={styles.safeArea} />
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? -100 : 20}
-        enabled={Platform.OS === 'ios' ? true : false}
-      >
+    <SafeArea
+      keyboardAvoidView
+      children={
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.topCentered}>
-            <Image source={logoImage} style={styles.authLogo}></Image>
-            <Text style={styles.authHeaderText}>W E L C O M E</Text>
+          <View style={AuthStyles.TopCentered}>
+            <Image source={logoImage} style={AuthStyles.Logo}></Image>
+            <Text style={styles.authHeaderText}>{headerText}</Text>
             <TextInput
               style={styles.authTextInput}
               placeholder="Username"
@@ -103,7 +98,7 @@ const RegisterScreen = (props: any) => {
               autoCapitalize="none"
               secureTextEntry={true}
             />
-            <View style={styles.authButtonContainer}>
+            <View style={styles.AuthButtonContainer}>
               <AuthButton
                 text="Continue"
                 mode="dark"
@@ -128,8 +123,8 @@ const RegisterScreen = (props: any) => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </Fragment>
+      }
+    />
   );
 };
 

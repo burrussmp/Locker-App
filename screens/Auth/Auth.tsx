@@ -30,7 +30,7 @@ const AuthScreen = (props: any) => {
             <Image source={logoTextImage} style={styles.logoText}></Image>
             <Image source={logoImage}></Image>
           </View>
-          <View style={styles.authButtonContainer}>
+          <View style={styles.AuthButtonContainer}>
             <AuthButton
               text="Get Started"
               onPress={() => {

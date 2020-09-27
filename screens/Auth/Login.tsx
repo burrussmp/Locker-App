@@ -7,133 +7,113 @@
  * @desc Login Screen
  */
 
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
-  TextInput,
   Image,
   View,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   Keyboard,
   Button,
-  Text,
-  TouchableOpacity,
+  Alert,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import {Session} from 'store/types/auth.types';
 import styles from 'styles/styles';
 import AuthButton from 'components/Auth.Button';
+import AuthTextInput from 'components/Auth/BasicTextInput';
+import LinkText from 'components/Auth/LinkText';
+import SafeArea from 'components/Common/SafeArea';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import api from 'api/api';
-import LoginStyles from 'components/Auth/Login.Styles';
+import AuthStyles from 'styles/Auth/Auth.Styles';
 import config from 'config';
 
 const DefaultUser = config.default_user;
-
 const logoImage = require('assets/images/logo.png');
 
-// authTextInput: {
-//   position: 'relative',
-//   margin: -0.5,
-//   height: 35,
-//   width: '90%',
-//   paddingLeft: 10,
-//   paddingRight: 10,
-//   alignItems: 'center',
-//   justifyContent: 'center',
-//   backgroundColor: '#FFF',
-//   borderWidth: 1,
-//   borderColor: '#DDD',
-//   color: '#000',
-// },
-
 const LoginScreen = (props: any) => {
+  // state
   const [loginInfo, setLoginInfo] = useState(
     props.route.params && props.route.params.login
   );
   const [password, setPassword] = useState('');
-  const ComponentStyles = LoginStyles;
-  const navigation = useNavigation();
+
+  /**
+   * @desc Log the user in or alert them of an error
+   */
+  const handleSubmit = () => {
+    const data = {
+      login: loginInfo,
+      password: password,
+    };
+    api.Auth.Login(data)
+      .then(session => {
+        props.Login(session);
+      })
+      .catch(err => {
+        const error = JSON.parse(err.message);
+        Alert.alert(error.error);
+      });
+  };
+
+  /**
+   * @desc purely for dev purposes to save time
+   */
+  const handleAutoFill = () => {
+    api.Auth.Login(DefaultUser)
+      .then(session => {
+        props.Login(session);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   const ForgotPasswordText = 'Forgot Password?';
+  const RegisterText = 'Create a new account';
+  const placeHolderLogin = 'Username, Email, or Phone Number';
+  const placeHolderPassword = 'Enter password';
   return (
-    <Fragment>
-      <SafeAreaView style={styles.safeArea} />
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? -100 : 20}
-        enabled={Platform.OS === 'ios' ? true : false}
-      >
+    <SafeArea
+      keyboardAvoidView
+      children={
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={ComponentStyles.TopContainer}>
-            <Image source={logoImage} style={ComponentStyles.logo}></Image>
-            <View style={ComponentStyles.TextInputContainer}>
-              <TextInput
-                style={ComponentStyles.TextInput}
-                placeholder="Username, Email, or Phone Number"
-                placeholderTextColor="lightgrey"
+          <View style={AuthStyles.TopContainer}>
+            <Image source={logoImage} style={AuthStyles.Logo}></Image>
+            <View style={AuthStyles.InputContainerMain}>
+              <AuthTextInput
+                placeholder={placeHolderLogin}
                 value={loginInfo}
                 onChangeText={setLoginInfo}
                 textContentType="username"
-                autoCapitalize="none"
               />
-              <TextInput
-                style={ComponentStyles.TextInput}
-                placeholder="Password"
-                placeholderTextColor="lightgrey"
+              <AuthTextInput
+                placeholder={placeHolderPassword}
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
                 textContentType="password"
               />
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('ForgotPassword');
-                }}
-              >
-                <Text style={ComponentStyles.TextLink}>
-                  {ForgotPasswordText}
-                </Text>
-              </TouchableOpacity>
+              <View style={AuthStyles.RowContainer}>
+                <LinkText
+                  screen={'ForgotPassword'}
+                  style={{marginLeft: 5, marginTop: 5}}
+                  placeHolder={ForgotPasswordText}
+                />
+                <LinkText
+                  screen={'Register'}
+                  style={{marginRight: 5, marginTop: 5}}
+                  placeHolder={RegisterText}
+                />
+              </View>
             </View>
-            <View style={styles.authButtonContainer}>
-              <AuthButton
-                text="Login"
-                mode="dark"
-                onPress={() => {
-                  const data = {
-                    login: loginInfo,
-                    password: password,
-                  };
-                  api.Auth.Login(data)
-                    .then(session => {
-                      props.Login(session);
-                    })
-                    .catch(err => {
-                      console.log(err);
-                    });
-                }}
-              />
-              <Button
-                title="AutoLogin"
-                onPress={() => {
-                  api.Auth.Login(DefaultUser)
-                    .then(session => {
-                      props.Login(session);
-                    })
-                    .catch(err => {
-                      console.log(err);
-                    });
-                }}
-              />
+            <View style={styles.AuthButtonContainer}>
+              <AuthButton text="Login" mode="dark" onPress={handleSubmit} />
+              <Button title="AutoLogin" onPress={handleAutoFill} />
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </Fragment>
+      }
+    />
   );
 };
 

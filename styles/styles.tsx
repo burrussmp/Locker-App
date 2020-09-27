@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
   },
-  authButtonContainer: {
+  AuthButtonContainer: {
     position: 'absolute',
     bottom: 50,
     height: 100,

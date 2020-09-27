@@ -15,12 +15,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Text,
-  TouchableOpacity,
   StyleSheet,
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AuthButton from 'components/Auth.Button';
+import LinkText from 'components/Auth/LinkText';
 import api from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import SafeArea from 'components/Common/SafeArea';
@@ -74,7 +74,7 @@ const ForgotPassword = () => {
       children={
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={AuthStyles.TopContainer}>
-            <Image source={logoImage} style={AuthStyles.logo}></Image>
+            <Image source={logoImage} style={AuthStyles.Logo}></Image>
             <View style={AuthStyles.InputContainerMain}>
               <Text style={styles.promptText}>{PromptText}</Text>
               <View style={AuthStyles.TextInputContainer}>
@@ -89,11 +89,13 @@ const ForgotPassword = () => {
                   autoCapitalize="none"
                 />
               </View>
-              <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={AuthStyles.TextLink}>{BackToLoginText}</Text>
-              </TouchableOpacity>
+              <LinkText
+                screen={'Login'}
+                styles={{marginTop: 5, marginLeft: 5}}
+                placeHolder={BackToLoginText}
+              />
             </View>
-            <View style={AuthStyles.authButtonContainer}>
+            <View style={AuthStyles.AuthButtonContainer}>
               <AuthButton
                 text={ButtonText}
                 mode="dark"
