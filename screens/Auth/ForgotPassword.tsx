@@ -86,7 +86,7 @@ const ForgotPassword = () => {
               />
               <LinkText
                 screen={'Login'}
-                styles={{marginTop: 5, marginLeft: 5}}
+                style={{marginLeft: 5}}
                 placeHolder={BackToLoginText}
               />
             </View>

@@ -54,6 +54,8 @@ const BasicTextInput = (props: any) => {
         onChangeText={setValue}
         secureTextEntry={secureTextEntry}
         textContentType={textContentType}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
         keyboardType={keyBoardType}
         autoCapitalize="none"
       />
