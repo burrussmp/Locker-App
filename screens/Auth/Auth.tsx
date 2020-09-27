@@ -8,7 +8,7 @@
  */
 
 import React, {Fragment} from 'react';
-import {ImageBackground, Image, View, SafeAreaView} from 'react-native';
+import {ImageBackground, Image, View, SafeAreaView, Alert} from 'react-native';
 
 import AuthButton from 'components/Auth.Button';
 import styles from 'styles/styles';

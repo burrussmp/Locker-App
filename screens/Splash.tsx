@@ -1,23 +1,27 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 'use strict';
 
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-
+import {ImageBackground, View, Image} from 'react-native';
+// import Loading from 'components/Common/LoadingAll';
+const backgroundImage = require('assets/images/splash.png');
+// const logoImage = require('assets/images/logo.png');
 const Splash = () => {
   return (
-    <View style={styles.container}>
-      <Text>Loading...</Text>
-    </View>
+    <ImageBackground source={backgroundImage} style={{flex: 1}}>
+      {/* <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Image source={logoImage} />
+      </View> */}
+      {/* <Loading /> */}
+    </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Splash;

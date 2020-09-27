@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use strict';
 import React, {useState, useEffect} from 'react';
-import {Text, View, ImageURISource, StyleSheet, Platform} from 'react-native';
+import {Text, View, Button, TouchableOpacity, Platform} from 'react-native';
 import {Avatar} from 'react-native-elements';
+import Icons from 'react-native-vector-icons/MaterialIcons';
+
+import {useNavigation} from '@react-navigation/native';
 
 import services from 'components/Profile/Profile.Services';
 import api from 'api/api';
@@ -30,6 +33,7 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
   // state
   const [avatarURI, setAvatarURI] = useState('');
   const avatarSource = avatarURI ? {uri: avatarURI} : undefined;
+  const navigation = useNavigation();
 
   // variables that depend on state or props
   const followingText = userInfo
@@ -83,9 +87,40 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
       setAvatarURI(profile_uri);
     })();
   }, []);
-
   return (
     <View style={ComponentStyles.container}>
+      {!isMyProfile ? (
+        <TouchableOpacity
+          onPress={navigation.goBack}
+          style={{
+            marginLeft: 10,
+            marginTop: 10,
+            width: 200,
+            flexDirection: 'row',
+            alignContent: 'center',
+          }}
+        >
+          <Icons
+            name={'arrow-back'}
+            size={25}
+            color="#000"
+            style={{
+              alignSelf: 'center',
+            }}
+          />
+          <Text
+            style={{
+              marginLeft: 3,
+              alignSelf: 'center',
+              fontSize: 20,
+              color: '#000',
+              fontWeight: 'bold',
+            }}
+          >
+            {`@${userInfo.username}`}
+          </Text>
+        </TouchableOpacity>
+      ) : undefined}
       <View style={ComponentStyles.topContainer}>
         <View style={ComponentStyles.infoContainer}>
           <Text style={ComponentStyles.nameText}>{nameText}</Text>

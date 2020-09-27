@@ -8,9 +8,11 @@
 
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import AuthScreen from 'screens/Auth';
-import LoginScreen from 'screens/Login';
+import AuthScreen from 'screens/Auth/Auth';
+import LoginScreen from 'screens/Auth/Login';
 import RegisterScreen from 'screens/Register';
+import ForgotPasswordScreen from 'screens/Auth/ForgotPassword';
+import ResetPasswordScreen from 'screens/Auth/ResetPassword';
 
 const AuthStack = createStackNavigator();
 
@@ -19,6 +21,11 @@ const AuthNavigation = () => {
     <AuthStack.Navigator headerMode="none" initialRouteName="Auth" mode="modal">
       <AuthStack.Screen name="Auth" component={AuthScreen} />
       <AuthStack.Screen name="Login" component={LoginScreen} />
+      <AuthStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+      />
+      <AuthStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       <AuthStack.Screen name="Register" component={RegisterScreen} />
     </AuthStack.Navigator>
   );

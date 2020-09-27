@@ -35,11 +35,11 @@ const get_id_and_token_redux = (): undefined | IdAndToken => {
  */
 const handleError = async (res: any): Promise<Error> => {
   const status = res.status;
-  const err = await res.json();
+  const error = await res.json();
   return new Error(
     JSON.stringify({
       status: status,
-      message: err,
+      error: error.error,
     })
   );
 };

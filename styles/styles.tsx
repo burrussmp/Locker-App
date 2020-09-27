@@ -9,9 +9,7 @@ import {StyleSheet, Platform, StatusBar} from 'react-native';
 
 const styles = StyleSheet.create({
   safeArea:
-    Platform.OS === 'ios'
-      ? {flex: 0, backgroundColor: '#FFFFFF'}
-      : {height: StatusBar.currentHeight, backgroundColor: '#FFFFFF'},
+    Platform.OS === 'ios' ? {flex: 0} : {height: StatusBar.currentHeight},
   container: {
     flex: 1,
   },

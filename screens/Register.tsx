@@ -7,7 +7,7 @@
  * @desc Registration screen
  */
 
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {
   KeyboardAvoidingView,
   Keyboard,
@@ -36,7 +36,8 @@ const RegisterScreen = (props: any) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   return (
-    <SafeAreaView style={styles.droidSafeArea}>
+    <Fragment>
+      <SafeAreaView style={styles.safeArea} />
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -128,7 +129,7 @@ const RegisterScreen = (props: any) => {
           </View>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </Fragment>
   );
 };
 

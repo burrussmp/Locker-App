@@ -5,11 +5,10 @@
  * @version 1.0.0
  */
 
-import config from 'config';
 import apiSession from './session';
 import apiHelper from './helper';
 import {Session} from 'store/types/auth.types';
-
+import config from 'config';
 global.fetch = require('node-fetch');
 
 interface LoginData {
@@ -41,7 +40,6 @@ interface SignUpData {
 ```
  */
 const Login = async (data: LoginData): Promise<Session | Error> => {
-  data = config.default_user;
   const res = await global.fetch(`${config.server}/auth/login`, {
     method: 'POST',
     headers: {
@@ -92,7 +90,7 @@ const Logout = async (): Promise<{message: string} | Error> => {
 }
 ```
  */
-const SignUp = async (data: SignUpData): Promise<Session | Error> => {
+const SignUp = async (data: SignUpData): Promise<Session> => {
   const res = await global.fetch(`${config.server}/api/users`, {
     method: 'POST',
     headers: {
@@ -109,8 +107,79 @@ const SignUp = async (data: SignUpData): Promise<Session | Error> => {
   }
 };
 
+/**
+ * @desc Forgot Password
+ * @param {string} email The email of the person who forgot their password
+ * @return A promise that resolves if a code has been sent to person's email
+  * @success (Note: The cognito_username is required to reset the password so must be kept)
+```
+  {
+    "cognito_username" : "4d9cfc84-9d89-4866-a28f-d8c2b7c41178"
+  }
+```
+ */
+const ForgotPassword = async (
+  email: string
+): Promise<{cognito_username: string}> => {
+  const res = await global.fetch(`${config.server}/auth/forgot_password`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+    }),
+  });
+  if (res.ok) {
+    return await res.json();
+  } else {
+    throw await apiHelper.handleError(res);
+  }
+};
+
+/**
+ * @desc Confirm Forgot Password
+ * @param {string} cognito_username The cognito username of the person (should come from the ForgotPassword request)
+ * @param {string} confirmation_code The confirmation code sent to the user
+ * @param {string} new_password The new password of the person
+ * @return A promise that resolves if the password has been successfully reset
+  * @success (Note: The cognito_username is required to reset the password so must be kept)
+```
+{
+    "message": "Correctly reset password"
+}
+```
+ */
+const ConfirmForgotPassword = async (
+  cognito_username: string,
+  confirmation_code: string,
+  new_password: string
+): Promise<boolean> => {
+  const res = await global.fetch(
+    `${config.server}/auth/confirm_forgot_password`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cognito_username: cognito_username,
+        confirmation_code: confirmation_code,
+        new_password: new_password,
+      }),
+    }
+  );
+  if (res.ok) {
+    return true;
+  } else {
+    throw await apiHelper.handleError(res);
+  }
+};
+
 export default {
   Login,
   Logout,
   SignUp,
+  ForgotPassword,
+  ConfirmForgotPassword,
 };

@@ -26,7 +26,7 @@ const AppNavigation = () => {
       enabled={Platform.OS === 'ios' ? true : false}
     >
       <BottomTab.Navigator
-        initialRouteName="Home"
+        initialRouteName="Search"
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         tabBar={MainTabBar}

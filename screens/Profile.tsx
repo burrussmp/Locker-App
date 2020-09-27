@@ -9,7 +9,7 @@ import api from 'api/api';
 import authSelectors from 'store/selectors/auth.selectors';
 // high level containers (well actually profile header is a component rn)
 import ProfileHeader from 'components/Profile/Profile.Header';
-import ProfileLoading from 'components/Profile/Profile.Loading';
+import ProfileLoading from 'components/Common/LoadingRelative';
 import ProfileNavigation from 'components/Profile/Profile.Navigation';
 // styles
 import styles from 'styles/styles';

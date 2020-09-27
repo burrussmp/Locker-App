@@ -13,10 +13,7 @@ import apiHelper from 'api/helper';
   <img src={img_src} />
   ```
  */
-const GetMedia = async (
-  key: string,
-  size?: string
-): Promise<string | Error> => {
+const GetMedia = async (key: string, size?: string): Promise<string> => {
   if (size && !apiHelper.validateSizeParam(size)) {
     throw 'Size parameter invalid';
   }
