@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AuthButton from 'components/Auth.Button';
+import AuthTextInput from 'components/Auth/BasicTextInput';
 import LinkText from 'components/Auth/LinkText';
 import api from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
@@ -77,18 +78,12 @@ const ForgotPassword = () => {
             <Image source={logoImage} style={AuthStyles.Logo}></Image>
             <View style={AuthStyles.InputContainerMain}>
               <Text style={styles.promptText}>{PromptText}</Text>
-              <View style={AuthStyles.TextInputContainer}>
-                <TextInput
-                  style={AuthStyles.TextInput}
-                  placeholder={inputTextPrompt}
-                  placeholderTextColor="lightgrey"
-                  value={email}
-                  onChangeText={setEmail}
-                  textContentType="emailAddress"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-              </View>
+              <AuthTextInput
+                placeholder={inputTextPrompt}
+                value={email}
+                onChangeText={setEmail}
+                textContentType="emailAddress"
+              />
               <LinkText
                 screen={'Login'}
                 styles={{marginTop: 5, marginLeft: 5}}

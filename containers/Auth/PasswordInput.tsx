@@ -8,9 +8,10 @@
  */
 
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text} from 'react-native';
 import Validators from 'services/Validators';
 import PasswordTextInput from 'components/Auth/PasswordTextInput';
+import AuthStyles from 'styles/Auth/Auth.Styles';
 
 /**
  * @desc A contaner to abstract the password containers
@@ -19,11 +20,13 @@ import PasswordTextInput from 'components/Auth/PasswordTextInput';
  * @param {function} setPassword A function that accepts the current password
  */
 const PasswordInput = (props: any) => {
+  const labelPassword = props.labelPassword;
+  const labelConfirmPassword = props.labelConfirmPassword;
+
   const confirmPassword = props.confirmPassword;
   const setPassword = props.setPassword;
 
   const [newPassword, setNewPassword] = useState('');
-
   const validationNewPassword = (text: string) => {
     confirmPassword(false);
     setNewPassword(text);
@@ -37,7 +40,6 @@ const PasswordInput = (props: any) => {
       return {valid: true, message: 'Valid password'};
     }
   };
-
   const validationConfirmPassword = (text: string) => {
     confirmPassword(false);
     const errorMessage = Validators.isValidPassword(newPassword);
@@ -55,15 +57,22 @@ const PasswordInput = (props: any) => {
 
   return (
     <>
+      <Text style={[AuthStyles.Label, {marginBottom: -20}]}>
+        {labelPassword}
+      </Text>
       <PasswordTextInput
         placeHolder={'New password'}
         toggleVisibility={true}
         validator={validationNewPassword}
       />
+      <Text style={[AuthStyles.Label, {marginBottom: -20}]}>
+        {labelConfirmPassword}
+      </Text>
       <PasswordTextInput
         placeHolder={'Confirm password'}
         watch={newPassword}
         validator={validationConfirmPassword}
+        hideValidation={false}
       />
     </>
   );

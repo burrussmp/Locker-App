@@ -85,13 +85,14 @@ const LoginScreen = (props: any) => {
                 placeholder={placeHolderLogin}
                 value={loginInfo}
                 onChangeText={setLoginInfo}
-                textContentType="username"
+                textContentType="emailAddress"
               />
               <AuthTextInput
                 placeholder={placeHolderPassword}
                 value={password}
                 onChangeText={setPassword}
                 textContentType="password"
+                secureTextEntry
               />
               <View style={AuthStyles.RowContainer}>
                 <LinkText

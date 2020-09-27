@@ -15,7 +15,7 @@ import {
   Keyboard,
   Alert,
   Text,
-  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 import PasswordInput from 'containers/Auth/PasswordInput';
@@ -78,7 +78,7 @@ const ResetPassword = (props: any) => {
       keyboardAvoidView
       children={
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={AuthStyles.TopCentered}>
+          <View style={AuthStyles.TopContainer}>
             <Image source={logoImage} style={AuthStyles.Logo}></Image>
             <View style={AuthStyles.InputContainerMain}>
               <ConfirmationCodeTextInput
@@ -90,6 +90,8 @@ const ResetPassword = (props: any) => {
               />
               <PasswordInput
                 setPassword={setPassword}
+                labelPassword={'New password'}
+                labelConfirmPassword={'Confirm new password:'}
                 confirmPassword={confirmPassword}
               />
               <LinkText

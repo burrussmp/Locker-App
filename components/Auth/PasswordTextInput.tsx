@@ -15,8 +15,9 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AuthStyles from 'styles/Auth/Auth.Styles';
+import AuthTextInput from 'components/Auth/BasicTextInput';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const styles = StyleSheet.create({
   container: {
@@ -97,29 +98,25 @@ const PasswordTextInput = (props: any) => {
     </TouchableOpacity>
   ) : undefined;
 
+  const validationContainer = props.hideValidation ? undefined : (
+    <View style={styles.validationContainer}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Text style={ValidationTextColorStyle}>{validationResult.message}</Text>
+        {ValidationIcon}
+      </View>
+    </View>
+  );
   return (
     <View style={styles.container}>
-      <View style={styles.validationContainer}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={ValidationTextColorStyle}>
-            {validationResult.message}
-          </Text>
-          {ValidationIcon}
-        </View>
-      </View>
-      <View style={AuthStyles.TextInputContainer}>
-        <TextInput
-          style={AuthStyles.TextInput}
-          placeholder={placeholder}
-          placeholderTextColor="lightgrey"
-          value={password}
-          secureTextEntry={!visible}
-          onChangeText={handleChangeText}
-          textContentType="password"
-          autoCapitalize="none"
-        />
-        {VisibilityIcon}
-      </View>
+      {validationContainer}
+      <AuthTextInput
+        placeholder={placeholder}
+        value={password}
+        secureTextEntry={!visible}
+        onChangeText={handleChangeText}
+        textContentType="password"
+        visibilityIcon={VisibilityIcon}
+      />
     </View>
   );
 };

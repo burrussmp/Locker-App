@@ -62,6 +62,7 @@ const ResetPasswordStyles = StyleSheet.create({
     height: 100,
     width: '80%',
   },
+  Label: {color: '#555', fontFamily: 'CircularBlack'},
 });
 
 export default ResetPasswordStyles;

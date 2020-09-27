@@ -7,17 +7,8 @@
  * @desc Basic Text Input for auth
  */
 
-import React, {useState} from 'react';
-import {
-  TextInput,
-  Image,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Button,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import {TextInput, View} from 'react-native';
 
 import AuthStyles from 'styles/Auth/Auth.Styles';
 
@@ -33,28 +24,35 @@ const BasicTextInput = (props: any) => {
   const setValue = props.onChangeText;
   const placeHolder = props.placeholder;
   const textContentType = props.textContentType;
+  const visibilityIcon = props.visibilityIcon;
+  const secureTextEntry = props.secureTextEntry;
+  const LeftIcon = props.LeftIcon;
+  const textStyle = props.textStyle;
+  const containerStyle = props.containerStyle;
   if (!setValue || !textContentType) {
     throw 'Missing required props';
   }
   let keyBoardType;
-  if (textContentType === 'email') {
+  if (textContentType === 'emailAddress') {
     keyBoardType = 'email-address';
   } else if (textContentType === 'telephoneNumber') {
     keyBoardType = 'phone-pad';
   }
   return (
-    <View style={AuthStyles.TextInputContainer}>
+    <View style={[AuthStyles.TextInputContainer, containerStyle]}>
+      {LeftIcon}
       <TextInput
-        style={AuthStyles.TextInput}
+        style={[AuthStyles.TextInput, textStyle]}
         placeholder={placeHolder}
         placeholderTextColor="lightgrey"
         value={value}
         onChangeText={setValue}
-        secureTextEntry={textContentType === 'password'}
+        secureTextEntry={secureTextEntry}
         textContentType={textContentType}
         keyboardType={keyBoardType}
         autoCapitalize="none"
       />
+      {visibilityIcon}
     </View>
   );
 };
