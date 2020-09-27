@@ -10,9 +10,9 @@ import {useNavigation} from '@react-navigation/native';
 import services from 'components/Profile/Profile.Services';
 import api from 'api/api';
 
-import {ProfileHeaderData} from 'components/Profile/Profile.Types';
+import {ProfileHeaderData} from 'types/Profile/Profile.Types';
 
-import styles from 'components/Profile/Profile.Styles';
+import styles from 'styles/Profile/Profile.Styles';
 import BlurHashService from 'services/BlurHashDecoder';
 
 /**

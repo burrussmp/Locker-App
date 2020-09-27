@@ -6,7 +6,7 @@
  * @desc Stack navigation for authorization (login, registration, reset password, etc.)
  */
 
-import * as React from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import AuthScreen from 'screens/Auth/Auth';
 import LoginScreen from 'screens/Auth/Login';

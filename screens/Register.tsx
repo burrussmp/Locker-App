@@ -93,7 +93,6 @@ const RegisterScreen = (props: any) => {
   const LoadingAnimation = loading ? <LoadingAll /> : undefined;
   return (
     <SafeArea
-      // keyboardAvoidView
       children={
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView>
@@ -145,14 +144,9 @@ const RegisterScreen = (props: any) => {
                   width: '100%',
                   marginTop: 50,
                 }}
-              >
-                <AuthButton
-                  text="Register"
-                  mode="dark"
-                  onPress={handleSubmit}
-                />
-              </View>
+              ></View>
             </View>
+            <AuthButton text="Register" mode="dark" onPress={handleSubmit} />
             {LoadingAnimation}
           </ScrollView>
         </TouchableWithoutFeedback>

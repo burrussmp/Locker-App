@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /**
@@ -15,11 +16,12 @@ import {
 } from 'react-native';
 
 const SafeArea = (props: any) => {
+  const containerStyle = props.containerStyle;
   const SafeAreaStyle =
     Platform.OS === 'ios' ? {flex: 0} : {height: StatusBar.currentHeight};
   return (
     <Fragment>
-      <SafeAreaView style={SafeAreaStyle} />
+      <SafeAreaView style={[SafeAreaStyle, containerStyle]} />
       {props.keyboardAvoidView ? (
         <KeyboardAvoidingView
           style={{flex: 1}}

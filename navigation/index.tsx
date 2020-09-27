@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
@@ -10,16 +12,20 @@ import {connect} from 'react-redux';
 
 import AuthNavigation from 'navigation/AuthNavigation';
 import AppNavigation from 'navigation/AppNavigation';
+import WelcomeScreen from 'screens/Auth/Welcome';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/Splash';
-import AuthActions from 'store/actions/auth.actions';
+import {AsyncStorage} from 'react-native';
 import api from 'api/api';
 import {Session} from 'store/types/auth.types';
 
 const Navigation = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [firstTime, setFirstTime] = useState(true);
   useEffect(() => {
     (async () => {
+      const isFirstTime = await AsyncStorage.getItem('firstTime');
+      setFirstTime(isFirstTime !== 'done');
       try {
         const session = await api.Session.getSession();
         await props.Login(session);
@@ -29,8 +35,9 @@ const Navigation = (props: any) => {
       }
     })();
   }, []);
-  return isLoading ? (
-    <Splash />
+
+  const Application = firstTime ? (
+    <WelcomeScreen setFirstTime={setFirstTime} />
   ) : (
     <NavigationContainer>
       {AuthSelectors.isLoggedIn(props.state) ? (
@@ -40,6 +47,7 @@ const Navigation = (props: any) => {
       )}
     </NavigationContainer>
   );
+  return isLoading ? <Splash /> : Application;
 };
 
 const mapStateToProps = (state: any) => {
