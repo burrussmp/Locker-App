@@ -48,7 +48,7 @@ const PasswordTextInput = (props: any) => {
       secureTextEntry={!visible}
       onChangeText={setPassword}
       textContentType="password"
-      visibilityIcon={VisibilityIcon}
+      rightIcon={VisibilityIcon}
     />
   );
 };

@@ -68,6 +68,15 @@ const ResetPasswordStyles = StyleSheet.create({
     alignItems: 'center',
   },
   Label: {color: '#555', fontFamily: 'CircularBlack'},
+  CountryContainer: {
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: 'tan',
+    height: '100%',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default ResetPasswordStyles;

@@ -18,13 +18,18 @@ import AuthStyles from 'styles/Auth/Auth.Styles';
  * @param {function} onChangeText the state callback
  * @param {string} placeholder place holder of the input
  * @param {string} textContentType Same as normal text input
+ * @param {React.Component} rightIcon : Icon to put on right
+ * @param {React.Component} leftIcon : Icon to put on left
+ * @param {boolean} secureTextEntry : Whether to hide text
+ * @param {object} textStyle : additional styling for the text
+ * @param {object} containerStyle : additional styling for the container
  */
 const BasicTextInput = (props: any) => {
   const value = props.value;
   const setValue = props.onChangeText;
   const placeHolder = props.placeholder;
   const textContentType = props.textContentType;
-  const visibilityIcon = props.visibilityIcon;
+  const rightIcon = props.rightIcon;
   const secureTextEntry = props.secureTextEntry;
   const LeftIcon = props.LeftIcon;
   const textStyle = props.textStyle;
@@ -52,7 +57,7 @@ const BasicTextInput = (props: any) => {
         keyboardType={keyBoardType}
         autoCapitalize="none"
       />
-      {visibilityIcon}
+      {rightIcon}
     </View>
   );
 };

@@ -21,9 +21,9 @@ import {
 } from 'react-native';
 import AuthButton from 'components/Auth.Button';
 import AuthTextInput from 'components/Auth/BasicTextInput';
-import CountryPicker from 'react-native-country-picker-modal';
-import LoadingAll from 'components/Common/LoadingAll';
 import PasswordInput from 'containers/Auth/PasswordInput';
+import PhoneNumberTextInput from 'components/Auth/PhoneNumberTextInput';
+import LoadingAll from 'components/Common/LoadingAll';
 import SafeArea from 'components/Common/SafeArea';
 import api from 'api/api';
 import {Session} from 'store/types/auth.types';
@@ -55,34 +55,22 @@ const RegisterScreen = (props: any) => {
     setCountryCode(res.cca2);
     setCallingCode(res.callingCode[0]);
   };
-  const handlePhoneTextChange = (text: string) => {
-    const insert = (str: string, index: number, value: string) => {
-      return str.substr(0, index) + value + str.substr(index);
-    };
-    let phone_number = text;
-    if (callingCode === '1') {
-      if (phone_number.length > 0 && phone_number[0] !== '(') {
-        phone_number = insert(phone_number, 0, '(');
-      }
-      if (phone_number.length > 4 && phone_number[4] !== ')') {
-        phone_number = insert(phone_number, 4, ')');
-      }
-      if (phone_number.length > 5 && phone_number[5] !== '-') {
-        phone_number = insert(phone_number, 5, '-');
-      }
-      if (phone_number.length > 9 && phone_number[9] !== '-') {
-        phone_number = insert(phone_number, 9, '-');
-      }
-    }
-    setPhoneNumber(phone_number);
-  };
   const handleSubmit = async () => {
+    if (!username) {
+      return Alert.alert('Username is required');
+    } else if (!phoneNumber) {
+      return Alert.alert('Phone number is required');
+    } else if (!email) {
+      Alert.alert('Email is required');
+    } else if (!password) {
+      return Alert.alert('Password is required');
+    }
     if (!passwordConfirmed && password) {
       return Alert.alert('Please enter and confirm a new password');
     }
     setLoading(true);
     const phone_number =
-      '+' + callingCode + phoneNumber.replace(/\-|\)|\(/g, '');
+      '+' + callingCode + phoneNumber.replace(/-|\)|\(/g, '');
     const data = {
       username: username,
       password: password,
@@ -137,35 +125,7 @@ const RegisterScreen = (props: any) => {
                 <Text style={AuthStyles.Label}>
                   Phone number (select country code below):
                 </Text>
-                <AuthTextInput
-                  placeholder="Phone Number"
-                  LeftIcon={
-                    <TouchableOpacity>
-                      <CountryPicker
-                        containerButtonStyle={{
-                          paddingLeft: 5,
-                          paddingRight: 5,
-                          backgroundColor: 'tan',
-                          height: '100%',
-                          alignItems: 'center',
-                          alignSelf: 'center',
-                          justifyContent: 'center',
-                        }}
-                        countryCode={countryCode}
-                        withFilter
-                        withEmoji={true}
-                        withFlagButton={false}
-                        withCallingCodeButton={true}
-                        withAlphaFilter
-                        withCallingCode
-                        onSelect={handleCountryPick}
-                      />
-                    </TouchableOpacity>
-                  }
-                  value={phoneNumber}
-                  onChangeText={handlePhoneTextChange}
-                  textContentType="telephoneNumber"
-                />
+                <PhoneNumberTextInput setPhoneNumber={setPhoneNumber} />
                 <Text style={AuthStyles.Label}>Email address:</Text>
                 <AuthTextInput
                   placeholder="Email"

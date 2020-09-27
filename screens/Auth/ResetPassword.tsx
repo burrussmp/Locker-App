@@ -89,9 +89,9 @@ const ResetPassword = (props: any) => {
                 promptSendNewCode
               />
               <PasswordInput
-                setPassword={setPassword}
-                labelPassword={'New password'}
+                labelPassword={'New password:'}
                 labelConfirmPassword={'Confirm new password:'}
+                setPassword={setPassword}
                 confirmPassword={confirmPassword}
               />
               <LinkText

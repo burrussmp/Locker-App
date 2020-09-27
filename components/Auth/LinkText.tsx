@@ -17,7 +17,12 @@ import {useNavigation} from '@react-navigation/native';
  * @param {object} style Any additional styling you wan to do to text object
  * @param {string} placeHolder The placeholder for the text
  */
-const LinkText = (props: any) => {
+interface LinkTextProps {
+  placeHolder: string;
+  style: object;
+  screen: string;
+}
+const LinkText = (props: LinkTextProps) => {
   const placeHolder = props.placeHolder;
   const style = props.style;
   const screen = props.screen;

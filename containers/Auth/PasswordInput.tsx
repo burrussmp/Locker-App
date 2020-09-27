@@ -15,7 +15,7 @@ import AuthStyles from 'styles/Auth/Auth.Styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
- * @desc A contaner to abstract the password containers
+ * @desc A container to abstract the password containers
  * @param {function} confirmPassword A function that accepts a single parameter
  * that is true when password is confirmed else false
  * @param {function} setPassword A function that accepts the current password
@@ -46,6 +46,7 @@ const PasswordInput = (props: any) => {
     confirmPassword(false);
     setNewPassword(text);
     setPassword(text);
+    setValidationConfirm({valid: false, message: ''});
     const errorMessage = Validators.isValidPassword(text);
     if (!text) {
       setValidationPassword({
@@ -56,6 +57,14 @@ const PasswordInput = (props: any) => {
       setValidationPassword({valid: false, message: errorMessage});
     } else {
       setValidationPassword({valid: true, message: 'Valid password'});
+      if (text === confirmedPassword) {
+        setValidationConfirm({valid: true, message: 'Passwords match'});
+      } else if (confirmedPassword) {
+        setValidationConfirm({
+          valid: false,
+          message: 'Please confirm password',
+        });
+      }
     }
   };
   const validationConfirmPassword = (text: string) => {
@@ -68,7 +77,10 @@ const PasswordInput = (props: any) => {
     } else if (text !== newPassword && !errorMessage) {
       setValidationConfirm({valid: false, message: 'Please confirm password'});
     } else {
-      setValidationConfirm({valid: false, message: errorMessage});
+      setValidationConfirm({
+        valid: false,
+        message: 'Enter valid password above',
+      });
     }
   };
 
