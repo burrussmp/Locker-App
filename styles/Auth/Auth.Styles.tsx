@@ -62,6 +62,11 @@ const ResetPasswordStyles = StyleSheet.create({
     height: 100,
     width: '80%',
   },
+  ValidationStatusContainer: {
+    alignSelf: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   Label: {color: '#555', fontFamily: 'CircularBlack'},
 });
 

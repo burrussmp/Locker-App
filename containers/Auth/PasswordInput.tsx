@@ -8,10 +8,11 @@
  */
 
 import React, {useState} from 'react';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import Validators from 'services/Validators';
 import PasswordTextInput from 'components/Auth/PasswordTextInput';
 import AuthStyles from 'styles/Auth/Auth.Styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 /**
  * @desc A contaner to abstract the password containers
@@ -23,55 +24,95 @@ const PasswordInput = (props: any) => {
   const labelPassword = props.labelPassword;
   const labelConfirmPassword = props.labelConfirmPassword;
 
+  // get parent state
   const confirmPassword = props.confirmPassword;
   const setPassword = props.setPassword;
 
+  // for child state
   const [newPassword, setNewPassword] = useState('');
+  const [confirmedPassword, setConfirmedPassword] = useState('');
+
+  const [validationPassword, setValidationPassword] = useState({
+    valid: false,
+    message: '',
+  });
+
+  const [validationConfirm, setValidationConfirm] = useState({
+    valid: false,
+    message: '',
+  });
+
   const validationNewPassword = (text: string) => {
     confirmPassword(false);
     setNewPassword(text);
     setPassword(text);
     const errorMessage = Validators.isValidPassword(text);
     if (!text) {
-      return {valid: false, message: 'Please enter a new password'};
+      setValidationPassword({
+        valid: false,
+        message: 'Please enter a new password',
+      });
     } else if (errorMessage) {
-      return {valid: false, message: errorMessage};
+      setValidationPassword({valid: false, message: errorMessage});
     } else {
-      return {valid: true, message: 'Valid password'};
+      setValidationPassword({valid: true, message: 'Valid password'});
     }
   };
   const validationConfirmPassword = (text: string) => {
     confirmPassword(false);
+    setConfirmedPassword(text);
     const errorMessage = Validators.isValidPassword(newPassword);
-    if (text && errorMessage) {
-      return {valid: false, message: ''};
-    } else if (text && text !== newPassword) {
-      return {valid: false, message: 'Password does not match'};
-    } else if (text === newPassword && !errorMessage) {
+    if (text === newPassword && !errorMessage) {
       confirmPassword(true);
-      return {valid: true, message: 'Passwords match'};
+      setValidationConfirm({valid: true, message: 'Passwords match'});
+    } else if (text !== newPassword && !errorMessage) {
+      setValidationConfirm({valid: false, message: 'Please confirm password'});
     } else {
-      return {valid: false, message: ''};
+      setValidationConfirm({valid: false, message: errorMessage});
     }
+  };
+
+  const ValidationStatusCreator = (
+    password: string,
+    validation_result: {valid: boolean; message: string}
+  ) => {
+    const ValidationIcon =
+      password && validation_result.valid ? (
+        <Icon name={'ios-checkmark'} size={17} color={'green'} />
+      ) : undefined;
+    const ValidationTextColorStyle = Object.assign({}, AuthStyles.Label, {
+      color: validation_result.valid ? 'green' : 'red',
+    });
+    return (
+      <View style={AuthStyles.ValidationStatusContainer}>
+        <Text style={[ValidationTextColorStyle, {paddingRight: 5}]}>
+          {validation_result.message}
+        </Text>
+        {ValidationIcon}
+      </View>
+    );
   };
 
   return (
     <>
-      <Text style={[AuthStyles.Label, {marginBottom: -20}]}>
-        {labelPassword}
-      </Text>
+      <View style={AuthStyles.RowContainer}>
+        <Text style={AuthStyles.Label}>{labelPassword}</Text>
+        {ValidationStatusCreator(newPassword, validationPassword)}
+      </View>
       <PasswordTextInput
         placeHolder={'New password'}
         toggleVisibility={true}
-        validator={validationNewPassword}
+        value={newPassword}
+        onChangeText={validationNewPassword}
       />
-      <Text style={[AuthStyles.Label, {marginBottom: -20}]}>
-        {labelConfirmPassword}
-      </Text>
+      <View style={AuthStyles.RowContainer}>
+        <Text style={AuthStyles.Label}>{labelConfirmPassword}</Text>
+        {ValidationStatusCreator(confirmedPassword, validationConfirm)}
+      </View>
       <PasswordTextInput
         placeHolder={'Confirm password'}
-        watch={newPassword}
-        validator={validationConfirmPassword}
+        value={confirmedPassword}
+        onChangeText={validationConfirmPassword}
         hideValidation={false}
       />
     </>
