@@ -49,7 +49,7 @@ const RegisterScreen = (props: any) => {
   const [passwordConfirmed, confirmPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const handleSubmit = async () => {
     if (!username) {
       return Alert.alert('Username is required');

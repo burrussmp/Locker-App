@@ -46,10 +46,10 @@ const PhoneNumberTextInput = (props: {setPhoneNumber: CallableFunction}) => {
       return str.substr(0, index) + value + str.substr(index);
     };
     let phone_number = text.replace(/-|\)|\(/g, '');
-    if (phone_number.includes('+' + callingCode)) {
-      phone_number = phone_number.replace('+' + callingCode, '');
-    }
     if (callingCode === '1') {
+      if (phone_number.includes('+' + callingCode)) {
+        phone_number = phone_number.replace('+' + callingCode, '');
+      }
       if (phone_number.length > 0 && !phone_number.includes('(')) {
         phone_number = insert(phone_number, 0, '(');
       }
