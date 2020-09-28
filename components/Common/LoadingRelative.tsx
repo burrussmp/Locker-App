@@ -5,8 +5,10 @@ import {View, ActivityIndicator, StyleSheet} from 'react-native';
 
 const LoadingStyle = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'column',
-    marginBottom: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 /**
