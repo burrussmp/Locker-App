@@ -21,6 +21,7 @@ import {Session} from 'store/types/auth.types';
 import styles from 'styles/styles';
 import AuthButton from 'components/Auth.Button';
 import AuthTextInput from 'components/Auth/BasicTextInput';
+import Loading from 'components/Common/LoadingAll';
 import LinkText from 'components/Auth/LinkText';
 import SafeArea from 'components/Common/SafeArea';
 import AuthSelectors from 'store/selectors/auth.selectors';
@@ -37,7 +38,7 @@ const LoginScreen = (props: any) => {
     props.route.params && props.route.params.login
   );
   const [password, setPassword] = useState('');
-
+  const [loading, setLoading] = useState(false);
   /**
    * @desc Log the user in or alert them of an error
    */
@@ -46,11 +47,14 @@ const LoginScreen = (props: any) => {
       login: loginInfo,
       password: password,
     };
+    setLoading(true);
     api.Auth.Login(data)
       .then(session => {
         props.Login(session);
+        setLoading(false);
       })
       .catch(err => {
+        setLoading(false);
         const error = JSON.parse(err.message);
         Alert.alert(error.error);
       });
@@ -60,11 +64,14 @@ const LoginScreen = (props: any) => {
    * @desc purely for dev purposes to save time
    */
   const handleAutoFill = () => {
+    setLoading(true);
     api.Auth.Login(DefaultUser)
       .then(session => {
         props.Login(session);
+        setLoading(false);
       })
       .catch(err => {
+        setLoading(false);
         console.log(err);
       });
   };
@@ -73,6 +80,8 @@ const LoginScreen = (props: any) => {
   const RegisterText = 'Create a new account';
   const placeHolderLogin = 'Username, Email, or Phone Number';
   const placeHolderPassword = 'Enter password';
+
+  const LoadingComponent = loading ? <Loading /> : undefined;
   return (
     <SafeArea
       keyboardAvoidView
@@ -111,6 +120,7 @@ const LoginScreen = (props: any) => {
               <AuthButton text="Login" mode="dark" onPress={handleSubmit} />
               <Button title="AutoLogin" onPress={handleAutoFill} />
             </View>
+            {LoadingComponent}
           </View>
         </TouchableWithoutFeedback>
       }

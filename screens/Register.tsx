@@ -49,12 +49,7 @@ const RegisterScreen = (props: any) => {
   const [passwordConfirmed, confirmPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [countryCode, setCountryCode] = useState('US');
-  const [callingCode, setCallingCode] = useState('1');
-  const handleCountryPick = (res: any) => {
-    setCountryCode(res.cca2);
-    setCallingCode(res.callingCode[0]);
-  };
+  
   const handleSubmit = async () => {
     if (!username) {
       return Alert.alert('Username is required');
@@ -69,15 +64,13 @@ const RegisterScreen = (props: any) => {
       return Alert.alert('Please enter and confirm a new password');
     }
     setLoading(true);
-    const phone_number =
-      '+' + callingCode + phoneNumber.replace(/-|\)|\(/g, '');
     const data = {
       username: username,
       password: password,
       first_name: firstName,
       last_name: lastName,
       email: email,
-      phone_number: phone_number,
+      phone_number: phoneNumber,
     };
     api.Auth.SignUp(data)
       .then(session => {
