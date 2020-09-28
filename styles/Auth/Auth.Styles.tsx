@@ -71,7 +71,7 @@ const ResetPasswordStyles = StyleSheet.create({
   CountryContainer: {
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: 'tan',
+    backgroundColor: '#e8ceac',
     height: '100%',
     alignItems: 'center',
     alignSelf: 'center',

@@ -8,15 +8,24 @@
  *  */
 
 import React, {useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import CountryPicker, {
   CountryCode,
   Country,
 } from 'react-native-country-picker-modal';
 import AuthTextInput from 'components/Auth/BasicTextInput';
 
-import AuthStyles from 'styles/Auth/Auth.Styles';
-
+const PhoneNumberTextInputStyles = StyleSheet.create({
+  countryPickerContainer: {
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: 'darkgray',
+    height: '100%',
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+});
 /**
  * @desc Phone number text input with country code picker
  * and formatting
@@ -71,7 +80,9 @@ const PhoneNumberTextInput = (props: {setPhoneNumber: CallableFunction}) => {
       LeftIcon={
         <TouchableOpacity>
           <CountryPicker
-            containerButtonStyle={AuthStyles.CountryContainer}
+            containerButtonStyle={
+              PhoneNumberTextInputStyles.countryPickerContainer
+            }
             countryCode={countryCode}
             withFilter
             withEmoji={true}
