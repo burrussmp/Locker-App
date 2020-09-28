@@ -4,7 +4,6 @@
 import {AsyncStorage} from 'react-native';
 import {Session} from 'store/types/auth.types';
 import config from 'config';
-import apiHelper from 'api/helper';
 
 // HELPERS
 /**

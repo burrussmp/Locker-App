@@ -7,10 +7,10 @@
  */
 
 import React, {useState, Fragment, useEffect} from 'react';
-import {Text, SafeAreaView, View, FlatList} from 'react-native';
+import {SafeAreaView, View, FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SearchBar, ListItem, Avatar} from 'react-native-elements';
-import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import ProfileScreen from 'screens/Profile';
 
 import authSelectors from 'store/selectors/auth.selectors';
