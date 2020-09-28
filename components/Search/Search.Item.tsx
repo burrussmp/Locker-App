@@ -16,6 +16,8 @@ import BlurHashService from 'services/Images/BlurHashDecoder';
 import authSelectors from 'store/selectors/auth.selectors';
 import api from 'api/api';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {profile} from 'console';
+const DefaultAvatar = require('assets/images/profile-pic.png');
 
 const SearchItemStyles = StyleSheet.create({
   title: {
@@ -44,23 +46,29 @@ const SearchItem = (props: {item: SearchResultsType}) => {
     throw 'Received a null object! This should not happen';
   }
   const navigation = useNavigation();
+
   const item = props.item;
-  const BlurHashDecoder = BlurHashService.BlurHashDecoder(
-    item.data.profile_photo.blurhash
-  );
-  const [avatarURI, setAvatarURI] = useState(BlurHashDecoder.getURI());
   const username = item.data.username;
   const first_name = item.data.first_name;
   const last_name = item.data.last_name;
-  const key = item.data.profile_photo.key;
   const userId = item.data._id;
+  const [source, setSource] = useState(DefaultAvatar);
   useEffect(() => {
     (async () => {
-      try {
-        const profilePhotoURI = await api.S3.GetMedia(key, 'large');
-        setAvatarURI(profilePhotoURI);
-      } catch (err) {
-        console.log(err);
+      if (item.data.profile_photo) {
+        try {
+          const BlurHashDecoder = BlurHashService.BlurHashDecoder(
+            item.data.profile_photo.blurhash
+          );
+          setSource({uri: BlurHashDecoder.getURI()});
+          const key = item.data.profile_photo.key;
+          const profilePhotoURI = await api.S3.GetMedia(key, 'large');
+          setSource({uri: profilePhotoURI});
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        setSource(DefaultAvatar);
       }
     })();
   }, []);
@@ -85,7 +93,7 @@ const SearchItem = (props: {item: SearchResultsType}) => {
         }
       }}
     >
-      <Avatar rounded size={'small'} source={{uri: avatarURI}} />
+      <Avatar rounded size={'small'} source={source} />
       <View style={SearchItemStyles.rowContainer}>
         <View>
           <Text style={SearchItemStyles.title}>{username}</Text>

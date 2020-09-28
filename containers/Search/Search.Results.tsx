@@ -17,7 +17,7 @@ import SearchItem from 'components/Search/Search.Item';
  * @param {[SearchResultsType]} searchResults An array of search results to render
  */
 const SearchResults = (props: {searchResults: [SearchResultsType] | null}) => {
-  return (
+  return props.searchResults ? (
     <FlatList
       data={props.searchResults}
       renderItem={(item: any) => <SearchItem item={item.item} />}
@@ -29,6 +29,8 @@ const SearchResults = (props: {searchResults: [SearchResultsType] | null}) => {
         return <View style={{height: 0}} />;
       }}
     />
+  ) : (
+    <></>
   );
 };
 
