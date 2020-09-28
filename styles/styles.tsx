@@ -12,6 +12,10 @@ const styles = StyleSheet.create({
     Platform.OS === 'ios'
       ? {flex: 0, backgroundColor: '#FFFFFF'}
       : {height: StatusBar.currentHeight, backgroundColor: '#FFFFFF'},
+  safeAreaAuth:
+    Platform.OS === 'ios'
+      ? {flex: 0, backgroundColor: '#F2F2F2'}
+      : {height: StatusBar.currentHeight, backgroundColor: '#F2F2F2'},
   container: {
     flex: 1,
   },

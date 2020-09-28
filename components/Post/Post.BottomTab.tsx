@@ -39,7 +39,10 @@ const PostBottomTab: React.FunctionComponent<PostBottomTabProps> = (
   // Styles
   const ComponentStyles = styles.BottomTab(props);
   // Extract props
-  const bottomTabData = props.bottomTabData;
+  const bottomTabData = props.bottomTabData || {
+    username: '',
+    profile_photo: {blur_hash: ''},
+  };
   const index = props.index;
   const scrollY = props.scrollY;
   const rotationDegrees = props.rotationDegrees;
@@ -77,7 +80,7 @@ const PostBottomTab: React.FunctionComponent<PostBottomTabProps> = (
         <View style={ComponentStyles.alignmentView}>
           <View style={ComponentStyles.userContainer}>
             <Avatar
-              source={{uri: avatarURI}}
+              source={avatarSource}
               rounded
               containerStyle={ComponentStyles.avatarContainer}
             />

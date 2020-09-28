@@ -19,35 +19,32 @@ const logoImage = require('assets/images/logo.png');
 
 const AuthScreen = (props: any) => {
   return (
-    <Fragment>
-      <SafeAreaView style={styles.safeArea} />
-      <View style={styles.container}>
-        <ImageBackground
-          source={backgroundImage}
-          style={styles.authBackgroundImage}
-        >
-          <View style={styles.centered}>
-            <Image source={logoTextImage} style={styles.logoText}></Image>
-            <Image source={logoImage}></Image>
-          </View>
-          <View style={styles.authButtonContainer}>
-            <AuthButton
-              text="Get Started"
-              onPress={() => {
-                props.navigation.navigate('Register');
-              }}
-            />
-            <AuthButton
-              text="Login"
-              mode="blurred"
-              onPress={() => {
-                props.navigation.navigate('Login');
-              }}
-            />
-          </View>
-        </ImageBackground>
-      </View>
-    </Fragment>
+    <View style={styles.container}>
+      <ImageBackground
+        source={backgroundImage}
+        style={styles.authBackgroundImage}
+      >
+        <View style={styles.centered}>
+          <Image source={logoTextImage} style={styles.logoText}></Image>
+          <Image source={logoImage}></Image>
+        </View>
+        <View style={styles.authButtonContainer}>
+          <AuthButton
+            text="Get Started"
+            onPress={() => {
+              props.navigation.navigate('Register');
+            }}
+          />
+          <AuthButton
+            text="Login"
+            mode="blurred"
+            onPress={() => {
+              props.navigation.navigate('Login');
+            }}
+          />
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
 

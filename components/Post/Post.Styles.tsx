@@ -147,7 +147,6 @@ const LoadingStyles = StyleSheet.create({
   indicatorContainer: {
     flex: 1,
     height: 500,
-    marginTop: -50,
     justifyContent: 'center',
   },
   indicator: {

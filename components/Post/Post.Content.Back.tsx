@@ -2,7 +2,7 @@
 'use strict';
 // External
 import * as React from 'react';
-import {Animated, Text, View} from 'react-native';
+import {Animated, ImageURISource, Text, View} from 'react-native';
 import {Avatar, Divider} from 'react-native-elements';
 // Services
 import {
@@ -14,6 +14,7 @@ import {
 import {PostType} from 'api/post';
 // Styles
 import styles from 'components/Post/Post.Styles';
+import PostCommentContainer from 'components/Post/Post.Comment.Container';
 
 /**
  * @desc Renders back of a content post
@@ -22,7 +23,7 @@ import styles from 'components/Post/Post.Styles';
  */
 const PostContentBack = (props: {
   info: PostType;
-  image: string;
+  imageSource: ImageURISource;
   index: number;
   rotationDegrees: Animated.Value;
   scrollY: Animated.Value;
@@ -37,9 +38,10 @@ const PostContentBack = (props: {
   // Styles
   const ComponentStyles = styles.ContentBack;
   // Extract props
+  const id = props.info._id;
   const caption = props.info.caption;
   const price = `$${props.info.content.price}`;
-  const image = props.image;
+  const imageSource = props.imageSource;
   const index = props.index;
   const scrollY = props.scrollY;
   const rotationDegrees = props.rotationDegrees;
@@ -56,13 +58,14 @@ const PostContentBack = (props: {
           <Text style={ComponentStyles.priceText}>{price}</Text>
         </View>
         <Avatar
-          source={{uri: image}}
+          source={imageSource}
           rounded
           containerStyle={ComponentStyles.avatarContainer}
         />
       </View>
       <View style={ComponentStyles.bottomContainer}>
         <Divider style={ComponentStyles.divider} />
+        <PostCommentContainer id={id} />
       </View>
     </Animated.View>
   );

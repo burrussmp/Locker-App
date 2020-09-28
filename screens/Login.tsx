@@ -32,7 +32,7 @@ const LoginScreen = (props: any) => {
   const [password, setPassword] = useState('');
   return (
     <Fragment>
-      <SafeAreaView style={styles.safeArea} />
+      <SafeAreaView style={styles.safeAreaAuth} />
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

@@ -3,7 +3,7 @@
 // External
 import * as React from 'react';
 import {useRef, useState} from 'react';
-import {Animated, View} from 'react-native';
+import {Animated, View, ViewStyle} from 'react-native';
 import {
   State,
   TapGestureHandler,
@@ -20,10 +20,12 @@ import icons from 'icons/icons';
  * @desc Renders a like button
  * @props The 'data' attribute specifies the post data to render
  */
-const LikeButton = () => {
+const LikeButton = (props: {size: string; style: StyleSheet<ViewStyle>}) => {
+  // Extract props
+  const size = props.size || 'large';
+  const viewStyle = props.style;
   // State
   const [isLiked, setLiked] = useState(false);
-  const icon = isLiked ? icons.like.liked : icons.like.unliked;
   // Refs
   const scaleRef = useRef(new Animated.Value(1)).current;
   // Functions
@@ -36,8 +38,16 @@ const LikeButton = () => {
     setLiked(prev => !prev);
     likeAnimation(scaleRef);
   }
+  const icon =
+    size === 'large'
+      ? isLiked
+        ? icons.like.liked
+        : icons.like.unliked
+      : isLiked
+      ? icons.like.liked_small
+      : icons.like.unliked_small;
   return (
-    <View>
+    <View style={viewStyle}>
       <TapGestureHandler onHandlerStateChange={onSingleTap}>
         <Animated.Image
           source={icon}

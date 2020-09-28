@@ -41,6 +41,7 @@ const PostContent = (props: {postData: PostData}) => {
   // State
   const [image, setImage] = useState('');
   const [isFlipped, setFlipped] = useState(false);
+  const imageSource = image ? {uri: image} : undefined;
   // Hooks
   useEffect(() => {
     (async () => {
@@ -78,14 +79,14 @@ const PostContent = (props: {postData: PostData}) => {
       <View style={ComponentStyles.topContainer}>
         <PostContentBack
           info={info}
-          image={image}
+          imageSource={imageSource}
           index={index}
           rotationDegrees={rotationDegrees}
           scrollY={scrollY}
           handleFlip={handleFlip}
         />
         <PostContentFront
-          image={image}
+          imageSource={imageSource}
           index={index}
           rotationDegrees={rotationDegrees}
           scrollY={scrollY}
