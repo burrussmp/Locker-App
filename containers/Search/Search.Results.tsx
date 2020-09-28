@@ -16,7 +16,7 @@ import SearchItem from 'components/Search/Search.Item';
  * @desc A container to hold all search results
  * @param {[SearchResultsType]} searchResults An array of search results to render
  */
-const SearchResults = (props: {searchResults: [SearchResultsType]}) => {
+const SearchResults = (props: {searchResults: [SearchResultsType] | null}) => {
   return (
     <FlatList
       data={props.searchResults}
