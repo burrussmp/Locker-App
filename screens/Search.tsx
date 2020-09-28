@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// tslint:disable:2339
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @author Matthew P. Burruss
  * @date Sep 2020

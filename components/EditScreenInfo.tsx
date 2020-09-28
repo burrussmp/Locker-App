@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
