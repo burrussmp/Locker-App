@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Animated} from 'react-native';
 import {MaterialTopTabBar} from '@react-navigation/material-top-tabs';
 
-const TopTabBar: React.FunctionComponent = (props: any) => {
+const TopTabBar = (props: any) => {
   return (
     <Animated.View
       style={{
