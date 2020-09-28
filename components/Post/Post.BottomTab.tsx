@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict';
 // External
 import * as React from 'react';
@@ -14,7 +16,7 @@ import {
   flipAnimationTransform,
   pushOutAnimationTransform,
 } from 'services/animations/PostAnimations';
-import BlurHashService from 'services/BlurHashDecoder';
+import BlurHashService from 'services/Images/BlurHashDecoder';
 import icons from 'icons/icons';
 // Styles
 import styles from 'components/Post/Post.Styles';

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
@@ -7,17 +8,14 @@
  */
 
 import * as React from 'react';
-import {Fragment} from 'react';
-import {Text, View, SafeAreaView, Platform, StatusBar} from 'react-native';
+import {View} from 'react-native';
 import {connect} from 'react-redux';
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-
 import TopTabBar from 'components/Navigation.TopTabBar';
 import PostSelectors from 'store/selectors/post.selectors';
 import Feed from 'screens/Feed';
-import styles from 'styles/styles';
-import {TabBar} from 'react-native-tab-view';
+import SafeArea from 'components/Common/SafeArea';
 
 const TabBarOptions = {
   activeTintColor: '#0c0b0b',
@@ -45,19 +43,20 @@ const HomeScreen = (props: any) => {
   const postIsExpanded = PostSelectors.isExpanded(props.state);
 
   return (
-    <Fragment>
-      <SafeAreaView style={styles.safeArea} />
-      <View style={{flex: 1}}>
-        <HomeTopTab.Navigator
-          tabBar={TopTabBar}
-          swipeEnabled={!postIsExpanded}
-          tabBarOptions={TabBarOptions}
-        >
-          <HomeTopTab.Screen name="Following" component={Feed} />
-          <HomeTopTab.Screen name="For You" component={Feed} />
-        </HomeTopTab.Navigator>
-      </View>
-    </Fragment>
+    <SafeArea
+      children={
+        <View style={{flex: 1}}>
+          <HomeTopTab.Navigator
+            tabBar={TopTabBar}
+            swipeEnabled={!postIsExpanded}
+            tabBarOptions={TabBarOptions}
+          >
+            <HomeTopTab.Screen name="Following" component={Feed} />
+            <HomeTopTab.Screen name="For You" component={Feed} />
+          </HomeTopTab.Navigator>
+        </View>
+      }
+    />
   );
 };
 

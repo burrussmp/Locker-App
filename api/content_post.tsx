@@ -67,6 +67,7 @@ export type ContentPostType = {
   media: {
     key: string;
     mimetype: string;
+    blurhash: string;
   };
 };
 

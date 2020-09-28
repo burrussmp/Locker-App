@@ -5,7 +5,7 @@
  */
 import {StyleSheet} from 'react-native';
 
-const SearchBarStyles = StyleSheet.create({
+const SearchStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -19,9 +19,5 @@ const SearchBarStyles = StyleSheet.create({
     color: '#444',
   },
 });
-
-const SearchStyles = {
-  SearchBar: SearchBarStyles,
-};
 
 export default SearchStyles;

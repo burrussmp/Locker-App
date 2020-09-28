@@ -50,6 +50,7 @@ PostTypeHandler.defaultProps = {
         media: {
           key: '',
           mimetype: '',
+          blurhash: '',
         },
       },
       postedBy: '',

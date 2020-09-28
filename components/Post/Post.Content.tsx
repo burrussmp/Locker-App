@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-var-requires */
 'use strict';
 // External
 import React, {useEffect, useRef, useState} from 'react';
@@ -9,7 +11,7 @@ import PostContentBack from 'components/Post/Post.Content.Back';
 import PostBottomTab from 'components/Post/Post.BottomTab';
 // Services
 import {flipAnimation} from 'services/animations/PostAnimations';
-import BlurHashService from 'services/BlurHashDecoder';
+import BlurHashService from 'services/Images/BlurHashDecoder';
 // Types
 import {PostData} from 'components/Post/Post.Types';
 // Styles
