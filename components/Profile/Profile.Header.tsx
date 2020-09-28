@@ -7,13 +7,13 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 
 import {useNavigation} from '@react-navigation/native';
 
-import services from 'components/Profile/Profile.Services';
+import ImageLibrary from 'services/Images/ImageLibrary';
 import api from 'api/api';
 
 import {ProfileHeaderData} from 'types/Profile/Profile.Types';
 
 import styles from 'styles/Profile/Profile.Styles';
-import BlurHashService from 'services/BlurHashDecoder';
+import BlurHashService from 'services/Images/BlurHashDecoder';
 
 /**
  * @desc Renders the header of the user profile
@@ -54,7 +54,7 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
 
   const on_avatar_press = () => {
     if (isMyProfile) {
-      services
+      ImageLibrary
         .pickImageFromLibrary()
         .then(async media => {
           await api.Avatar.Update(media);

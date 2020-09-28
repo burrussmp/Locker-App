@@ -14,7 +14,7 @@ import ProfileNavigation from 'components/Profile/Profile.Navigation';
 // styles
 import styles from 'styles/styles';
 // types
-import {ProfileHeaderData} from 'components/Profile/Profile.Types';
+import {ProfileHeaderData} from 'types/Profile/Profile.Types';
 
 const ProfileScreen = (props: {userId: string}) => {
   const [isLoaded, setIsLoaded] = useState(false);

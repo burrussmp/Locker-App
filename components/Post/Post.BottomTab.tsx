@@ -16,7 +16,7 @@ import {
   flipAnimationTransform,
   pushOutAnimationTransform,
 } from 'services/animations/PostAnimations';
-import BlurHashService from 'services/BlurHashDecoder';
+import BlurHashService from 'services/Images/BlurHashDecoder';
 import icons from 'icons/icons';
 // Styles
 import styles from 'components/Post/Post.Styles';
