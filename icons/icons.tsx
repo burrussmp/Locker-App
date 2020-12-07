@@ -48,8 +48,8 @@ const icons = {
   like: {
     liked: likeIconSelected,
     unliked: likeIcon,
-    liked_small: likeIconSmall,
-    unliked_small: likeIconSmallSelected,
+    liked_small: likeIconSmallSelected,
+    unliked_small: likeIconSmall,
   },
   lock: {
     locked: lockIconSelected,

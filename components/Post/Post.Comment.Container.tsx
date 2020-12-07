@@ -9,7 +9,6 @@ const PostCommentContainer = (props: any) => {
   // Extract props
   const id = props.id;
   // State
-  const [isLoaded, setIsLoaded] = useState(false);
   const [commentData, setCommentData] = useState([] as CommentType[]);
   // Hooks
   useEffect(() => {
@@ -17,7 +16,6 @@ const PostCommentContainer = (props: any) => {
       try {
         const commentData = await api.Post.Basic.ListComments(id);
         setCommentData(commentData as CommentType[]);
-        setIsLoaded(true);
       } catch (err) {
         console.log(err);
       }

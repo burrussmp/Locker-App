@@ -49,7 +49,7 @@ const PostBottomTab: React.FunctionComponent<PostBottomTabProps> = (
   const scrollY = props.scrollY;
   const rotationDegrees = props.rotationDegrees;
   const author = bottomTabData.username;
-  const blur_hash = bottomTabData.profile_photo.blur_hash;
+  const blur_hash = bottomTabData.profile_photo.blurhash;
   const id = bottomTabData._id;
   // State
   const [avatarURI, setAvatarURI] = useState('');
@@ -58,16 +58,21 @@ const PostBottomTab: React.FunctionComponent<PostBottomTabProps> = (
   const scrollAnimation = borderRadiusAnimationStyle(scrollY, index);
   const flipAnimation = flipAnimationTransform(rotationDegrees, false);
   useEffect(() => {
-    (async () => {
-      const blur_hash_uri = blur_hash
-        ? BlurHashService.BlurHashDecoder(blur_hash).getURI()
-        : undefined;
-      if (blur_hash_uri) {
-        setAvatarURI(blur_hash_uri);
-      }
-      const profile_uri = (await api.Avatar.Get(id, 'xlarge')) as string;
-      setAvatarURI(profile_uri);
-    })();
+    let isMounted = true;
+    const blur_hash_uri = blur_hash
+      ? BlurHashService.BlurHashDecoder(blur_hash).getURI()
+      : undefined;
+    if (blur_hash_uri && isMounted) {
+      setAvatarURI(blur_hash_uri);
+    }
+    api.Avatar.Get(id, 'xlarge')
+      .then(profile_url => {
+        if (isMounted) setAvatarURI(profile_url as string);
+      })
+      .catch(err => console.log(err));
+    return () => {
+      isMounted = false;
+    };
   }, []);
   return (
     <View>

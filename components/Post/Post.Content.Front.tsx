@@ -40,34 +40,17 @@ const PostContentFront = (props: {
       props.handleFlip();
     }
   };
-  const onContentDoubleTap = (event: TapGestureHandlerGestureEvent) => {
-    if (event.nativeEvent.state === State.ACTIVE) {
-      Alert.alert('NiceNice');
-      // like action goes here
-    }
-  };
   const flipAnimation = flipAnimationTransform(rotationDegrees, true);
   const scrollAnimation = borderTopRadiusAnimationStyle(scrollY, index);
   return (
     <View>
-      <TapGestureHandler
-        onHandlerStateChange={onContentTap}
-        waitFor={doubleTapRef}
-      >
-        <TapGestureHandler
-          ref={doubleTapRef}
-          onHandlerStateChange={onContentDoubleTap}
-          numberOfTaps={2}
-        >
-          <Animated.View
-            style={[ComponentStyles.imageContainer, flipAnimation]}
-          >
-            <Animated.Image
-              source={imageSource}
-              style={[ComponentStyles.image, scrollAnimation]}
-            />
-          </Animated.View>
-        </TapGestureHandler>
+      <TapGestureHandler onHandlerStateChange={onContentTap}>
+        <Animated.View style={[ComponentStyles.imageContainer, flipAnimation]}>
+          <Animated.Image
+            source={imageSource}
+            style={[ComponentStyles.image, scrollAnimation]}
+          />
+        </Animated.View>
       </TapGestureHandler>
     </View>
   );
