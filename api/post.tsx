@@ -200,7 +200,7 @@ const ListComments = async (postId: string): Promise<[CommentType] | Error> => {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
   const res = await global.fetch(
-    `${config.server}/api/posts/${postId}/comments?access_token=${id_and_token.access_token}`
+    `${config.server}/api/${postId}/comments?access_token=${id_and_token.access_token}`
   );
   if (res.ok) {
     return await res.json();

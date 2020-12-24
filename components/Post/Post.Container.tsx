@@ -26,27 +26,29 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
   props: PostContainerProps
 ) => {
   // Extract props
+  const id = props.id;
+  const index = props.index;
   const scrollY = props.scrollY;
   // State
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setLoaded] = useState(false);
   const [postData, setPostData] = useState(null as PostData);
-  const [index, setIndex] = useState(props.index);
   // Hooks
   useEffect(() => {
-    (async () => {
-      try {
-        const postData = await api.Post.Basic.GetByID(props.id);
-        console.log(postData);
-        setPostData({
-          apiResponse: postData,
-          index: index,
-          scrollY: scrollY,
-        } as PostData);
-        setIsLoaded(true);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    let isMounted = true;
+    api.Post.Basic.GetByID(id)
+      .then(postData => {
+        if (isMounted)
+          setPostData({
+            apiResponse: postData,
+            index: index,
+            scrollY: scrollY,
+          } as PostData);
+        setLoaded(true);
+      })
+      .catch(err => console.log(err));
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return !isLoaded ? (

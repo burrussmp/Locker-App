@@ -25,51 +25,53 @@ const ContentFrontStyles = StyleSheet.create({
   },
 });
 
-const ContentBackStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    right: 0,
-    left: 0,
-    height: 500,
-    backgroundColor: '#FFFFFF',
-    backfaceVisibility: 'hidden',
-  },
-  headerContainer: {
-    height: 150,
-    width: '100%',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingTop: 25,
-    paddingLeft: 25,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: '#FFFFFF',
-  },
-  captionContainer: {
-    flex: 2,
-  },
-  captionText: {
-    fontSize: 24,
-    fontWeight: '700',
-  },
-  priceText: {
-    fontSize: 18,
-    fontWeight: '200',
-    marginTop: 5,
-  },
-  avatarContainer: {
-    height: 100,
-    width: 100,
-    marginRight: 25,
-  },
-  bottomContainer: {
-    flex: 7,
-  },
-  divider: {
-    backgroundColor: 'black',
-    marginHorizontal: 75,
-  },
-});
+const ContentBackStyles = (props: any) =>
+  StyleSheet.create({
+    container: {
+      position: 'absolute',
+      right: 0,
+      left: 0,
+      height: 500,
+      backgroundColor: '#FFFFFF',
+      backfaceVisibility: 'hidden',
+      zIndex: props.isFlipped ? 1 : 0,
+    },
+    headerContainer: {
+      height: 150,
+      width: '100%',
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+      paddingTop: 25,
+      paddingLeft: 25,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      backgroundColor: '#FFFFFF',
+    },
+    captionContainer: {
+      flex: 2,
+    },
+    captionText: {
+      fontSize: 24,
+      fontWeight: '700',
+    },
+    priceText: {
+      fontSize: 18,
+      fontWeight: '200',
+      marginTop: 5,
+    },
+    avatarContainer: {
+      height: 100,
+      width: 100,
+      marginRight: 25,
+    },
+    bottomContainer: {
+      flex: 7,
+    },
+    divider: {
+      backgroundColor: 'black',
+      marginHorizontal: 75,
+    },
+  });
 
 const BottomTabStyles = (props: any) =>
   StyleSheet.create({
@@ -147,7 +149,6 @@ const LoadingStyles = StyleSheet.create({
   indicatorContainer: {
     flex: 1,
     height: 500,
-    marginTop: -50,
     justifyContent: 'center',
   },
   indicator: {

@@ -18,6 +18,8 @@ const profileIcon = require('assets/icons/profile.png');
 const profileIconSelected = require('assets/icons/profile_selected.png');
 const likeIcon = require('assets/icons/like.png');
 const likeIconSelected = require('assets/icons/liked.png');
+const likeIconSmall = require('assets/icons/like_small.png');
+const likeIconSmallSelected = require('assets/icons/liked_small.png');
 const lockIcon = require('assets/icons/lock.png');
 const lockIconSelected = require('assets/icons/locked.png');
 const moreIcon = require('assets/icons/more.png');
@@ -46,6 +48,8 @@ const icons = {
   like: {
     liked: likeIconSelected,
     unliked: likeIcon,
+    liked_small: likeIconSmallSelected,
+    unliked_small: likeIconSmall,
   },
   lock: {
     locked: lockIconSelected,

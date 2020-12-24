@@ -4,7 +4,7 @@
 'use strict';
 // External
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Animated, Alert, Platform} from 'react-native';
+import {View, Animated, Alert, Platform, ImageURISource} from 'react-native';
 // Internal
 import PostContentFront from 'components/Post/Post.Content.Front';
 import PostContentBack from 'components/Post/Post.Content.Back';
@@ -43,6 +43,7 @@ const PostContent = (props: {postData: PostData}) => {
   // State
   const [image, setImage] = useState('');
   const [isFlipped, setFlipped] = useState(false);
+  const imageSource = image ? {uri: image} : undefined;
   // Hooks
   useEffect(() => {
     (async () => {
@@ -80,18 +81,20 @@ const PostContent = (props: {postData: PostData}) => {
       <View style={ComponentStyles.topContainer}>
         <PostContentBack
           info={info}
-          image={image}
+          imageSource={imageSource as ImageURISource}
           index={index}
           rotationDegrees={rotationDegrees}
           scrollY={scrollY}
           handleFlip={handleFlip}
+          isFlipped={isFlipped}
         />
         <PostContentFront
-          image={image}
+          imageSource={imageSource as ImageURISource}
           index={index}
           rotationDegrees={rotationDegrees}
           scrollY={scrollY}
           handleFlip={handleFlip}
+          isFlipped={isFlipped}
         />
       </View>
       <PostBottomTab
