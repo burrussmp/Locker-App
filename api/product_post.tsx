@@ -9,7 +9,7 @@ type media = {
   uri: string;
 };
 
-type ContentPostData = {
+type ProductPostData = {
   price: string;
   caption: string;
   tags: string;
@@ -28,7 +28,7 @@ type ContentPostData = {
 */
 const Create = async (
   media: media,
-  data: ContentPostData
+  data: ProductPostData
 ): Promise<{_id: string} | Error> => {
   if (
     media.type !== 'image/jpeg' &&
@@ -47,7 +47,7 @@ const Create = async (
   form.append('caption', data.caption);
   form.append('tags', data.tags);
   const res = await global.fetch(
-    `${config.server}/api/posts?type=ContentPost&access_token=${id_and_token.access_token}`,
+    `${config.server}/api/posts?type=ProductPost&access_token=${id_and_token.access_token}`,
     {
       method: 'POST',
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -62,7 +62,7 @@ const Create = async (
   }
 };
 
-export type ContentPostType = {
+export type ProductPostType = {
   price: number;
   media: {
     key: string;

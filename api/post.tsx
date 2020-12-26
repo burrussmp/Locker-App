@@ -1,7 +1,7 @@
 'use strict';
 import config from 'config';
 import apiHelper from 'api/helper';
-import {ContentPostType} from './content_post';
+import {ProductPostType} from './product_post';
 import {CommentType} from './comments';
 
 export type PostType = {
@@ -9,7 +9,7 @@ export type PostType = {
   tags: Array<Record<string, string>>;
   _id: string;
   type: string;
-  content: ContentPostType;
+  content: ProductPostType;
   postedBy: string;
   createdAt: string;
   updatedAt: string;
@@ -71,8 +71,8 @@ const GetAll = async (): Promise<{_id: string} | Error> => {
         "designer"
     ],
     "_id": "5f4155c1284bd74c053c2ffe",
-    "type": "ContentPost",
-    "content": // depends on the type of post (see /api/content_post.tsx for example),
+    "type": "ProductPost",
+    "content": // depends on the type of post (see /api/product_post.tsx for example),
     "postedBy": "5f4155c0284bd74c053c2ff9",
     "createdAt": "2020-08-22T17:28:33.161Z",
     "updatedAt": "2020-08-22T17:28:33.161Z"

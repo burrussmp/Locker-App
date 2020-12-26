@@ -21,7 +21,7 @@ const isLoggedIn = (state: any): boolean => {
 const Authenticate = async (dispatch: any, session: Session) => {
   dispatch(AuthActions.SetSession(session));
   if (session) {
-    const verified = await api.Session.VerifyToken(session['access_token']);
+    const verified = await api.Session.verifyToken(session['access_token']);
     dispatch(AuthActions.VerifyToken(verified));
   }
 };

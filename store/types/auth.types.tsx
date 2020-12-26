@@ -14,6 +14,7 @@ export interface Session {
   refresh_token: string;
   id_token: string;
   _id: string;
+  [key: string]: string;
 }
 
 interface SetSession {

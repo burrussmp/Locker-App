@@ -9,4 +9,4 @@ export type PostData = {
   scrollY: Animated.Value;
 } | null;
 
-export const CONTENT = 'ContentPost';
+export const CONTENT = 'ProductPost';

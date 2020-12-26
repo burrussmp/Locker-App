@@ -1,50 +1,77 @@
 /**
+ * @description All of the authorization calls for users
  * @author Matthew P. Burruss
- * @date Aug 2020
- * @desc Client-Side API calls
+ * @date 12/24/2020
  * @version 1.0.0
  */
 
-import apiSession from './session';
-import apiHelper from './helper';
+import apiSession from 'api/session';
+import apiHelper from 'api/helper';
 import {Session} from 'store/types/auth.types';
 import config from 'config';
 global.fetch = require('node-fetch');
 
+/**
+ * @desc Login information interface
+ */
 interface LoginData {
+  /**
+   * @property {string} login The username, phone number, or email of the user.
+   */
   login: string;
+  /**
+   * @property {string} password The password of the user.
+   */
   password: string;
 }
 
 interface SignUpData {
-  username: string;
-  password: string;
-  first_name: string;
-  last_name: string;
+  /**
+   * @property {string} email The email of the user.
+   */
   email: string;
+  /**
+   * @property {string} phone_number The phone number of the user. Must be in format +15024567890
+   */
   phone_number: string;
+  /**
+   * @property {string} login The username of the user (<= 32 characters).
+   */
+  username: string;
+  /**
+   * @property {string} password The password of the user (at least 1 number, 1 lower case, 1 upper case
+   * and 1 special character, and >= 8 characters.).
+   */
+  password: string;
+  /**
+   * @property {string} first_name The first name of the user (optional)
+   */
+  first_name: string;
+  /**
+   * @property {string} last_name The first name of the user (optional)
+   */
+  last_name: string;
 }
 
 /**
- * @desc Login API
- * @param data : Object - Contains the login info and password of the
- * @return A promise that can be handled. If resolved, the user's token is returned (String) else an error is returned
+ * @desc User Login API
+ * @param {LoginData} data Contains the login info and password of the
+ * @return {Promise<Session | Error>} A promise that can be handled. If resolved, the user's token is returned (String)
+ * else an error is returned
  * @success
 ```
-{
-    "access_token": "XXXX",
-    "id_token": "YYYY",
-    "refresh_token" : "ZZZZ",
-    "_id": "WWWW"
-}
+  {
+      "access_token": "XXXX",
+      "id_token": "YYYY",
+      "refresh_token" : "ZZZZ",
+      "_id": "WWWW"
+  }
 ```
  */
 const Login = async (data: LoginData): Promise<Session | Error> => {
   const res = await global.fetch(`${config.server}/auth/login`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(data),
   });
   if (res.ok) {
@@ -58,7 +85,8 @@ const Login = async (data: LoginData): Promise<Session | Error> => {
 
 /**
  * @desc Logout API
- * @return A promise that can be handled. If resolved, the user's token has been deleted else error can be caught
+ * @return {Promise<{message: string} | Error>} A promise that resolves
+ * if the user has successfully been logged out.
  * @success
 ```
   {
@@ -77,9 +105,10 @@ const Logout = async (): Promise<{message: string} | Error> => {
 };
 
 /**
- * @desc Signup API
- * @param data : Object - Contains the login info and password of the
- * @return A promise that can be handled. If resolved, void else throws error
+ * @desc User Sign Up API
+ * @param {SignUpData} data The sign in information. Required attributes include username, email,
+ * phone number, and password.
+ * @return {Promise<Session>} The user session if successful.
   * @success
 ```
 {
@@ -108,9 +137,10 @@ const SignUp = async (data: SignUpData): Promise<Session> => {
 };
 
 /**
- * @desc Forgot Password
+ * @desc Forgot Password API
  * @param {string} email The email of the person who forgot their password
- * @return A promise that resolves if a code has been sent to person's email
+ * @return {Promise<{cognito_username: string}>} The cognito_username if the person has been sent an
+ * email.
   * @success (Note: The cognito_username is required to reset the password so must be kept)
 ```
   {
@@ -118,9 +148,7 @@ const SignUp = async (data: SignUpData): Promise<Session> => {
   }
 ```
  */
-const ForgotPassword = async (
-  email: string
-): Promise<{cognito_username: string}> => {
+const ForgotPassword = async (email: string): Promise<{cognito_username: string}> => {
   const res = await global.fetch(`${config.server}/auth/forgot_password`, {
     method: 'POST',
     headers: {
@@ -138,11 +166,11 @@ const ForgotPassword = async (
 };
 
 /**
- * @desc Confirm Forgot Password
+ * @desc Confirm Forgotten Password
  * @param {string} cognito_username The cognito username of the person (should come from the ForgotPassword request)
- * @param {string} confirmation_code The confirmation code sent to the user
+ * @param {string} confirmation_code The confirmation code sent to the user via email or SMS.
  * @param {string} new_password The new password of the person
- * @return A promise that resolves if the password has been successfully reset
+ * @return {Promise<boolean>} A promise that resolves if the password has been successfully reset
   * @success (Note: The cognito_username is required to reset the password so must be kept)
 ```
 {
@@ -150,13 +178,8 @@ const ForgotPassword = async (
 }
 ```
  */
-const ConfirmForgotPassword = async (
-  cognito_username: string,
-  confirmation_code: string,
-  new_password: string
-): Promise<boolean> => {
-  const res = await global.fetch(
-    `${config.server}/auth/confirm_forgot_password`,
+const ConfirmForgotPassword = async (cognito_username: string, confirmation_code: string, new_password: string): Promise<boolean> => {
+  const res = await global.fetch(`${config.server}/auth/confirm_forgot_password`,
     {
       method: 'POST',
       headers: {

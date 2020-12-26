@@ -1,19 +1,25 @@
 'use strict';
+/**
+ * @description A wrapper of all of the API calls into a single callable object
+ * @author Matthew P. Burruss
+ * @date 12/24/2020
+ * @version 1.0.0
+ */
 
-import auth from './auth';
-import session from './session';
-import user from './user';
-import avatar from './avatar';
-import s3 from './S3';
-import post from './post';
-import content_post from './content_post';
-import comments from './comments';
-import replies from './replies';
-import search from './search';
+import auth from 'api/auth';
+import session from 'api/session';
+import user from 'api/user';
+import avatar from 'api/avatar';
+import s3 from 'api/S3';
+import post from 'api/post';
+import product_post from 'api/product_post';
+import comments from 'api/comments';
+import replies from 'api/replies';
+import search from 'api/search';
 
 type PostAPIType = {
   Basic: typeof post;
-  ContentPost: typeof content_post;
+  ProductPost: typeof product_post;
 };
 
 type APIType = {
@@ -30,7 +36,7 @@ type APIType = {
 
 const post_api: PostAPIType = {
   Basic: post,
-  ContentPost: content_post,
+  ProductPost: product_post,
 };
 
 const api: APIType = {
