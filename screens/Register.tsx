@@ -7,7 +7,7 @@
  * @desc Registration screen
  */
 
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Keyboard,
   Text,
@@ -26,9 +26,10 @@ import PhoneNumberTextInput from 'components/Auth/PhoneNumberTextInput';
 import LoadingAll from 'components/Common/LoadingAll';
 import SafeArea from 'components/Common/SafeArea';
 import api from 'api/api';
-import {Session} from 'store/types/auth.types';
+import { Session } from 'store/types/auth.types';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import AuthStyles from 'styles/Auth/Auth.Styles';
+import { connect } from 'react-redux';
 
 const logoImage = require('assets/images/logo.png');
 
@@ -53,9 +54,9 @@ const RegisterScreen = (props: any) => {
   const handleSubmit = async () => {
     if (!username) {
       return Alert.alert('Username is required');
-    } else if (!phoneNumber) {
+    } if (!phoneNumber) {
       return Alert.alert('Phone number is required');
-    } else if (!email) {
+    } if (!email) {
       Alert.alert('Email is required');
     } else if (!password) {
       return Alert.alert('Password is required');
@@ -65,18 +66,18 @@ const RegisterScreen = (props: any) => {
     }
     setLoading(true);
     const data = {
-      username: username,
-      password: password,
+      username,
+      password,
       first_name: firstName,
       last_name: lastName,
-      email: email,
+      email,
       phone_number: phoneNumber,
     };
     api.Auth.SignUp(data)
-      .then(session => {
+      .then((session) => {
         props.SignUp(session);
       })
-      .catch(err => {
+      .catch((err) => {
         setLoading(false);
         const error = JSON.parse(err.message);
         Alert.alert(error.error);
@@ -86,11 +87,11 @@ const RegisterScreen = (props: any) => {
   const LoadingAnimation = loading ? <LoadingAll /> : undefined;
   return (
     <SafeArea
-      children={
+      children={(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView>
             <View style={[AuthStyles.TopContainer]}>
-              <Image source={logoImage} style={AuthStyles.Logo}></Image>
+              <Image source={logoImage} style={AuthStyles.Logo} />
               <Text style={RegisterStyles.authHeaderText}>{headerText}</Text>
               <View style={AuthStyles.InputContainerMain}>
                 <Text style={AuthStyles.Label}>Username:</Text>
@@ -126,8 +127,8 @@ const RegisterScreen = (props: any) => {
                   textContentType="emailAddress"
                 />
                 <PasswordInput
-                  labelPassword={'Password'}
-                  labelConfirmPassword={'Confirm password:'}
+                  labelPassword="Password"
+                  labelConfirmPassword="Confirm password:"
                   setPassword={setPassword}
                   confirmPassword={confirmPassword}
                 />
@@ -137,25 +138,22 @@ const RegisterScreen = (props: any) => {
                   width: '100%',
                   marginTop: 50,
                 }}
-              ></View>
+              />
             </View>
             <AuthButton text="Register" mode="dark" onPress={handleSubmit} />
             {LoadingAnimation}
           </ScrollView>
         </TouchableWithoutFeedback>
-      }
+      )}
     />
   );
 };
 
 const mapStateToProps = (state: any) => state;
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    SignUp: async (session: Session) => {
-      await AuthSelectors.Authenticate(dispatch, session);
-    },
-  };
-};
-import {connect} from 'react-redux';
+const mapDispatchToProps = (dispatch: any) => ({
+  SignUp: async (session: Session) => {
+    await AuthSelectors.Authenticate(dispatch, session);
+  },
+});
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

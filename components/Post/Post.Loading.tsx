@@ -2,7 +2,7 @@
 'use strict';
 // External
 import React from 'react';
-import {View, ActivityIndicator} from 'react-native';
+import {Animated, View, ActivityIndicator} from 'react-native';
 // Internal
 import PostBottomTab from 'components/Post/Post.BottomTab';
 // Styles
@@ -24,7 +24,7 @@ const PostLoading = (props: any) => {
           style={ComponentStyles.indicator}
         />
       </View>
-      <PostBottomTab index={index} scrollY={scrollY} />
+      <PostBottomTab index={index} scrollY={scrollY} rotationDegrees={new Animated.Value(0)}/>
     </View>
   );
 };

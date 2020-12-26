@@ -49,8 +49,8 @@ const SearchItem = (props: {item: SearchResultsType}) => {
 
   const item = props.item;
   const username = item.data.username;
-  const first_name = item.data.first_name;
-  const last_name = item.data.last_name;
+  const firstName = item.data.firstName;
+  const lastName = item.data.lastName;
   const userId = item.data._id;
   const [source, setSource] = useState(DefaultAvatar);
   useEffect(() => {
@@ -73,8 +73,8 @@ const SearchItem = (props: {item: SearchResultsType}) => {
     })();
   }, []);
   let subtitleText = '';
-  subtitleText += first_name ? first_name + ' ' : '';
-  subtitleText += last_name ? last_name : '';
+  subtitleText += firstName ? firstName + ' ' : '';
+  subtitleText += lastName ? lastName : '';
   const Subtitle = subtitleText ? (
     <Text style={SearchItemStyles.subTitle}>{subtitleText}</Text>
   ) : undefined;

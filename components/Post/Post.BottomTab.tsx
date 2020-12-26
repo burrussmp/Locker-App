@@ -23,11 +23,11 @@ import styles from 'components/Post/Post.Styles';
 import api from 'api/api';
 
 interface PostBottomTabProps {
-  bottomTabData: any;
-  cardColor: number[];
   index: number;
   scrollY: Animated.Value;
   rotationDegrees: Animated.Value;
+  bottomTabData?: any;
+  cardColor?: number[];
 }
 
 /**

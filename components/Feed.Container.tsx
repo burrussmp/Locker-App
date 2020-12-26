@@ -55,19 +55,19 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
   );
 
   const getFeedData = () => {
-    api.Post.Basic.GetAll()
-      .then(res => {
-        if (!isCancelled.current) {
-          setFeedData(res);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // api.Post.Basic.GetAll()
+    //   .then(res => {
+    //     if (!isCancelled.current) {
+    //       setFeedData(res);
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   };
 
   return (
-    <View style={styles.droidSafeArea}>
+    <View style={styles.safeArea}>
       <FlatList
         ref={feedRef}
         contentContainerStyle={{

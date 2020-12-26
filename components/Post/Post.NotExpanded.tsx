@@ -15,8 +15,8 @@ import {Alert, Animated, FlatList, Image, Text, View} from 'react-native';
 import {State, TapGestureHandler} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 
-import LikeButton from 'components/Post.LikeButton';
-import LockButton from 'components/Post.LockButton';
+import LikeButton from 'components/Post/Post.LikeButton';
+import LockButton from 'components/Post/Post.LockButton';
 import icons from 'icons/icons';
 
 import PostActions from 'store/actions/post.actions';
@@ -36,6 +36,14 @@ interface PostProps {
   image: string;
   scrollY: Animated.Value;
   onContentExpand(index: number): void;
+  ExpandPost(): void;
+  cardColor: string;
+  author: string;
+  authorAvatar: {
+    uri: string;
+  };
+
+
 }
 
 const PostNotExpanded: React.FunctionComponent<PostProps> = (
@@ -104,7 +112,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                 ]}
               >
                 <Animated.Image
-                  source={props.image ? {uri: props.image} : null}
+                  source={{uri: props.image}}
                   style={[
                     {flex: 1, width: '100%', resizeMode: 'cover'},
                     pushOutAnimationTransform(props.scrollY, props.index),
@@ -155,7 +163,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
                       </Text>
                     </View>
                     <Avatar
-                      source={props.image ? {uri: props.image} : null}
+                      source={{uri: props.image}}
                       rounded
                       containerStyle={{
                         height: 100,

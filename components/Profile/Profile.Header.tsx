@@ -40,7 +40,7 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
     ? `${userInfo.followers.length} Followers • ${userInfo.following.length} Following`
     : '';
   const nameText = userInfo
-    ? `${userInfo.first_name} ${userInfo.last_name}`
+    ? `${userInfo.first_name ? userInfo.first_name : ''} ${userInfo.last_name ? userInfo.last_name : ''}`
     : '';
   const handleText = userInfo ? `@${userInfo.username}` : '';
   const aboutText = userInfo ? userInfo.about : '';

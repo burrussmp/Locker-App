@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
@@ -45,34 +42,34 @@ const PhoneNumberTextInput = (props: {setPhoneNumber: CallableFunction}) => {
     const insert = (str: string, index: number, value: string) => {
       return str.substr(0, index) + value + str.substr(index);
     };
-    let phone_number = text.replace(/-|\)|\(/g, '');
+    let phoneNumber = text.replace(/-|\)|\(/g, '');
     if (callingCode === '1') {
-      if (phone_number.includes('+' + callingCode)) {
-        phone_number = phone_number.replace('+' + callingCode, '');
+      if (phoneNumber.includes('+' + callingCode)) {
+        phoneNumber = phoneNumber.replace('+' + callingCode, '');
       }
-      if (phone_number.length > 0 && !phone_number.includes('(')) {
-        phone_number = insert(phone_number, 0, '(');
+      if (phoneNumber.length > 0 && !phoneNumber.includes('(')) {
+        phoneNumber = insert(phoneNumber, 0, '(');
       }
-      if (phone_number.length > 4 && !phone_number.includes(')')) {
-        phone_number = insert(phone_number, 4, ')');
-      }
-      if (
-        phone_number.length > 5 &&
-        (phone_number.match(/-/g) || []).length === 0
-      ) {
-        phone_number = insert(phone_number, 5, '-');
+      if (phoneNumber.length > 4 && !phoneNumber.includes(')')) {
+        phoneNumber = insert(phoneNumber, 4, ')');
       }
       if (
-        phone_number.length > 9 &&
-        (phone_number.match(/-/g) || []).length === 1
+        phoneNumber.length > 5 &&
+        (phoneNumber.match(/-/g) || []).length === 0
       ) {
-        phone_number = insert(phone_number, 9, '-');
+        phoneNumber = insert(phoneNumber, 5, '-');
+      }
+      if (
+        phoneNumber.length > 9 &&
+        (phoneNumber.match(/-/g) || []).length === 1
+      ) {
+        phoneNumber = insert(phoneNumber, 9, '-');
       }
     }
-    setText(phone_number);
-    const cleaned_phone_number =
-      '+' + callingCode + phone_number.replace(/-|\)|\(/g, '');
-    setPhoneNumber(cleaned_phone_number);
+    setText(phoneNumber);
+    const cleanedPhoneNumber =
+      '+' + callingCode + phoneNumber.replace(/-|\)|\(/g, '');
+    setPhoneNumber(cleanedPhoneNumber);
   };
   return (
     <AuthTextInput

@@ -1,14 +1,23 @@
 {
+    "settings": {
+        "import/resolver": {
+          "typescript": {}
+        }
+    },
     "env": {
         "browser": true,
         "es2021": true
     },
     "extends": [
         "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "airbnb"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./",
         "ecmaFeatures": {
             "jsx": true
         },
@@ -16,6 +25,7 @@
         "sourceType": "module"
     },
     "plugins": [
+        "import",
         "react",
         "@typescript-eslint"
     ],
@@ -25,7 +35,7 @@
             "ignoreComments": false,
             "ignoreRegExpLiterals": true,
             "ignoreStrings": false,
-            "ignoreTemplateLiterals": false,
+            "ignoreTemplateLiterals": false
         }]
     }
 }

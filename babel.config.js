@@ -17,6 +17,7 @@ module.exports = function (api) {
             styles: './styles',
             assets: './assets',
             containers: './containers',
+            tests: './tests',
           },
         },
       ],

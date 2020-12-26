@@ -5,11 +5,12 @@
  * @version 1.0.0
  */
 
+import fetch from 'node-fetch';
+
 import apiSession from 'api/session';
 import apiHelper from 'api/helper';
-import {Session} from 'store/types/auth.types';
+import { Session } from 'store/types/auth.types';
 import config from 'config';
-global.fetch = require('node-fetch');
 
 /**
  * @desc Login information interface
@@ -18,39 +19,39 @@ interface LoginData {
   /**
    * @property {string} login The username, phone number, or email of the user.
    */
-  login: string;
+  'login': string;
   /**
    * @property {string} password The password of the user.
    */
-  password: string;
+  'password': string;
 }
 
 interface SignUpData {
   /**
    * @property {string} email The email of the user.
    */
-  email: string;
+  'email': string;
   /**
    * @property {string} phone_number The phone number of the user. Must be in format +15024567890
    */
-  phone_number: string;
+  'phone_number': string;
   /**
    * @property {string} login The username of the user (<= 32 characters).
    */
-  username: string;
+  'username': string;
   /**
    * @property {string} password The password of the user (at least 1 number, 1 lower case, 1 upper case
    * and 1 special character, and >= 8 characters.).
    */
-  password: string;
+  'password': string;
   /**
    * @property {string} first_name The first name of the user (optional)
    */
-  first_name: string;
+  'first_name': string;
   /**
    * @property {string} last_name The first name of the user (optional)
    */
-  last_name: string;
+  'last_name': string;
 }
 
 /**
@@ -69,18 +70,17 @@ interface SignUpData {
 ```
  */
 const Login = async (data: LoginData): Promise<Session | Error> => {
-  const res = await global.fetch(`${config.server}/auth/login`, {
+  const res = await fetch(`${config.server}/auth/login`, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
   if (res.ok) {
-    const session = await res.json();
+    const session = await res.json() as Session;
     await apiSession.setSession(session);
     return session;
-  } else {
-    throw await apiHelper.handleError(res);
   }
+  throw await apiHelper.handleError(res);
 };
 
 /**
@@ -95,13 +95,12 @@ const Login = async (data: LoginData): Promise<Session | Error> => {
 ```
  */
 const Logout = async (): Promise<{message: string} | Error> => {
-  const res = await global.fetch(`${config.server}/auth/logout`);
+  const res = await fetch(`${config.server}/auth/logout`);
   if (res.ok) {
     await apiSession.setSession(null);
-    return await res.json();
-  } else {
-    throw await apiHelper.handleError(res);
+    return await res.json() as {message: string};
   }
+  throw await apiHelper.handleError(res);
 };
 
 /**
@@ -120,7 +119,7 @@ const Logout = async (): Promise<{message: string} | Error> => {
 ```
  */
 const SignUp = async (data: SignUpData): Promise<Session> => {
-  const res = await global.fetch(`${config.server}/api/users`, {
+  const res = await fetch(`${config.server}/api/users`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -128,12 +127,11 @@ const SignUp = async (data: SignUpData): Promise<Session> => {
     body: JSON.stringify(data),
   });
   if (res.ok) {
-    const session = await res.json();
+    const session = await res.json() as Session;
     await apiSession.setSession(session);
     return session;
-  } else {
-    throw await apiHelper.handleError(res);
   }
+  throw await apiHelper.handleError(res);
 };
 
 /**
@@ -148,28 +146,27 @@ const SignUp = async (data: SignUpData): Promise<Session> => {
   }
 ```
  */
-const ForgotPassword = async (email: string): Promise<{cognito_username: string}> => {
-  const res = await global.fetch(`${config.server}/auth/forgot_password`, {
+const ForgotPassword = async (email: string): Promise<{'cognito_username': string}> => {
+  const res = await fetch(`${config.server}/auth/forgot_password`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      email: email,
+      email,
     }),
   });
   if (res.ok) {
-    return await res.json();
-  } else {
-    throw await apiHelper.handleError(res);
+    return await res.json() as {'cognito_username': string};
   }
+  throw await apiHelper.handleError(res);
 };
 
 /**
  * @desc Confirm Forgotten Password
  * @param {string} cognito_username The cognito username of the person (should come from the ForgotPassword request)
- * @param {string} confirmation_code The confirmation code sent to the user via email or SMS.
- * @param {string} new_password The new password of the person
+ * @param {string} confirmationCode The confirmation code sent to the user via email or SMS.
+ * @param {string} newPassword The new password of the person
  * @return {Promise<boolean>} A promise that resolves if the password has been successfully reset
   * @success (Note: The cognito_username is required to reset the password so must be kept)
 ```
@@ -178,25 +175,23 @@ const ForgotPassword = async (email: string): Promise<{cognito_username: string}
 }
 ```
  */
-const ConfirmForgotPassword = async (cognito_username: string, confirmation_code: string, new_password: string): Promise<boolean> => {
-  const res = await global.fetch(`${config.server}/auth/confirm_forgot_password`,
+const ConfirmForgotPassword = async (cognitoUsername: string, confirmationCode: string, newPassword: string): Promise<boolean> => {
+  const res = await fetch(`${config.server}/auth/confirm_forgot_password`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        cognito_username: cognito_username,
-        confirmation_code: confirmation_code,
-        new_password: new_password,
+        cognito_username: cognitoUsername,
+        confirmation_code: confirmationCode,
+        new_password: newPassword,
       }),
-    }
-  );
+    });
   if (res.ok) {
     return true;
-  } else {
-    throw await apiHelper.handleError(res);
   }
+  throw await apiHelper.handleError(res);
 };
 
 export default {

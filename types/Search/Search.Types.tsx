@@ -11,8 +11,8 @@ export type SearchResultsType = {
   data: {
     _id: string;
     username: string;
-    first_name?: string;
-    last_name?: string;
+    firstName?: string;
+    lastName?: string;
     profile_photo: {
       mimetype: string;
       key: string;

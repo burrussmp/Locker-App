@@ -10,7 +10,7 @@ import {ALL} from 'dns';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 
-import PostNotExpanded from 'components/Post.NotExpanded';
+import PostNotExpanded from 'components/Post/Post.NotExpanded';
 import api from 'api/api';
 import {
   flipAnimation,
@@ -40,11 +40,11 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
     api.Post.Basic.GetByID(props.id)
       .then(res => {
         if (!isCancelled.current) {
-          setPostData(res);
-          setPostContent(res.content);
-          api.S3.GetMedia(res.content.media.key).then(res => {
-            setPostImageURI(res);
-          });
+          // setPostData(res);
+          // setPostContent(res.content);
+          // api.S3.GetMedia(res.content.media.key).then(res => {
+          //   setPostImageURI(res);
+          // });
           setIndex(index + 1);
         }
       })

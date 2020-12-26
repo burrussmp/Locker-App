@@ -20,7 +20,7 @@ import icons from 'icons/icons';
  * @desc Renders a like button
  * @props The 'data' attribute specifies the post data to render
  */
-const LikeButton = (props: {size: string; style: StyleSheet<ViewStyle>}) => {
+const LikeButton = (props: {size?: string; style?: ViewStyle}) => {
   // Extract props
   const size = props.size || 'large';
   const viewStyle = props.style;

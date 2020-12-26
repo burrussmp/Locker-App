@@ -22,6 +22,7 @@ const PostContentFront = (props: {
   imageSource: ImageURISource;
   index: number;
   rotationDegrees: Animated.Value;
+  isFlipped: Boolean,
   scrollY: Animated.Value;
   handleFlip(): void;
 }) => {

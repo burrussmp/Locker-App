@@ -1,4 +1,3 @@
-'use strict';
 /**
  * @description A wrapper of all of the API calls into a single callable object
  * @author Matthew P. Burruss
@@ -12,14 +11,14 @@ import user from 'api/user';
 import avatar from 'api/avatar';
 import s3 from 'api/S3';
 import post from 'api/post';
-import product_post from 'api/product_post';
+import productPost from 'api/product_post';
 import comments from 'api/comments';
 import replies from 'api/replies';
 import search from 'api/search';
 
 type PostAPIType = {
   Basic: typeof post;
-  ProductPost: typeof product_post;
+  ProductPost: typeof productPost;
 };
 
 type APIType = {
@@ -34,9 +33,9 @@ type APIType = {
   Search: typeof search;
 };
 
-const post_api: PostAPIType = {
+const postAPI: PostAPIType = {
   Basic: post,
-  ProductPost: product_post,
+  ProductPost: productPost,
 };
 
 const api: APIType = {
@@ -45,7 +44,7 @@ const api: APIType = {
   User: user,
   Avatar: avatar,
   S3: s3,
-  Post: post_api,
+  Post: postAPI,
   Comments: comments,
   Replies: replies,
   Search: search,
