@@ -10,10 +10,10 @@ export const LOGOUT = 'auth/logout';
 export const VERIFY_TOKEN = 'auth/verify_token';
 
 export interface Session {
-  access_token: string;
-  refresh_token: string;
-  id_token: string;
-  _id: string;
+  'access_token': string;
+  'refresh_token': string;
+  'id_token': string;
+  '_id': string;
   [key: string]: string;
 }
 

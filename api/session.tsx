@@ -1,8 +1,6 @@
-'use strict';
-
 // imports
-import AsyncStorage from '@react-native-community/async-storage';
-import {Session} from 'store/types/auth.types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Session } from 'store/types/auth.types';
 import config from 'config';
 
 const ASYNC_STORAGE_SESSION_KEY = 'session';
@@ -15,9 +13,9 @@ const ASYNC_STORAGE_SESSION_KEY = 'session';
  */
 const setSession = async (session: Session | null): Promise<void> => {
   return session
-    ? AsyncStorage.setItem(ASYNC_STORAGE_SESSION_KEY, JSON.stringify(session))
-    : AsyncStorage.setItem(ASYNC_STORAGE_SESSION_KEY, '');
-};
+  ? AsyncStorage.setItem(ASYNC_STORAGE_SESSION_KEY, JSON.stringify(session))
+  : AsyncStorage.setItem(ASYNC_STORAGE_SESSION_KEY, '');
+}
 
 /**
  * @desc Get the user session information from asynchronous storage.
@@ -27,10 +25,9 @@ const setSession = async (session: Session | null): Promise<void> => {
 const getSession = async (): Promise<Session | null> => {
   const session = await AsyncStorage.getItem(ASYNC_STORAGE_SESSION_KEY);
   if (session) {
-    return JSON.parse(session);
-  } else {
-    return null;
+    return JSON.parse(session) as Session;
   }
+  return null;
 };
 
 /**
@@ -40,7 +37,7 @@ const getSession = async (): Promise<Session | null> => {
  * false.
  */
 const verifyToken = async (token: string): Promise<boolean> => {
-  const res = await global.fetch(`${config.server}/auth/verify_token?token=${token}`, {method: 'HEAD'});
+  const res = await global.fetch(`${config.server}/auth/verify_token?token=${token}`, { method: 'HEAD' });
   return res.ok;
 };
 
@@ -56,39 +53,32 @@ const retrieveFromSession = async (key: string): Promise<string | undefined> => 
   if (session) {
     return session[key];
   }
+  return undefined;
 };
 
 /**
  * @desc Retrieves the User's access token from memory.
  * @return {Promise<string | undefined>} The access token of the user
  */
-const getAccessToken = async (): Promise<string | undefined> => {
-  return retrieveFromSession('access_token');
-};
+const getAccessToken = async (): Promise<string | undefined> => retrieveFromSession('access_token');
 
 /**
  * @desc Retrieves the User's ID token from memory.
  * @return {Promise<string | undefined>} The ID token of the user.
  */
-const getIDToken = async (): Promise<string | undefined> => {
-  return retrieveFromSession('id_token');
-};
+const getIDToken = async (): Promise<string | undefined> => retrieveFromSession('id_token');
 
 /**
  * @desc Retrieves the User's refresh token from memory.
  * @return {Promise<string | undefined>} The refresh token of the user.
  */
-const getRefreshToken = async (): Promise<string | undefined> => {
-  return retrieveFromSession('refresh_token');
-};
+const getRefreshToken = async (): Promise<string | undefined> => retrieveFromSession('refresh_token');
 
 /**
  * @desc Retrieves the user Mongoose database ID.
  * @return {Promise<string | undefined>} The ID of the User.
  */
-const getMyID = async (): Promise<string | undefined> => {
-  return retrieveFromSession('_id');
-};
+const getMyID = async (): Promise<string | undefined> => retrieveFromSession('_id');
 
 export default {
   getAccessToken,
