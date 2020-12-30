@@ -13,7 +13,7 @@ export interface Session {
   'access_token': string;
   'refresh_token': string;
   'id_token': string;
-  '_id': string;
+  'id': string;
   [key: string]: string;
 }
 

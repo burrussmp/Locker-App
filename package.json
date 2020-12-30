@@ -126,6 +126,7 @@
     "jest-fetch-mock": "^3.0.3",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
+    "ts-auto-mock": "3.0.0",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
     "tsconfig-paths-jest": "0.0.1",

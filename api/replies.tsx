@@ -27,7 +27,7 @@ const Create = async (
   commentId: string,
   text: string
 ): Promise<[{_id: string}] | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -67,7 +67,7 @@ const Like = async (
   commentId: string,
   replyId: string
 ): Promise<[{_id: string}] | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -100,7 +100,7 @@ const Unlike = async (
   commentId: string,
   replyId: string
 ): Promise<[{_id: string}] | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -137,7 +137,7 @@ const GetById = async (
   commentId: string,
   replyId: string
 ): Promise<ReplyType | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -167,7 +167,7 @@ const Delete = async (
   commentId: string,
   replyId: string
 ): Promise<[{_id: string}] | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }

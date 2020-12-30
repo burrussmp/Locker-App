@@ -11,11 +11,9 @@ const ASYNC_STORAGE_SESSION_KEY = 'session';
  * in asynchronous storage.
  * @return {Promise<void>} A promise that resolves if successful otherwise can retrieve error.
  */
-const setSession = async (session: Session | null): Promise<void> => {
-  return session
+const setSession = async (session: Session | null): Promise<void> => (session
   ? AsyncStorage.setItem(ASYNC_STORAGE_SESSION_KEY, JSON.stringify(session))
-  : AsyncStorage.setItem(ASYNC_STORAGE_SESSION_KEY, '');
-}
+  : AsyncStorage.setItem(ASYNC_STORAGE_SESSION_KEY, ''));
 
 /**
  * @desc Get the user session information from asynchronous storage.

@@ -42,7 +42,7 @@ const PostContainer: React.FunctionComponent<PostContainerProps> = (
         if (!isCancelled.current) {
           // setPostData(res);
           // setPostContent(res.content);
-          // api.S3.GetMedia(res.content.media.key).then(res => {
+          // api.S3.getMedia(res.content.media.key).then(res => {
           //   setPostImageURI(res);
           // });
           setIndex(index + 1);

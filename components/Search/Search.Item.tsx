@@ -62,7 +62,7 @@ const SearchItem = (props: {item: SearchResultsType}) => {
           );
           setSource({uri: BlurHashDecoder.getURI()});
           const key = item.data.profile_photo.key;
-          const profilePhotoURI = await api.S3.GetMedia(key, 'large');
+          const profilePhotoURI = await api.S3.getMedia(key, 'large');
           setSource({uri: profilePhotoURI});
         } catch (err) {
           console.log(err);

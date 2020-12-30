@@ -35,7 +35,7 @@ const Authenticate = async (dispatch: any, session: Session) => {
 const getMyID = (): undefined | string => {
   const state = store.getState();
   if (state.auth && state.auth.session) {
-    return state.auth.session._id;
+    return state.auth.session.id;
   }
 };
 

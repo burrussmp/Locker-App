@@ -23,28 +23,22 @@ const AuthInitialState = {
     access_token: '',
     id_token: '',
     refresh_token: '',
-    _id: '',
+    id: '',
   },
   verified: false,
 };
 
 const AuthorizationReducer = (
   state = AuthInitialState,
-  action: AuthorizationActions
+  action: AuthorizationActions,
 ): AuthState => {
   switch (action.type) {
     case LOGOUT:
-      return Object.assign({}, state, {
-        session: null,
-      });
+      return AuthInitialState;
     case SET_SESSION:
-      return Object.assign({}, state, {
-        session: action.session,
-      });
+      return { ...state, session: action.session };
     case VERIFY_TOKEN:
-      return Object.assign({}, state, {
-        verified: action.verified,
-      });
+      return { ...state, verified: action.verified };
     default:
       return state;
   }

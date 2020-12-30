@@ -2,7 +2,6 @@
  * @description All of the authorization calls for users
  * @author Matthew P. Burruss
  * @date 12/24/2020
- * @version 1.0.0
  */
 
 import fetch from 'node-fetch';

@@ -28,7 +28,7 @@ const Create = async (
   postId: string,
   text: string
 ): Promise<[{_id: string}] | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -64,7 +64,7 @@ const Create = async (
   ```
 */
 const GetByID = async (commentID: string): Promise<CommentType | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -90,7 +90,7 @@ const GetByID = async (commentID: string): Promise<CommentType | Error> => {
   ```
 */
 const Like = async (commentID: string): Promise<{message: string} | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -121,7 +121,7 @@ const Like = async (commentID: string): Promise<{message: string} | Error> => {
 const Unlike = async (
   commentID: string
 ): Promise<{message: string} | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -150,7 +150,7 @@ const Unlike = async (
   ```
 */
 const Delete = async (commentID: string): Promise<{_id: string} | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -194,7 +194,7 @@ const Delete = async (commentID: string): Promise<{_id: string} | Error> => {
   ```
 */
 const ListReplies = async (commentID: string): Promise<[ReplyType] | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }

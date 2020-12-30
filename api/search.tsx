@@ -14,7 +14,7 @@ import apiHelper from 'api/helper';
   ```
  */
 const GetUsers = async (searchText: string): Promise<any> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }

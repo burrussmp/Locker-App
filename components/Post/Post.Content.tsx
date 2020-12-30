@@ -60,7 +60,7 @@ const PostContent = (props: {postData: PostData}) => {
         setImage(blur_hash_uri);
       }
       try {
-        const imageUri = await api.S3.GetMedia(mediaKey);
+        const imageUri = await api.S3.getMedia(mediaKey);
         setImage(imageUri);
       } catch (err) {
         console.log(err);

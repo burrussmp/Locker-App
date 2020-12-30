@@ -18,7 +18,7 @@ const UpdatePassword = async (
   password: string,
   old_password: string
 ): Promise<string | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -55,7 +55,7 @@ const UpdatePassword = async (
   ```
  */
 const Follow = async (userID: string): Promise<{message: string} | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -84,7 +84,7 @@ const Follow = async (userID: string): Promise<{message: string} | Error> => {
   ```
  */
 const Unfollow = async (userID: string): Promise<string | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -135,7 +135,7 @@ type ListFollowingType = {
 const GetFollowing = async (
   userID: string
 ): Promise<ListFollowingType | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -179,7 +179,7 @@ type ListAllUsersType = [
 ```
  */
 const GetAll = async (): Promise<ListAllUsersType | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -247,7 +247,7 @@ export type UserInfoType = {
   ```
  */
 const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -291,7 +291,7 @@ const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
   ```
  */
 const DeleteMe = async (): Promise<Record<string, any> | Error> => {
-  const id_and_token = apiHelper.get_id_and_token_redux();
+  const id_and_token = apiHelper.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
