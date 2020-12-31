@@ -48,7 +48,7 @@ type media = {
 
 const Update = async (avatar: media): Promise<Record<string, string>> => {
   if (avatar.type !== 'image/jpeg' && avatar.type !== 'image/png') {
-    throw Error('Cannot upload anything besides an image to a profile');
+    throw Error('The user avatar must be an image e.g. image/jpeg or image/png.');
   }
   const form = new FormData();
   form.append('media', avatar);

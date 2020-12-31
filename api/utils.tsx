@@ -123,7 +123,7 @@ const getRequest = async (url: string, query?: Record<string, string>): Promise<
   const headers = getHeaders();
   const method = 'GET';
   const queryString = new URLSearchParams(query).toString();
-  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers});
+  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers });
   if (res.ok) {
     return res;
   }
@@ -140,7 +140,7 @@ const deleteRequest = async (url: string, query?: Record<string, string>): Promi
   const headers = getHeaders();
   const method = 'DELETE';
   const queryString = new URLSearchParams(query).toString();
-  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers});
+  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers });
   if (res.ok) {
     return res;
   }
