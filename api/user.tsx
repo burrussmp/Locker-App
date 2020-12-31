@@ -1,6 +1,10 @@
-'use strict';
+/**
+ * @description Users API
+ * @author Matthew P. Burruss
+ * @date 12/24/2020
+ */
 import config from 'config';
-import apiHelper from 'api/helper';
+import utils from 'api/utils';
 
 /**
  * @desc Update password
@@ -18,7 +22,7 @@ const UpdatePassword = async (
   password: string,
   old_password: string
 ): Promise<string | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -39,7 +43,7 @@ const UpdatePassword = async (
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -55,7 +59,7 @@ const UpdatePassword = async (
   ```
  */
 const Follow = async (userID: string): Promise<{message: string} | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -68,7 +72,7 @@ const Follow = async (userID: string): Promise<{message: string} | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -84,7 +88,7 @@ const Follow = async (userID: string): Promise<{message: string} | Error> => {
   ```
  */
 const Unfollow = async (userID: string): Promise<string | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -97,7 +101,7 @@ const Unfollow = async (userID: string): Promise<string | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -135,7 +139,7 @@ type ListFollowingType = {
 const GetFollowing = async (
   userID: string
 ): Promise<ListFollowingType | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -146,7 +150,7 @@ const GetFollowing = async (
     const result = await res.json();
     return result;
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -179,7 +183,7 @@ type ListAllUsersType = [
 ```
  */
 const GetAll = async (): Promise<ListAllUsersType | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -190,7 +194,7 @@ const GetAll = async (): Promise<ListAllUsersType | Error> => {
     const result = await res.json();
     return result;
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -247,7 +251,7 @@ export type UserInfoType = {
   ```
  */
 const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -257,7 +261,7 @@ const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -291,7 +295,7 @@ const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
   ```
  */
 const DeleteMe = async (): Promise<Record<string, any> | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -304,7 +308,7 @@ const DeleteMe = async (): Promise<Record<string, any> | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 

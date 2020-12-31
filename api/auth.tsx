@@ -1,20 +1,17 @@
 /**
- * @description All of the authorization calls for users
+ * @description Auth API
  * @author Matthew P. Burruss
  * @date 12/24/2020
  */
 
-import fetch from 'node-fetch';
-
 import apiSession from 'api/session';
-import apiHelper from 'api/helper';
+import utils from 'api/utils';
 import { Session } from 'store/types/auth.types';
-import config from 'config';
 
 /**
  * @desc Login information interface
  */
-interface LoginData {
+interface LoginData extends Record<string, string> {
   /**
    * @property {string} login The username, phone number, or email of the user.
    */
@@ -25,7 +22,7 @@ interface LoginData {
   'password': string;
 }
 
-interface SignUpData {
+interface SignUpData extends Record<string, string> {
   /**
    * @property {string} email The email of the user.
    */
@@ -56,7 +53,7 @@ interface SignUpData {
 /**
  * @desc User Login API
  * @param {LoginData} data Contains the login info and password of the
- * @return {Promise<Session | Error>} A promise that can be handled. If resolved, the user's token is returned (String)
+ * @return {Promise<Session>} A promise that can be handled. If resolved, the user's token is returned (String)
  * else an error is returned
  * @success
 ```
@@ -68,18 +65,11 @@ interface SignUpData {
   }
 ```
  */
-const Login = async (data: LoginData): Promise<Session | Error> => {
-  const res = await fetch(`${config.server}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (res.ok) {
-    const session = await res.json() as Session;
-    await apiSession.setSession(session);
-    return session;
-  }
-  throw await apiHelper.handleError(res);
+const Login = async (data: LoginData): Promise<Session> => {
+  const res = await utils.postRequest('/auth/login', data);
+  const session = await res.json() as Session;
+  await apiSession.setSession(session);
+  return session;
 };
 
 /**
@@ -94,12 +84,9 @@ const Login = async (data: LoginData): Promise<Session | Error> => {
 ```
  */
 const Logout = async (): Promise<{message: string} | Error> => {
-  const res = await fetch(`${config.server}/auth/logout`);
-  if (res.ok) {
-    await apiSession.setSession(null);
-    return await res.json() as {message: string};
-  }
-  throw await apiHelper.handleError(res);
+  const res = await utils.getRequest('/auth/logout');
+  await apiSession.setSession(null);
+  return await res.json() as {message: string};
 };
 
 /**
@@ -118,19 +105,10 @@ const Logout = async (): Promise<{message: string} | Error> => {
 ```
  */
 const SignUp = async (data: SignUpData): Promise<Session> => {
-  const res = await fetch(`${config.server}/api/users`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-  if (res.ok) {
-    const session = await res.json() as Session;
-    await apiSession.setSession(session);
-    return session;
-  }
-  throw await apiHelper.handleError(res);
+  const res = await utils.postRequest('/api/users', data);
+  const session = await res.json() as Session;
+  await apiSession.setSession(session);
+  return session;
 };
 
 /**
@@ -145,20 +123,9 @@ const SignUp = async (data: SignUpData): Promise<Session> => {
   }
 ```
  */
-const ForgotPassword = async (email: string): Promise<{'cognito_username': string}> => {
-  const res = await fetch(`${config.server}/auth/forgot_password`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email,
-    }),
-  });
-  if (res.ok) {
-    return await res.json() as {'cognito_username': string};
-  }
-  throw await apiHelper.handleError(res);
+const ForgotPassword = async (email: string): Promise<Record<string, string>> => {
+  const res = await utils.postRequest('/auth/forgot_password', { email });
+  return await res.json() as Record<string, string>;
 };
 
 /**
@@ -166,7 +133,7 @@ const ForgotPassword = async (email: string): Promise<{'cognito_username': strin
  * @param {string} cognito_username The cognito username of the person (should come from the ForgotPassword request)
  * @param {string} confirmationCode The confirmation code sent to the user via email or SMS.
  * @param {string} newPassword The new password of the person
- * @return {Promise<boolean>} A promise that resolves if the password has been successfully reset
+ * @return {Promise<void>} A promise that resolves if the password has been successfully reset
   * @success (Note: The cognito_username is required to reset the password so must be kept)
 ```
 {
@@ -174,23 +141,12 @@ const ForgotPassword = async (email: string): Promise<{'cognito_username': strin
 }
 ```
  */
-const ConfirmForgotPassword = async (cognitoUsername: string, confirmationCode: string, newPassword: string): Promise<boolean> => {
-  const res = await fetch(`${config.server}/auth/confirm_forgot_password`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        cognito_username: cognitoUsername,
-        confirmation_code: confirmationCode,
-        new_password: newPassword,
-      }),
-    });
-  if (res.ok) {
-    return true;
-  }
-  throw await apiHelper.handleError(res);
+const ConfirmForgotPassword = async (cognitoUsername: string, confirmationCode: string, newPassword: string): Promise<void> => {
+  await utils.postRequest('/auth/confirm_forgot_password', {
+    cognito_username: cognitoUsername,
+    confirmation_code: confirmationCode,
+    new_password: newPassword,
+  });
 };
 
 export default {

@@ -1,6 +1,10 @@
-'use strict';
+/**
+ * @description Post API
+ * @author Matthew P. Burruss
+ * @date 12/24/2020
+ */
 import config from 'config';
-import apiHelper from 'api/helper';
+import utils from 'api/utils';
 import {ProductPostType} from './product_post';
 import {CommentType} from './comments';
 
@@ -44,7 +48,7 @@ type ReactionsType = {
   ```
 */
 const GetAll = async (): Promise<{_id: string} | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -54,7 +58,7 @@ const GetAll = async (): Promise<{_id: string} | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -80,7 +84,7 @@ const GetAll = async (): Promise<{_id: string} | Error> => {
   ```
 */
 const GetByID = async (postId: string): Promise<PostType | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -90,7 +94,7 @@ const GetByID = async (postId: string): Promise<PostType | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -114,7 +118,7 @@ const Edit = async (
   postId: string,
   postUpdate: PostUpdate
 ): Promise<{_id: string} | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -135,7 +139,7 @@ const Edit = async (
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -151,7 +155,7 @@ const Edit = async (
   ```
 */
 const Delete = async (postId: string): Promise<{_id: string} | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -164,7 +168,7 @@ const Delete = async (postId: string): Promise<{_id: string} | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -195,7 +199,7 @@ const Delete = async (postId: string): Promise<{_id: string} | Error> => {
   ```
 */
 const ListComments = async (postId: string): Promise<[CommentType] | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -205,7 +209,7 @@ const ListComments = async (postId: string): Promise<[CommentType] | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -251,7 +255,7 @@ const AddReaction = async (
   if (!_allowed_reactions_.includes(reaction)) {
     throw `Reaction ${reaction} not supported. The following reactions are ${_allowed_reactions_}`;
   }
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -271,7 +275,7 @@ const AddReaction = async (
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -289,7 +293,7 @@ const AddReaction = async (
 const DeleteReaction = async (
   postId: string
 ): Promise<[{_id: string}] | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -302,7 +306,7 @@ const DeleteReaction = async (
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -324,7 +328,7 @@ const DeleteReaction = async (
   ```
 */
 const GetReactions = async (postId: string): Promise<ReactionsType | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -334,7 +338,7 @@ const GetReactions = async (postId: string): Promise<ReactionsType | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 

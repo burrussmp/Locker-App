@@ -1,4 +1,9 @@
-// imports
+/**
+ * @description AsyncStorage API
+ * @author Matthew P. Burruss
+ * @date 12/24/2020
+ */
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Session } from 'store/types/auth.types';
 import config from 'config';

@@ -1,6 +1,10 @@
-'use strict';
+/**
+ * @description Comments API
+ * @author Matthew P. Burruss
+ * @date 12/24/2020
+ */
 import config from 'config';
-import apiHelper from 'api/helper';
+import utils from 'api/utils';
 import {ReplyType} from 'api/replies';
 
 export type CommentType = {
@@ -28,7 +32,7 @@ const Create = async (
   postId: string,
   text: string
 ): Promise<[{_id: string}] | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -48,7 +52,7 @@ const Create = async (
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -64,7 +68,7 @@ const Create = async (
   ```
 */
 const GetByID = async (commentID: string): Promise<CommentType | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -74,7 +78,7 @@ const GetByID = async (commentID: string): Promise<CommentType | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -90,7 +94,7 @@ const GetByID = async (commentID: string): Promise<CommentType | Error> => {
   ```
 */
 const Like = async (commentID: string): Promise<{message: string} | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -103,7 +107,7 @@ const Like = async (commentID: string): Promise<{message: string} | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -121,7 +125,7 @@ const Like = async (commentID: string): Promise<{message: string} | Error> => {
 const Unlike = async (
   commentID: string
 ): Promise<{message: string} | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -134,7 +138,7 @@ const Unlike = async (
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -150,7 +154,7 @@ const Unlike = async (
   ```
 */
 const Delete = async (commentID: string): Promise<{_id: string} | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -163,7 +167,7 @@ const Delete = async (commentID: string): Promise<{_id: string} | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 
@@ -194,7 +198,7 @@ const Delete = async (commentID: string): Promise<{_id: string} | Error> => {
   ```
 */
 const ListReplies = async (commentID: string): Promise<[ReplyType] | Error> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -204,7 +208,7 @@ const ListReplies = async (commentID: string): Promise<[ReplyType] | Error> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 

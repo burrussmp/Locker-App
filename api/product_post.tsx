@@ -1,6 +1,11 @@
-'use strict';
+/**
+ * @description Product Post API
+ * @author Matthew P. Burruss
+ * @date 12/24/2020
+ */
+
 import config from 'config';
-import apiHelper from 'api/helper';
+import utils from 'api/utils';
 import FormData from 'form-data';
 
 type media = {
@@ -37,7 +42,7 @@ const Create = async (
   ) {
     throw 'Cannot upload anything besides an image or a video';
   }
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -58,7 +63,7 @@ const Create = async (
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 

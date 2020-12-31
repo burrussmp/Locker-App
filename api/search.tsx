@@ -1,6 +1,10 @@
-'use strict';
+/**
+ * @description Search API
+ * @author Matthew P. Burruss
+ * @date 12/24/2020
+ */
 import config from 'config';
-import apiHelper from 'api/helper';
+import utils from 'api/utils';
 
 /**
  * @desc Get the avatar of a specific user
@@ -14,7 +18,7 @@ import apiHelper from 'api/helper';
   ```
  */
 const GetUsers = async (searchText: string): Promise<any> => {
-  const id_and_token = apiHelper.getIDAndAccessToken();
+  const id_and_token = utils.getIDAndAccessToken();
   if (!id_and_token) {
     throw 'Unable to retrieve userID and/or access_token from redux store';
   }
@@ -33,7 +37,7 @@ const GetUsers = async (searchText: string): Promise<any> => {
   if (res.ok) {
     return await res.json();
   } else {
-    throw await apiHelper.handleError(res);
+    throw await utils.handleError(res);
   }
 };
 

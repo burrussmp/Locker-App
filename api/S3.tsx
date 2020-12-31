@@ -1,10 +1,10 @@
 /**
- * @description API calls to interact with S3 objects
+ * @description S3 API
  * @author Matthew P. Burruss
  * @date 12/28/2020
  */
 import config from 'config';
-import apiHelper from 'api/helper';
+import utils from 'api/utils';
 import fetch from 'node-fetch';
 
 /**
@@ -19,19 +19,19 @@ import fetch from 'node-fetch';
   ```
  */
 const getMedia = async (key: string, size?: string): Promise<string | Error> => {
-  if (size && !apiHelper.validateSizeParam(size)) {
+  if (size && !utils.validateSizeParam(size)) {
     throw Error('Size parameter invalid');
   }
-  const idAndAccessToken = apiHelper.getIDAndAccessToken();
+  const idAndAccessToken = utils.getIDAndAccessToken();
   if (!idAndAccessToken) {
     throw Error('Unable to retrieve userID and/or access_token from redux store');
   }
   const sizeQuery = size ? `&size=${size}` : '';
   const res = await fetch(`${config.server}/api/media/${key}?access_token=${idAndAccessToken.access_token}${sizeQuery}`);
   if (res.ok) {
-    return apiHelper.createURI(res);
+    return utils.createURI(res);
   }
-  throw await apiHelper.handleError(res);
+  throw await utils.handleError(res);
 };
 
 export default {
