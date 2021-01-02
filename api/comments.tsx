@@ -65,7 +65,7 @@ const GetByID = async (commentID: string): Promise<CommentType> => {
   ```
 */
 const Like = async (commentID: string): Promise<{'message': string}> => {
-  const res = await utils.putRequest(`/api/${commentID}/likes`);
+  const res = await utils.putRequest(`/api/comments/${commentID}/likes`);
   return await res.json() as {'message': string};
 };
 
@@ -81,7 +81,7 @@ const Like = async (commentID: string): Promise<{'message': string}> => {
   ```
 */
 const Unlike = async (commentID: string): Promise<{message: string}> => {
-  const res = await utils.deleteRequest(`/api/${commentID}/likes`);
+  const res = await utils.deleteRequest(`/api/comments/${commentID}/likes`);
   return await res.json() as {'message': string};
 };
 
@@ -97,7 +97,7 @@ const Unlike = async (commentID: string): Promise<{message: string}> => {
   ```
 */
 const Delete = async (commentID: string): Promise<{_id: string}> => {
-  const res = await utils.deleteRequest(`/api/${commentID}`);
+  const res = await utils.deleteRequest(`/api/comments/${commentID}`);
   return await res.json() as {'_id': string};
 };
 
@@ -128,7 +128,7 @@ const Delete = async (commentID: string): Promise<{_id: string}> => {
   ```
 */
 const ListReplies = async (commentID: string): Promise<[ReplyType]> => {
-  const res = await utils.getRequest(`/api/${commentID}/replies`);
+  const res = await utils.getRequest(`/api/comments/${commentID}/replies`);
   return await res.json() as [ReplyType];
 };
 
