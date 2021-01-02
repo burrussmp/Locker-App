@@ -3,10 +3,9 @@
  * @author Matthew P. Burruss
  * @date 12/24/2020
  */
-import config from 'config';
 import utils from 'api/utils';
-import {ProductPostType} from './product_post';
-import {CommentType} from './comments';
+import { CommentType } from 'api/comments';
+import { ProductPostType } from 'api/product_post';
 
 export type PostType = {
   caption: string;
@@ -20,7 +19,7 @@ export type PostType = {
   __v: number | undefined;
 };
 
-type ReactionsType = {
+export type ReactionsType = {
   selected: boolean;
   like: number;
   love: number;
@@ -32,7 +31,8 @@ type ReactionsType = {
 
 /**
  * @desc List all posts
- * @return a promise that resolves if the API went through otherwise the error
+ * @param {Record<string, string> | undefined} query Optional query parameters
+ * @return {Promise<[{'_id': string, 'createdAt': string}]>} A list of posts
  * @success
  ```
 [
@@ -47,24 +47,15 @@ type ReactionsType = {
 ]
   ```
 */
-const GetAll = async (): Promise<{_id: string} | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/posts?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const GetAll = async (query?: Record<string, string>): Promise<[{'_id': string, 'createdAt': string}]> => {
+  const res = await utils.getRequest('/api/posts', query);
+  return await res.json() as [{'_id': string, 'createdAt': string}];
 };
 
 /**
  * @desc Get a specific post. The 'content' field is populated depending on the type of the post
- * @param postId : string : the postID
+ * @param {string} postId The ID of the post.
+ * @param {Record<string, string> | undefined} query Optional query parameters
  * @return a promise that resolves if the API went through otherwise the error
  * @success
  ```
@@ -83,99 +74,15 @@ const GetAll = async (): Promise<{_id: string} | Error> => {
 }
   ```
 */
-const GetByID = async (postId: string): Promise<PostType | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/posts/${postId}?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-type PostUpdate = {
-  caption: string;
-  tags: string;
-};
-
-/**
- * @desc Edit a post
- * @param postId : string : the post ID
- * @return a promise that resolves if the API went through otherwise the error
- * @success
- ```
-{
-   "_id" : "5f4142d3df64933395456de1"
-}
-  ```
-*/
-const Edit = async (
-  postId: string,
-  postUpdate: PostUpdate
-): Promise<{_id: string} | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const data = {
-    caption: postUpdate.caption,
-    tags: postUpdate.tags,
-  };
-  const res = await global.fetch(
-    `${config.server}/api/posts/${postId}?access_token=${id_and_token.access_token}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-/**
- * @desc Deletes a post (user must be owner)
- * @param postId : string : the postID to retrieve
- * @return a promise that resolves if the API went through otherwise the error
- * @success
- ```
-  {
-    "_id": "5f41ea00c025ae611618988c",
-  }
-  ```
-*/
-const Delete = async (postId: string): Promise<{_id: string} | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/posts/${postId}/comments?access_token=${id_and_token.access_token}`,
-    {
-      method: 'DELETE',
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const GetByID = async (postId: string, query?: Record<string, string>): Promise<PostType> => {
+  const res = await utils.getRequest(`/api/posts/${postId}`, query);
+  return await res.json() as PostType;
 };
 
 /**
  * @desc List post comments
- * @param postId : string : the post ID
- * @return a promise that resolves if the API went through otherwise the error
+ * @param {string} postId The ID of the post.
+ * @return {Promise<[CommentType]>} List of comments for a post.
  * @success
  ```
   [
@@ -198,91 +105,32 @@ const Delete = async (postId: string): Promise<{_id: string} | Error> => {
   ]
   ```
 */
-const ListComments = async (postId: string): Promise<[CommentType] | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/${postId}/comments?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const ListComments = async (postId: string): Promise<[CommentType]> => {
+  const res = await utils.getRequest(`/api/${postId}/comments`);
+  return await res.json() as [CommentType];
 };
 
 /**
- * @desc React to a post and returns the id of the post that you reacted to
- * @param postId : string : the post ID
- * @param reaction : string : Must be one of the following: "like", "love", "laugh", "surprise", "mad", or "sad"
- * @return a promise that resolves if the API went through otherwise the error
+ * @desc React to a post.
+ * @param {string} postId The ID of the post.
+ * @param {string} reaction The reaction to the post. Must be one of the following: "like", "love", "laugh", "surprise", "mad", or "sad"
+ * @return {Promise<{_id: string}>} The ID of the post
  * @success
- ```
- [
-    {
-      text: 'What the heck @someperson comments',
-      postedBy: 5f65925c10264630c624150b,
-      createdAt: 2020-09-19T05:08:48.350Z,
-      _id: 5f65926010264630c6241516,
-      likes: 0,
-      liked: false
-    },
-    {
-      text: 'New comment 1',
-      postedBy: 5f65925c10264630c624150b,
-      createdAt: 2020-09-19T05:08:48.358Z,
-      _id: 5f65926010264630c6241517,
-      likes: 0,
-      liked: false
-    }
-  ]
+  ```
+  {
+    "_id": 5f400fb18b012a65ef46044b
+  }
   ```
 */
-const AddReaction = async (
-  postId: string,
-  reaction: string
-): Promise<[{_id: string}] | Error> => {
-  const _allowed_reactions_ = [
-    'like',
-    'love',
-    'laugh',
-    'surprise',
-    'mad',
-    'sad',
-  ];
-  if (!_allowed_reactions_.includes(reaction)) {
-    throw `Reaction ${reaction} not supported. The following reactions are ${_allowed_reactions_}`;
-  }
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const data = {
-    reaction: reaction,
-  };
-  const res = await global.fetch(
-    `${config.server}/api/posts/${postId}/reaction?access_token=${id_and_token.access_token}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const AddReaction = async (postId: string, reaction: string): Promise<{_id: string}> => {
+  const res = await utils.putRequest(`/api/posts/${postId}/reaction`, { reaction });
+  return await res.json() as {_id: string};
 };
 
 /**
- * @desc Delete reaction from a post and return the ID
- * @param postId : string : the post ID
- * @return a promise that resolves if the API went through otherwise the error
+ * @desc Remove reaction to post.
+ * @param {string} postId The ID of the post.
+ * @return {Promise<{_id: string}>} The deleted reaction.
  * @success
  ```
   {
@@ -290,30 +138,15 @@ const AddReaction = async (
   }
   ```
 */
-const DeleteReaction = async (
-  postId: string
-): Promise<[{_id: string}] | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/posts/${postId}/reaction?access_token=${id_and_token.access_token}`,
-    {
-      method: 'DELETE',
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const DeleteReaction = async (postId: string): Promise<{_id: string}> => {
+  const res = await utils.deleteRequest(`/api/posts/${postId}/reaction`);
+  return await res.json() as {_id: string};
 };
 
 /**
- * @desc Get a summary of the reactions of a post
- * @param postId : string : the post ID
- * @return a promise that resolves if the API went through otherwise the error
+ * @desc Get a summary of a post reactions.
+ * @param {string} postId The ID of the post.
+ * @return {Promise<ReactionsType>} The reaction summary.
  * @success
  ```
 {
@@ -327,28 +160,92 @@ const DeleteReaction = async (
 }
   ```
 */
-const GetReactions = async (postId: string): Promise<ReactionsType | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/posts/${postId}/reaction?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const GetReactions = async (postId: string): Promise<ReactionsType> => {
+  const res = await utils.getRequest(`/api/posts/${postId}/reaction`);
+  return await res.json() as ReactionsType;
 };
 
 export default {
   GetAll,
   GetByID,
-  Edit,
-  Delete,
+  // Edit,
+  // Delete,
   ListComments,
   AddReaction,
   DeleteReaction,
   GetReactions,
 };
+
+// type PostUpdate = {
+//   caption: string;
+//   tags: string;
+// };
+
+// /**
+//  * @desc Edit a post
+//  * @param postId : string : the post ID
+//  * @return a promise that resolves if the API went through otherwise the error
+//  * @success
+//  ```
+// {
+//    "_id" : "5f4142d3df64933395456de1"
+// }
+//   ```
+// */
+// const Edit = async (
+//   postId: string,
+//   postUpdate: PostUpdate
+// ): Promise<{_id: string} | Error> => {
+//   const id_and_token = utils.getIDAndAccessToken();
+//   if (!id_and_token) {
+//     throw 'Unable to retrieve userID and/or access_token from redux store';
+//   }
+//   const data = {
+//     caption: postUpdate.caption,
+//     tags: postUpdate.tags,
+//   };
+//   const res = await global.fetch(
+//     `${config.server}/api/posts/${postId}?access_token=${id_and_token.access_token}`,
+//     {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(data),
+//     }
+//   );
+//   if (res.ok) {
+//     return await res.json();
+//   } else {
+//     throw await utils.handleError(res);
+//   }
+// };
+
+// /**
+//  * @desc Deletes a post (user must be owner)
+//  * @param postId : string : the postID to retrieve
+//  * @return a promise that resolves if the API went through otherwise the error
+//  * @success
+//  ```
+//   {
+//     "_id": "5f41ea00c025ae611618988c",
+//   }
+//   ```
+// */
+// const Delete = async (postId: string): Promise<{_id: string} | Error> => {
+//   const id_and_token = utils.getIDAndAccessToken();
+//   if (!id_and_token) {
+//     throw 'Unable to retrieve userID and/or access_token from redux store';
+//   }
+//   const res = await global.fetch(
+//     `${config.server}/api/posts/${postId}/comments?access_token=${id_and_token.access_token}`,
+//     {
+//       method: 'DELETE',
+//     }
+//   );
+//   if (res.ok) {
+//     return await res.json();
+//   } else {
+//     throw await utils.handleError(res);
+//   }
+// };
