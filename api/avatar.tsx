@@ -20,9 +20,6 @@ import utils from 'api/utils';
   ```
  */
 const Get = async (userId?: string, size?: string): Promise<string> => {
-  if (size && !utils.validateSizeParam(size)) {
-    throw Error('Size parameter invalid');
-  }
   const query = size ? { size } : undefined;
   const res = await utils.getRequest(`/api/users/${userId || utils.getIDAndAccessToken().id}/avatar`, query);
   return utils.createURI(res);
