@@ -4,7 +4,6 @@
  * @date 12/24/2020
  */
 
-import config from 'config';
 import utils from 'api/utils';
 import FormData from 'form-data';
 
@@ -21,9 +20,10 @@ type ProductPostData = {
 };
 
 /**
- * @desc Create a content post and return the ID of the newly created content post
- * @param photo : photo : An object with a name, type, and uri attribute (see react-native-image-picker)
- * @return a promise that resolves if the API went through otherwise the error
+ * @desc Create a product post and return the ID
+ * @param {ProductPostData} productPostData The product post data
+ * @param {media} productPostMedia An object with a name, type, and uri attribute (see react-native-image-picker)
+ * @return {Promise<{_id: string}>} The ID of the newly created product post
  * @success
  ```
 {
@@ -31,40 +31,14 @@ type ProductPostData = {
 }
   ```
 */
-const Create = async (
-  media: media,
-  data: ProductPostData
-): Promise<{_id: string} | Error> => {
-  if (
-    media.type !== 'image/jpeg' &&
-    media.type !== 'image/png' &&
-    media.type !== 'video/mp4'
-  ) {
-    throw 'Cannot upload anything besides an image or a video';
-  }
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const form = new FormData();
-  form.append('media', media);
-  form.append('price', data.price);
-  form.append('caption', data.caption);
-  form.append('tags', data.tags);
-  const res = await global.fetch(
-    `${config.server}/api/posts?type=ProductPost&access_token=${id_and_token.access_token}`,
-    {
-      method: 'POST',
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      body: form,
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const Create = async (productPostData: ProductPostData, productPostMedia: media): Promise<{_id: string}> => {
+  const data = new FormData();
+  data.append('media', productPostMedia);
+  data.append('price', productPostData.price);
+  data.append('caption', productPostData.caption);
+  data.append('tags', productPostData.tags);
+  const res = await utils.postRequest('api/posts', data, { type: 'ProductPost' });
+  return await res.json() as {_id: string};
 };
 
 export type ProductPostType = {
