@@ -114,6 +114,25 @@ const postRequest = async (url: string, data?: Record<string, string> | FormData
 };
 
 /**
+ * @desc Generic HTTP PUT request
+ * @param {string} url The url
+ * @param {Record<string, string> | FormData | undefined} body The body of the post request
+ * @param {Record<string, string | undefined}query Optional query parameters (key-value dictionary)
+ * @return {Promise<Response>} The HTTP response if successful otherwise an error is thrown.
+ */
+const putRequest = async (url: string, data?: Record<string, string> | FormData, query?: Record<string, string>): Promise<Response> => {
+  const headers = getHeaders(typeof data === 'object' ? { 'Content-Type': 'application/json' } : undefined);
+  const method = 'PUT';
+  const body = typeof data === 'object' ? JSON.stringify(data) : data;
+  const queryString = new URLSearchParams(query).toString();
+  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers, body });
+  if (res.ok) {
+    return res;
+  }
+  throw await handleError(res);
+};
+
+/**
  * @desc Generic HTTP GET Request
  * @param {string} url The url
  * @param {Record<string, string | undefined} query Optional query parameters (key-value dictionary)
@@ -154,6 +173,7 @@ export default {
   createURI,
   validateSizeParam,
   postRequest,
+  putRequest,
   getRequest,
   deleteRequest,
 };

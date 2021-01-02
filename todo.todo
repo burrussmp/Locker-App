@@ -1,1 +1,25 @@
-1. Add a 404 not found page
+API
+
+Refactoring
+- comments
+- post
+- product_post
+- replies
+- s3
+- search
+- session
+- user
+
+Unit tests
+- utils
+- user
+- session
+- search
+- s3
+- replies
+- product_post
+- post
+- comments
+- avatar
+- auth
+- api
