@@ -3,9 +3,7 @@
  * @author Matthew P. Burruss
  * @date 12/28/2020
  */
-import config from 'config';
 import utils from 'api/utils';
-import fetch from 'node-fetch';
 
 /**
  * @desc Get media from S3
@@ -18,20 +16,10 @@ import fetch from 'node-fetch';
   <img src={img_src} />
   ```
  */
-const getMedia = async (key: string, size?: string): Promise<string | Error> => {
-  if (size && !utils.validateSizeParam(size)) {
-    throw Error('Size parameter invalid');
-  }
-  const idAndAccessToken = utils.getIDAndAccessToken();
-  if (!idAndAccessToken) {
-    throw Error('Unable to retrieve userID and/or access_token from redux store');
-  }
-  const sizeQuery = size ? `&size=${size}` : '';
-  const res = await fetch(`${config.server}/api/media/${key}?access_token=${idAndAccessToken.access_token}${sizeQuery}`);
-  if (res.ok) {
-    return utils.createURI(res);
-  }
-  throw await utils.handleError(res);
+const getMedia = async (key: string, size?: string): Promise<string> => {
+  const query = size ? { size } : undefined;
+  const res = await utils.getRequest(`/api/media/${key}`, query);
+  return await res.json() as string;
 };
 
 export default {

@@ -3,42 +3,30 @@
  * @author Matthew P. Burruss
  * @date 12/24/2020
  */
-import config from 'config';
 import utils from 'api/utils';
 
+type UserSearchResults = [{
+  'data': {'_id': string,
+    'username': string,
+    'profile_photo': {
+      'blurhash': string,
+      'mimetype': string,
+      'key': string,
+    },
+    'first_name': string,
+    'last_name': string,
+  },
+  'score': number,
+}];
+
 /**
- * @desc Get the avatar of a specific user
- * @param userID : string : The user ID of the person who's information you want to retrieve. If undefined, retrieve user profile.
- * @param size : string : either small, medium, large, or xlarge
- * @return a promise that resolves if the API went through otherwise the error
- * @success
-  ```
-  let img_src = await getAvatar(userID);
-  <img src={URL.createObjectURL(img_src)} />
-  ```
+ * @desc Search for users based on text
+ * @param {string} search Search text.
+ * @return {Promise<SearchResults>} A list of users that match the search and the respective confidence.
  */
-const GetUsers = async (searchText: string): Promise<any> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/search/users?access_token=${id_and_token.access_token}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        search: searchText,
-      }),
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const GetUsers = async (search: string): Promise<UserSearchResults> => {
+  const res = await utils.getRequest('/api/search/users', { search });
+  return await res.json() as UserSearchResults;
 };
 
 export default {

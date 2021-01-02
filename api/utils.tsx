@@ -86,14 +86,6 @@ const createURI = async (res: Response): Promise<string> => {
   });
 };
 
-const AllowedSizes = ['small', 'medium', 'large', 'xlarge'];
-/**
- * @desc Validate that an image query parameter 'size' is supported.
- * @param {string} size The size query parameter value.
- * @return {boolean} true if supported else false
- */
-const validateSizeParam = (size: string): boolean => AllowedSizes.includes(size);
-
 /**
  * @desc Generic HTTP GET request
  * @param {string} url The url
@@ -171,7 +163,6 @@ export default {
   handleError,
   getIDAndAccessToken,
   createURI,
-  validateSizeParam,
   postRequest,
   putRequest,
   getRequest,
