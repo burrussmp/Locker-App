@@ -3,158 +3,14 @@
  * @author Matthew P. Burruss
  * @date 12/24/2020
  */
-import config from 'config';
 import utils from 'api/utils';
 
-/**
- * @desc Update password
- * @param password : string : new password
- * @param old_password : string : old password
- * @return a promise that resolves if the API went through otherwise the error
- * @success
-  ```
-    {
-        "message": "Successfully updated password"
-    }
-  ```
- */
-const UpdatePassword = async (
-  password: string,
-  old_password: string
-): Promise<string | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const params = {
-    password: password,
-    old_password: old_password,
-  };
-  const res = await global.fetch(
-    `${config.server}/api/users/${id_and_token.id}/password?access_token=${id_and_token.access_token}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-/**
- * @desc Follow someone
- * @param userID : string : The user ID of the person you want to follow
- * @return a promise that resolves if the API went through otherwise the error
- * @success
-  ```
-    {
-        "message": "Successfully followed someone"
-    }
-  ```
- */
-const Follow = async (userID: string): Promise<{message: string} | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/users/${userID}/follow?access_token=${id_and_token.access_token}`,
-    {
-      method: 'PUT',
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-/**
- * @desc Unfollow someone
- * @param userID : string : The user ID of the person you want to unfollow
- * @return a promise that resolves if the API went through otherwise the error
- * @success
-  ```
-    {
-        "message": "Successfully unfollowed someone"
-    }
-  ```
- */
-const Unfollow = async (userID: string): Promise<string | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/users/${userID}/follow?access_token=${id_and_token.access_token}`,
-    {
-      method: 'DELETE',
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-type ListFollowingType = {
+type FollowingList = {
   following: [{_id: string; username: string}];
   followers: [{_id: string; username: string}];
 };
 
-/**
- * @desc List someone's following/followers
- * @param userID : string : The userID of the person's info you are requesting
- * @return a promise that resolves if the API went through otherwise the error
- * @success
-  ```javascript
- {
-  "following": [
-      {
-          "_id": "5f3e184ad4df2d2ab0d5f91b",
-          "username": "new_user"
-      },
-      {
-          "_id": "5f3e184ad4dfads2ab0d5f91",
-          "username": "user2"
-      }
-  ],
-  "followers": [
-      {
-          "_id": "5f3e183dd4df2d2ab0d5f919",
-          "username": "user3"
-      },
-  ]
-}
-```
- */
-const GetFollowing = async (
-  userID: string
-): Promise<ListFollowingType | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/users/${userID}/follow?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    const result = await res.json();
-    return result;
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-type ListAllUsersType = [
+type UsersList = [
   {
     _id: string;
     username: string;
@@ -163,42 +19,7 @@ type ListAllUsersType = [
   }
 ];
 
-/**
- * @desc List all users
- * @return a promise that resolves if the API went through otherwise the error
- * @success
-  ```
-[{
-    "_id": "5f34821b0c46f63b28831230",
-    "username": "userA",
-    "updated": "2020-08-12T23:58:19.944Z",
-    "created": "2020-08-12T23:58:19.944Z"
-  },
-  {
-    "_id": "5f34821c0c46f63b28831231",
-    "username": "userB",
-    "updated": "2020-08-12T23:58:20.137Z",
-    "created": "2020-08-12T23:58:20.137Z"
-  }]
-```
- */
-const GetAll = async (): Promise<ListAllUsersType | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/users?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    const result = await res.json();
-    return result;
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-export type UserInfoType = {
+type UserInfo = {
   'about': string;
   'following': [
     {
@@ -224,10 +45,35 @@ export type UserInfoType = {
     'blurhash': string;
   };
 };
+
+/**
+ * @desc List all users
+ * @return {Promise<UsersList>} A list of all the users.
+ * @success
+  ```
+[{
+    "_id": "5f34821b0c46f63b28831230",
+    "username": "userA",
+    "updated": "2020-08-12T23:58:19.944Z",
+    "created": "2020-08-12T23:58:19.944Z"
+  },
+  {
+    "_id": "5f34821c0c46f63b28831231",
+    "username": "userB",
+    "updated": "2020-08-12T23:58:20.137Z",
+    "created": "2020-08-12T23:58:20.137Z"
+  }]
+```
+ */
+const GetAll = async (): Promise<UsersList> => {
+  const res = await utils.getRequest('/api/users');
+  return await res.json() as UsersList;
+};
+
 /**
  * @desc Get specific user's information
- * @param userID : string : The user ID of the person who's information you want to retrieve
- * @return a promise that resolves if the API went through otherwise the error
+ * @param {string} userID The user ID of a user.
+ * @return {Promise<UserInfo>} The information of a user
  * @success
   ```
     {
@@ -250,24 +96,14 @@ export type UserInfoType = {
     }
   ```
  */
-const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/users/${userId}?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const GetByID = async (userId: string): Promise<UserInfo> => {
+  const res = await utils.getRequest(`/api/users/${userId}`);
+  return await res.json() as UserInfo;
 };
 
 /**
  * @desc Delete yourself
- * @return a promise that resolves if the API went through otherwise the error
+ * @return {Promise<UserInfo>} The info of yourself.
  * @success
   ```
  {
@@ -294,22 +130,92 @@ const GetByID = async (userId: string): Promise<UserInfoType | Error> => {
 }
   ```
  */
-const DeleteMe = async (): Promise<Record<string, any> | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/users/${id_and_token.id}?access_token=${id_and_token.access_token}`,
+const DeleteMe = async (): Promise<UserInfo> => {
+  const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken().id}`);
+  return await res.json() as UserInfo;
+};
+
+/**
+ * @desc Update the password of a user.
+ * @param {string} newPassword The new password.
+ * @param {string} oldPassword The old password.
+ * @return {Promise<{message: string}>} A success message
+ * @success
+  ```
     {
-      method: 'DELETE',
+        "message": "Successfully updated password"
     }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
+  ```
+ */
+const UpdatePassword = async (newPassword: string, oldPassword: string): Promise<{message: string}> => {
+  const res = await utils.putRequest(`/api/users/${utils.getIDAndAccessToken().id}/password`, {
+    password: newPassword,
+    old_password: oldPassword,
+  });
+  return await res.json() as {message: string};
+};
+
+/**
+ * @desc Follow someone
+ * @param {string} userID The user ID of a user.
+ * @return {Promise<{message: string}>} A success message
+ * @success
+  ```
+    {
+        "message": "Successfully followed someone"
+    }
+  ```
+ */
+const Follow = async (userID: string): Promise<{message: string}> => {
+  const res = await utils.putRequest(`/api/users/${userID}/follow`);
+  return await res.json() as {message: string};
+};
+
+/**
+ * @desc Unfollow someone
+ * @param {string} userID The user ID of a user.
+ * @return {Promise<{message: string}>} A success message
+ * @success
+  ```
+    {
+        "message": "Successfully unfollowed someone"
+    }
+  ```
+ */
+const Unfollow = async (userID: string): Promise<{message: string}> => {
+  const res = await utils.deleteRequest(`/api/users/${userID}/follow`);
+  return await res.json() as {message: string};
+};
+
+/**
+ * @desc List someone's following/followers
+ * @param {string} userID The user ID of a user.
+ * @return {Promise<FollowingList>} A users's list of followers/followings.
+ * @success
+  ```javascript
+  {
+    "following": [
+        {
+            "_id": "5f3e184ad4df2d2ab0d5f91b",
+            "username": "new_user"
+        },
+        {
+            "_id": "5f3e184ad4dfads2ab0d5f91",
+            "username": "user2"
+        }
+    ],
+    "followers": [
+        {
+            "_id": "5f3e183dd4df2d2ab0d5f919",
+            "username": "user3"
+        },
+    ]
   }
+```
+ */
+const GetFollowing = async (userID: string): Promise<FollowingList> => {
+  const res = await utils.getRequest(`/api/users/${userID}/follow`);
+  return await res.json() as FollowingList;
 };
 
 export default {
