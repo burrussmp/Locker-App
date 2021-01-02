@@ -1,4 +1,9 @@
-import config from 'config';
+/**
+ * @description Replies API
+ * @author Matthew P. Burruss
+ * @date 1/2/2021
+ */
+
 import utils from 'api/utils';
 
 export type ReplyType = {
@@ -12,9 +17,9 @@ export type ReplyType = {
 
 /**
  * @desc Creates a new reply (returns the ID of the newly created reply)
- * @param commentId : string : the comment ID
- * @param text : string : the reply text
- * @return a promise that resolves if the API went through otherwise the error
+ * @param {string} commentID The ID of the comment
+ * @param {string} text The text of the reply.
+ * @return {Promise<{_id: string}>} The ID of the newly created reply
  * @success
  ```
   {
@@ -22,105 +27,16 @@ export type ReplyType = {
   }
   ```
 */
-const Create = async (
-  commentId: string,
-  text: string
-): Promise<[{_id: string}] | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const data = {
-    text: text,
-  };
-  const res = await global.fetch(
-    `${config.server}/api/${commentId}/replies?access_token=${id_and_token.access_token}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const Create = async (commentID: string, text: string): Promise<{_id: string}> => {
+  const res = await utils.postRequest(`/api/${commentID}/replies`, { text });
+  return await res.json() as {_id: string};
 };
 
 /**
- * @desc Like a reply and return its ID
- * @param commentId : string : the comment ID
- * @param replyId : string : the reply ID
- * @return a promise that resolves if the API went through otherwise the error
- * @success
- ```
-  {
-      "_id": "5f400fb18b012a65ef46044b",
-  }
-  ```
-*/
-const Like = async (
-  commentId: string,
-  replyId: string
-): Promise<[{_id: string}] | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/${commentId}/replies/${replyId}/likes?access_token=${id_and_token.access_token}`,
-    {
-      method: 'PUT',
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-/**
- * @desc Unlike a reply and return its ID
- * @param commentId : string : the comment ID
- * @param replyId : string : the reply ID
- * @return a promise that resolves if the API went through otherwise the error
- * @success
- ```
-  {
-      "_id": "5f400fb18b012a65ef46044b",
-  }
-  ```
-*/
-const Unlike = async (
-  commentId: string,
-  replyId: string
-): Promise<[{_id: string}] | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/${commentId}/replies/${replyId}/likes?access_token=${id_and_token.access_token}`,
-    {
-      method: 'DELETE',
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
-};
-
-/**
- * @desc Get a reply by ID
- * @param commentId : string : the comment ID
- * @param replyId : string : the reply ID
- * @return a promise that resolves if the API went through otherwise the error
+ * @desc Get a reply by ID and return the reply information.
+ * @param {string} commentID The ID of the comment
+ * @param {string} replyID The ID of the reply
+ * @return {Promise<ReplyType>} The reply promise.
  * @success
  ```
  {
@@ -132,29 +48,16 @@ const Unlike = async (
 }
   ```
 */
-const GetById = async (
-  commentId: string,
-  replyId: string
-): Promise<ReplyType | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
-  }
-  const res = await global.fetch(
-    `${config.server}/api/${commentId}/replies/${replyId}?access_token=${id_and_token.access_token}`
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
-  }
+const GetById = async (commentID: string, replyID: string): Promise<ReplyType> => {
+  const res = await utils.getRequest(`/api/${commentID}/replies/${replyID}`);
+  return await res.json() as ReplyType;
 };
 
 /**
- * @desc Delete a reply and return the ID of the deleted comment
- * @param commentId : string : the comment ID
- * @param replyId : string : the reply ID
- * @return a promise that resolves if the API went through otherwise the error
+ * @desc Delete a reply and return its ID
+ * @param {string} commentID The ID of the comment
+ * @param {string} replyID The ID of the reply
+ * @return {Promise<{_id: string}>} The ID of the deleted reply.
  * @success
  ```
   {
@@ -162,25 +65,43 @@ const GetById = async (
   }
   ```
 */
-const Delete = async (
-  commentId: string,
-  replyId: string
-): Promise<[{_id: string}] | Error> => {
-  const id_and_token = utils.getIDAndAccessToken();
-  if (!id_and_token) {
-    throw 'Unable to retrieve userID and/or access_token from redux store';
+const Delete = async (commentID: string, replyID: string): Promise<{_id: string}> => {
+  const res = await utils.deleteRequest(`/api/${commentID}/replies/${replyID}`);
+  return await res.json() as {_id: string};
+};
+
+/**
+ * @desc Like a reply and return its ID
+ * @param {string} commentID The ID of the comment
+ * @param {string} replyID The ID of the reply
+ * @return {Promise<{_id: string}>} The ID of the liked reply.
+ * @success
+ ```
+  {
+      "_id": "5f400fb18b012a65ef46044b",
   }
-  const res = await global.fetch(
-    `${config.server}/api/${commentId}/replies/${replyId}?access_token=${id_and_token.access_token}`,
-    {
-      method: 'DELETE',
-    }
-  );
-  if (res.ok) {
-    return await res.json();
-  } else {
-    throw await utils.handleError(res);
+  ```
+*/
+const Like = async (commentID: string, replyID: string): Promise<{_id: string}> => {
+  const res = await utils.putRequest(`/api/${commentID}/replies/${replyID}/likes`);
+  return await res.json() as {_id: string};
+};
+
+/**
+ * @desc Unlike a reply and return its ID
+ * @param {string} commentID The ID of the comment
+ * @param {string} replyID The ID of the reply
+ * @return {Promise<{_id: string}>} The ID of the unliked reply.
+ * @success
+ ```
+  {
+      "_id": "5f400fb18b012a65ef46044b",
   }
+  ```
+*/
+const Unlike = async (commentID: string, replyID: string): Promise<{_id: string}> => {
+  const res = await utils.deleteRequest(`/api/${commentID}/replies/${replyID}/likes`);
+  return await res.json() as {_id: string};
 };
 
 export default {
