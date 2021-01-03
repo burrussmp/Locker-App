@@ -4,24 +4,26 @@
  * @desc The central store created by all the reducers with logging middleware. This is what app.js imports
  */
 
-import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
-import {createLogger} from 'redux-logger';
+import {
+  createStore, applyMiddleware, compose, combineReducers,
+} from 'redux';
+import { createLogger } from 'redux-logger';
 
 import AuthReducer from 'store/reducers/auth.reducer';
 import HomeReducer from 'store/reducers/home.reducer';
 import PostReducer from 'store/reducers/post.reducer';
 
 const middleware = [];
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'development') {
   // Add logging if in development mode
   middleware.push(createLogger());
 }
 
-const Reducer = combineReducers({
+export const reducers = combineReducers({
   // create the combined reducer with all the reducer slices
   home: HomeReducer,
   auth: AuthReducer,
   post: PostReducer,
 });
 
-export default compose(applyMiddleware(...middleware))(createStore)(Reducer); // export the created store
+export default compose(applyMiddleware(...middleware))(createStore)(reducers); // export the created store

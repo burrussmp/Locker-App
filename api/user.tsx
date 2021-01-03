@@ -131,7 +131,7 @@ const GetByID = async (userId: string): Promise<UserInfo> => {
   ```
  */
 const DeleteMe = async (): Promise<UserInfo> => {
-  const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken().id}`);
+  const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken()._id}`);
   return await res.json() as UserInfo;
 };
 
@@ -148,7 +148,7 @@ const DeleteMe = async (): Promise<UserInfo> => {
   ```
  */
 const UpdatePassword = async (newPassword: string, oldPassword: string): Promise<{message: string}> => {
-  const res = await utils.putRequest(`/api/users/${utils.getIDAndAccessToken().id}/password`, {
+  const res = await utils.putRequest(`/api/users/${utils.getIDAndAccessToken()._id}/password`, {
     password: newPassword,
     old_password: oldPassword,
   });

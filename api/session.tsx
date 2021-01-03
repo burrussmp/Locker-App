@@ -79,7 +79,7 @@ const getRefreshToken = async (): Promise<string | undefined> => retrieveFromSes
  * @desc Retrieves the user Mongoose database ID.
  * @return {Promise<string | undefined>} The ID of the User.
  */
-const getMyID = async (): Promise<string | undefined> => retrieveFromSession('id');
+const getMyID = async (): Promise<string | undefined> => retrieveFromSession('_id');
 
 export default {
   getAccessToken,

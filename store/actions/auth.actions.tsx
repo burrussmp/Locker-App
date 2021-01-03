@@ -14,25 +14,19 @@ import {
   Session,
 } from 'store/types/auth.types';
 
-const VerifyToken = (verified: boolean): AuthorizationActions => {
-  return {
-    type: VERIFY_TOKEN,
-    verified: verified,
-  };
-};
+const VerifyToken = (verified: boolean): AuthorizationActions => ({
+  type: VERIFY_TOKEN,
+  verified,
+});
 
-const SetSession = (payload: Session): AuthorizationActions => {
-  return {
-    type: SET_SESSION,
-    session: payload,
-  };
-};
+const SetSession = (payload: Session): AuthorizationActions => ({
+  type: SET_SESSION,
+  session: payload,
+});
 
-const Logout = (): AuthorizationActions => {
-  return {
-    type: LOGOUT,
-  };
-};
+const Logout = (): AuthorizationActions => ({
+  type: LOGOUT,
+});
 
 export default {
   Logout,

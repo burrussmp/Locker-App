@@ -21,7 +21,7 @@ import utils from 'api/utils';
  */
 const Get = async (userId?: string, size?: string): Promise<string> => {
   const query = size ? { size } : undefined;
-  const res = await utils.getRequest(`/api/users/${userId || utils.getIDAndAccessToken().id}/avatar`, query);
+  const res = await utils.getRequest(`/api/users/${userId || utils.getIDAndAccessToken()._id}/avatar`, query);
   return utils.createURI(res);
 };
 
@@ -49,7 +49,7 @@ const Update = async (avatar: media): Promise<Record<string, string>> => {
   }
   const form = new FormData();
   form.append('media', avatar);
-  const res = await utils.postRequest(`/api/users/${utils.getIDAndAccessToken().id}/avatar`, form);
+  const res = await utils.postRequest(`/api/users/${utils.getIDAndAccessToken()._id}/avatar`, form);
   return await res.json() as Record<string, string>;
 };
 
@@ -64,7 +64,7 @@ const Update = async (avatar: media): Promise<Record<string, string>> => {
   ```
  */
 const Delete = async (): Promise<Record<string, string>> => {
-  const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken().id}/avatar`);
+  const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken()._id}/avatar`);
   return await res.json() as Record<string, string>;
 };
 

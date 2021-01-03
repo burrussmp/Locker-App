@@ -85,7 +85,7 @@ const Login = async (data: LoginData): Promise<Session> => {
  */
 const Logout = async (): Promise<{message: string} | Error> => {
   const res = await utils.getRequest('/auth/logout');
-  await apiSession.setSession(null);
+  await apiSession.setSession();
   return await res.json() as {message: string};
 };
 

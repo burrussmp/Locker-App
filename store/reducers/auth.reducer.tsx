@@ -23,15 +23,12 @@ const AuthInitialState = {
     access_token: '',
     id_token: '',
     refresh_token: '',
-    id: '',
+    _id: '',
   },
   verified: false,
 };
 
-const AuthorizationReducer = (
-  state = AuthInitialState,
-  action: AuthorizationActions,
-): AuthState => {
+const AuthorizationReducer = (state = AuthInitialState, action: AuthorizationActions): AuthState => {
   switch (action.type) {
     case LOGOUT:
       return AuthInitialState;

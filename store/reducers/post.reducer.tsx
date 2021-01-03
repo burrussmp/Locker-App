@@ -5,7 +5,7 @@
  * produce a new state given the old state and the action
  */
 
-import {PostActions, EXPAND, CONTRACT} from 'store/types/post.types';
+import { PostActions, EXPAND, CONTRACT } from 'store/types/post.types';
 
 interface PostState {
   isExpanded: boolean;
@@ -15,10 +15,7 @@ const PostInitialState = {
   isExpanded: false,
 };
 
-const PostReducer = (
-  state = PostInitialState,
-  action: PostActions
-): PostState => {
+const PostReducer = (state = PostInitialState, action: PostActions): PostState => {
   switch (action.type) {
     case EXPAND:
       return {

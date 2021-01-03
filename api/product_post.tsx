@@ -37,7 +37,7 @@ const Create = async (productPostData: ProductPostData, productPostMedia: media)
   data.append('price', productPostData.price);
   data.append('caption', productPostData.caption);
   data.append('tags', productPostData.tags);
-  const res = await utils.postRequest('api/posts', data, { type: 'ProductPost' });
+  const res = await utils.postRequest('/api/posts', data, { type: 'ProductPost' });
   return await res.json() as {_id: string};
 };
 

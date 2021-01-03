@@ -37,6 +37,7 @@
             "ignoreRegExpLiterals": true,
             "ignoreStrings": false,
             "ignoreTemplateLiterals": false
-        }]
+        }],
+        "no-underscore-dangle": "off",
     }
 }

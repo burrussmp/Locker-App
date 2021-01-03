@@ -19,10 +19,10 @@ import config from 'config';
  *  "access_token" : user access token
  * } if it exists otherwise throws an error
  */
-const getIDAndAccessToken = (): {'id': string, 'access_token': string} => {
+const getIDAndAccessToken = (): {'_id': string, 'access_token': string} => {
   const state = store.getState();
   return {
-    id: state.auth.session.id,
+    _id: state.auth.session._id,
     access_token: state.auth.session.access_token,
   };
 };
@@ -31,22 +31,20 @@ const getIDAndAccessToken = (): {'id': string, 'access_token': string} => {
  * @desc Handle an HTTP error by extracting the error message and the status
  * of the HTTP response.
  * @param {Response} res The HTTP response.
- * @return {Promise<Error>} Return a promise that resolves to an error object that
+ * @return {Promise<{status: number, error: string}>} Return a promise that resolves to an error object that
  * includes the following information stringified.
  * {
  *  "status": "statusCode",
  *  "error": "errorMessage"
  * }
  */
-const handleError = async (res: Response): Promise<Error> => {
+const handleError = async (res: Response): Promise<{status: number, error: string}> => {
   const { status } = res;
-  const error = await res.json() as Record<string, string>;
-  return new Error(
-    JSON.stringify({
-      status,
-      error: error.error,
-    }),
-  );
+  const error = await res.json() as {error: string};
+  return {
+    status,
+    error: error.error,
+  };
 };
 
 /**
@@ -71,14 +69,14 @@ const getHeaders = (optionalHeaders:Record<string, string> | undefined = undefin
  * @return {Promise<string>} The URI of the media object which can be dynamically rendered.
  */
 const createURI = async (res: Response): Promise<string> => {
-  const blob = await res.blob();
+  const arrayBuffer = await res.arrayBuffer();
+  const blob = new window.Blob([arrayBuffer]);
+
   if (Platform.OS === 'ios') {
-    return (global.URL || global.webkitURL || global || {}).createObjectURL(
-      blob,
-    );
+    return (URL || webkitURL).createObjectURL(blob);
   }
-  const fileReaderInstance = new global.FileReader();
-  fileReaderInstance.readAsDataURL(blob as unknown as Blob);
+  const fileReaderInstance = new window.FileReader();
+  fileReaderInstance.readAsDataURL(blob);
   return new Promise((resolve) => {
     fileReaderInstance.onload = () => {
       resolve(fileReaderInstance.result as string);
