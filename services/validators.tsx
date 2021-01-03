@@ -3,6 +3,24 @@
  * @author Matthew P. Burruss
  * @date 1/3/2021
  */
+import * as D from 'io-ts/Decoder';
+import { pipe } from 'fp-ts/function';
+import { fold } from 'fp-ts/Either';
+
+const validateType = (decoder: T.Decoder<any, any>, value: any) => {
+  const handleError = (errors: any) => {
+    throw new Error(JSON.stringify(errors));
+  }
+  return pipe(
+      decoder.decode(value),
+      fold(
+        // failure handler
+        handleError,
+        // success handler
+        (a) => 'success'
+      )
+    )
+};
 
 /**
  * @desc Performs the same validation as the server and cognito (really don't change this)
@@ -32,4 +50,5 @@ const isValidPassword = (password: string): string => {
 
 export default {
   isValidPassword,
+  validateType,
 };

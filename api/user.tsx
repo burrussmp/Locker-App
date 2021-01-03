@@ -4,56 +4,70 @@
  * @date 12/24/2020
  */
 import utils from 'api/utils';
+import * as T from 'io-ts';
 
 /**
  * @desc Following list type
- */
-export type FollowingList = {
-  following: [{_id: string; username: string}];
-  followers: [{_id: string; username: string}];
-};
+*/
+const FollowingList = T.type({
+  following: T.array(
+    T.type({_id: T.string, username: T.string})
+  ),
+  followers: T.array(
+    T.type({_id: T.string, username: T.string})
+  ),
+})
+export type FollowingList = T.TypeOf<typeof FollowingList>;
 
 /**
  * @desc User list type
  */
-export type UsersList = [
-  {
-    _id: string;
-    username: string;
-    updatedAt: string;
-    createdAt: string;
-  }
-];
+export const UsersList = T.array(
+  T.type({
+    _id: T.string,
+    username: T.string,
+    updatedAt: T.string,
+    createdAt: T.string,
+  })
+);
+export type UsersList = T.TypeOf<typeof UsersList>;
 
 /**
  * @desc User details
  */
-export type UserInfo = {
-  '_id': string;
-  'about': string;
-  'cognito_username': string;
-  'username': string;
-  'first_name'?: string;
-  'last_name'?: string;
-  'createdAt': string;
-  'updatedAt': string;
-  'profile_photo'?: {
-    '_id': string;
-    'key': string;
-    'mimetype': string;
-    'blurhash': string;
-  };
-  'following': [
-    {
-      _id: string;
-    }
-  ];
-  'followers': [
-    {
-      _id: string;
-    }
-  ];
-};
+export const UserInfo = T.type({
+  '_id': T.string,
+  'active': T.boolean,
+  'about': T.string,
+  'cognito_username': T.string,
+  'username': T.string,
+  'first_name': T.union([T.undefined, T.string]),
+  'last_name': T.union([T.undefined, T.string]),
+  'createdAt': T.string,
+  'updatedAt': T.string,
+  'profile_photo': T.union([
+    T.type({
+    '_id': T.string,
+    'key': T.string,
+    'mimetype': T.string,
+    'blurhash': T.string,
+  }), T.undefined]),
+  'following': T.array(
+    T.type(
+      {
+        _id: T.string,
+      }
+    )
+  ),
+  'followers': T.array(
+    T.type(
+      {
+        _id: T.string,
+      }
+    )
+  ),
+});
+export type UserInfo = T.TypeOf<typeof UserInfo>;
 
 /**
  * @desc List all users
