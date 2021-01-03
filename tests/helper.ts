@@ -15,7 +15,7 @@ const getFakeUser = () => ({
   last_name: faker.name.lastName(),
   email: faker.internet.email(),
   phone_number: `+${faker.phone.phoneNumberFormat(2).replace(/-/g, '')}`,
-  password: `${faker.internet.password()}$`,
+  password: `1a#D${faker.internet.password()}$`,
 });
 
 export default {

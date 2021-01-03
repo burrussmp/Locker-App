@@ -52,6 +52,7 @@
     "faker": "^5.1.0",
     "form-data": "^3.0.0",
     "get-pixels": "^3.3.2",
+    "io-ts": "^2.2.13",
     "jpeg-js": "^0.4.2",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.4",
@@ -92,6 +93,8 @@
     "sharp": "^0.26.0",
     "sinon": "^9.2.2",
     "typedarray": "0.0.6",
+    "types": "^0.1.1",
+    "typescript-is": "^0.17.0",
     "util": "^0.12.3",
     "utils": "^0.3.1"
   },
@@ -137,7 +140,10 @@
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
     "tsconfig-paths-jest": "0.0.1",
-    "typescript": "^3.9.7"
+    "ttypescript": "^1.5.12",
+    "typescript": "^3.9.7",
+    "typescript-json-schema": "^0.47.0",
+    "typescript-json-validator": "^2.4.2"
   },
   "private": true
 }

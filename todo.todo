@@ -1,18 +1,7 @@
 API
 
-Refactoring
-- post
-- product_post
-- replies
-- s3
-- search
-- session
-- user
-
 Unit tests
-- utils
 - user
-- session
 - search
 - s3
 - replies
@@ -20,5 +9,8 @@ Unit tests
 - post
 - comments
 - avatar
-- auth
 - api
+
+
+Think about
+1. Moving auth action dispatch from store into the auth api

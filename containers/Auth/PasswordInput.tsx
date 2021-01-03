@@ -10,7 +10,7 @@
 
 import React, {useState} from 'react';
 import {Text, View} from 'react-native';
-import Validators from 'services/Validators';
+import Validators from 'services/validators';
 import PasswordTextInput from 'components/Auth/PasswordTextInput';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import Icon from 'react-native-vector-icons/Ionicons';

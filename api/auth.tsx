@@ -6,7 +6,11 @@
 
 import apiSession from 'api/session';
 import utils from 'api/utils';
+
+import AuthActions from 'store/actions/auth.actions';
+import store from 'store/index';
 import { Session } from 'store/types/auth.types';
+
 
 /**
  * @desc Login information interface
@@ -69,12 +73,13 @@ const Login = async (data: LoginData): Promise<Session> => {
   const res = await utils.postRequest('/auth/login', data);
   const session = await res.json() as Session;
   await apiSession.setSession(session);
+  store.dispatch(AuthActions.SetSession(session));
   return session;
 };
 
 /**
  * @desc Logout API
- * @return {Promise<{message: string} | Error>} A promise that resolves
+ * @return {Promise<{message: string}>} A promise that resolves
  * if the user has successfully been logged out.
  * @success
 ```
@@ -83,9 +88,10 @@ const Login = async (data: LoginData): Promise<Session> => {
   }
 ```
  */
-const Logout = async (): Promise<{message: string} | Error> => {
-  const res = await utils.getRequest('/auth/logout');
+const Logout = async (): Promise<{message: string}> => {
   await apiSession.setSession();
+  store.dispatch(AuthActions.Logout());
+  const res = await utils.getRequest('/auth/logout');
   return await res.json() as {message: string};
 };
 
@@ -108,6 +114,7 @@ const SignUp = async (data: SignUpData): Promise<Session> => {
   const res = await utils.postRequest('/api/users', data);
   const session = await res.json() as Session;
   await apiSession.setSession(session);
+  store.dispatch(AuthActions.SetSession(session));
   return session;
 };
 
@@ -123,9 +130,9 @@ const SignUp = async (data: SignUpData): Promise<Session> => {
   }
 ```
  */
-const ForgotPassword = async (email: string): Promise<Record<string, string>> => {
+const ForgotPassword = async (email: string): Promise<{cognito_username: string}> => {
   const res = await utils.postRequest('/auth/forgot_password', { email });
-  return await res.json() as Record<string, string>;
+  return await res.json() as {cognito_username: string};
 };
 
 /**

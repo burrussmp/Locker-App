@@ -5,33 +5,32 @@
  */
 import utils from 'api/utils';
 
-type FollowingList = {
+/**
+ * @desc Following list type
+ */
+export type FollowingList = {
   following: [{_id: string; username: string}];
   followers: [{_id: string; username: string}];
 };
 
-type UsersList = [
+/**
+ * @desc User list type
+ */
+export type UsersList = [
   {
     _id: string;
     username: string;
-    updated: string;
-    created: string;
+    updatedAt: string;
+    createdAt: string;
   }
 ];
 
-type UserInfo = {
-  'about': string;
-  'following': [
-    {
-      _id: string;
-    }
-  ];
-  'followers': [
-    {
-      _id: string;
-    }
-  ];
+/**
+ * @desc User details
+ */
+export type UserInfo = {
   '_id': string;
+  'about': string;
   'cognito_username': string;
   'username': string;
   'first_name'?: string;
@@ -44,6 +43,16 @@ type UserInfo = {
     'mimetype': string;
     'blurhash': string;
   };
+  'following': [
+    {
+      _id: string;
+    }
+  ];
+  'followers': [
+    {
+      _id: string;
+    }
+  ];
 };
 
 /**
@@ -60,8 +69,8 @@ type UserInfo = {
   {
     "_id": "5f34821c0c46f63b28831231",
     "username": "userB",
-    "updated": "2020-08-12T23:58:20.137Z",
-    "created": "2020-08-12T23:58:20.137Z"
+    "updatedAt": "2020-08-12T23:58:20.137Z",
+    "createdAt": "2020-08-12T23:58:20.137Z"
   }]
 ```
  */

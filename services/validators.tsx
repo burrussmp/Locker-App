@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 /**
+ * @desc Validators
  * @author Matthew P. Burruss
- * @date Aug 2020
- * @desc Useful Validators
+ * @date 1/3/2021
  */
 
 /**
