@@ -3,7 +3,7 @@
  * @author Matthew P. Burruss
  * @date 1/3/2021
  */
-import * as D from 'io-ts/Decoder';
+import * as T from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { fold } from 'fp-ts/Either';
 

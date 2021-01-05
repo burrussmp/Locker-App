@@ -1,12 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/unbound-method */
 // Import the dependencies for testing
 
 import helper from 'tests/helper';
@@ -27,11 +18,13 @@ describe('API Tests', () => {
 
     beforeAll(async () => {
       user = helper.getFakeUser();
-      await api.Auth.SignUp(user);
+      await api.Auth.SignUp(user.email, user.phone_number, user.username, user.password, user.first_name, user.last_name);
     });
 
     it('SignUp - Session contains correct fields', async () => {
-      const signUpSession = await api.Auth.SignUp(helper.getFakeUser());
+      const fake_user = helper.getFakeUser();
+      const signUpSession = await api.Auth.SignUp(fake_user.email, fake_user.phone_number, fake_user.username,
+        fake_user.password, fake_user.first_name, fake_user.last_name);
       expect(Boolean(signUpSession._id)).toBe(true);
       expect(Boolean(signUpSession.access_token)).toBe(true);
       expect(Boolean(signUpSession.refresh_token)).toBe(true);
@@ -39,20 +32,25 @@ describe('API Tests', () => {
     });
 
     it('SignUp - Session saved to async storage', async () => {
-      const session = await api.Auth.SignUp(helper.getFakeUser());
+      const fake_user = helper.getFakeUser();
+      const session = await api.Auth.SignUp(fake_user.email, fake_user.phone_number, fake_user.username,
+        fake_user.password, fake_user.first_name, fake_user.last_name);
       expect(apiSession.setSession).toBeCalledWith(session);
     });
 
     it('SignUp - Redux authorization called to store', async () => {
-      const session = await api.Auth.SignUp(helper.getFakeUser());
+      const fake_user = helper.getFakeUser();
+      const session = await api.Auth.SignUp(fake_user.email, fake_user.phone_number, fake_user.username,
+        fake_user.password, fake_user.first_name, fake_user.last_name);
       expect(dispatchSpy).toBeCalledWith(AuthActions.SetSession(session));
     });
 
     it('SignUp - Failure (Bad password)', async () => {
-      let userData = helper.getFakeUser();
-      userData.password = 'tooshort';
+      let fake_user = helper.getFakeUser();
+      fake_user.password = 'tooshort';
       try {
-        await api.Auth.SignUp(userData);
+        await api.Auth.SignUp(fake_user.email, fake_user.phone_number, fake_user.username,
+          fake_user.password, fake_user.first_name, fake_user.last_name);
       } catch (err) {
         expect(err.status).toEqual(400);
         expect(err.error.toLowerCase().includes('password')).toBeTruthy();
@@ -60,37 +58,37 @@ describe('API Tests', () => {
     });
 
     it('Login - Using email', async () => {
-      const session = await api.Auth.Login({login: user.email, password: user.password});
+      const session = await api.Auth.Login(user.email, user.password);
       expect(Boolean(session._id)).toBe(true);
       expect(Boolean(session.access_token)).toBe(true);
       expect(Boolean(session.refresh_token)).toBe(true);
       expect(Boolean(session.id_token)).toBe(true);
     });
     it('Login - Using username', async () => {
-      const session = await api.Auth.Login({login: user.username, password: user.password});
+      const session = await api.Auth.Login(user.username, user.password);
       expect(Boolean(session._id)).toBe(true);
       expect(Boolean(session.access_token)).toBe(true);
       expect(Boolean(session.refresh_token)).toBe(true);
       expect(Boolean(session.id_token)).toBe(true);
     });
     it('Login - Using phone_number', async () => {
-      const session = await api.Auth.Login({login: user.phone_number, password: user.password});
+      const session = await api.Auth.Login(user.phone_number, user.password);
       expect(Boolean(session._id)).toBe(true);
       expect(Boolean(session.access_token)).toBe(true);
       expect(Boolean(session.refresh_token)).toBe(true);
       expect(Boolean(session.id_token)).toBe(true);
     });
     it('Login - Session stored to async storage', async () => {
-      const session = await api.Auth.Login({login: user.phone_number, password: user.password});
+      const session = await api.Auth.Login(user.email, user.password);
       expect(apiSession.setSession).toBeCalledWith(session);
     });
     it('Login - Redux authorization called to store', async () => {
-      const session = await api.Auth.Login({login: user.phone_number, password: user.password});
+      const session = await api.Auth.Login(user.email, user.password);
       expect(dispatchSpy).toBeCalledWith(AuthActions.SetSession(session));
     });
     it('Login - Wrong login info', async () => {
       try {
-        await api.Auth.Login({login: 'bad', password: user.password});
+        await api.Auth.Login('bad', user.password);
       } catch (err) {
         expect(err.status).toEqual(401);
       }

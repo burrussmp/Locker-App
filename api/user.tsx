@@ -50,7 +50,7 @@ export const UserInfo = T.type({
     '_id': T.string,
     'key': T.string,
     'mimetype': T.string,
-    'blurhash': T.string,
+    'blurhash': T.union([T.undefined, T.string]),
   }), T.undefined]),
   'following': T.array(
     T.type(

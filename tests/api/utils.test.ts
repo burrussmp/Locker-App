@@ -8,21 +8,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/unbound-method */
 // Import the dependencies for testing
-
-import jsdom from 'jsdom';
 import fs from 'fs';
-import fetch from 'node-fetch';
 
 import utils from 'api/utils';
 import store from 'store/index';
 import AuthActions from 'store/actions/auth.actions';
+import fetch from 'node-fetch';
 
 jest.mock('node-fetch');
 const mockedFetch = fetch as any;
 const { Response } = jest.requireActual('node-fetch');
 
-global.window = new jsdom.JSDOM().window as any;
-global.URL.createObjectURL = jest.fn(() => 'details');
 
 describe('API Tests', () => {
   describe('Utils Tests', () => {
@@ -63,7 +59,7 @@ describe('API Tests', () => {
     });
 
     it('createURI - Successfully creates a URI', async () => {
-      const uri = await utils.createURI(new Response(fs.readFileSync('./tests/assets/freepeople.jpeg')));
+      const uri = await utils.createURI(new Response(fs.readFileSync('./tests/assets/freepeople.jpg')));
       expect(typeof uri).toEqual('string');
       expect(uri).toBeTruthy();
     });
@@ -72,7 +68,7 @@ describe('API Tests', () => {
       mockedFetch.mockReturnValue(Promise.resolve(new Response('test')));
       const res = await utils.postRequest('/fakeurl');
       expect(await res.text()).toEqual('test');
-      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?', { body: undefined, headers: { Authorization: 'Bearer access_token' }, method: 'POST' });
+      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?', { body: undefined, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer access_token' }, method: 'POST' });
     });
 
     it('postRequest - Success with Body', async () => {
@@ -84,7 +80,7 @@ describe('API Tests', () => {
     it('postRequest - Success with Query parameter', async () => {
       mockedFetch.mockReturnValue(Promise.resolve(new Response('test')));
       await utils.postRequest('/fakeurl', undefined, { test: 'test' });
-      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?test=test', { body: undefined, headers: { Authorization: 'Bearer access_token' }, method: 'POST' });
+      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?test=test', { body: undefined, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer access_token' }, method: 'POST' });
     });
 
     it('postRequest - Throws error if not ok', async () => {
@@ -101,7 +97,7 @@ describe('API Tests', () => {
       mockedFetch.mockReturnValue(Promise.resolve(new Response('test')));
       const res = await utils.putRequest('/fakeurl');
       expect(await res.text()).toEqual('test');
-      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?', { body: undefined, headers: { Authorization: 'Bearer access_token' }, method: 'PUT' });
+      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?', { body: undefined, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer access_token' }, method: 'PUT' });
     });
 
     it('putRequest - Success with Body', async () => {
@@ -113,7 +109,7 @@ describe('API Tests', () => {
     it('putRequest - Success with Query parameter', async () => {
       mockedFetch.mockReturnValue(Promise.resolve(new Response('test')));
       await utils.putRequest('/fakeurl', undefined, { test: 'test' });
-      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?test=test', { body: undefined, headers: { Authorization: 'Bearer access_token' }, method: 'PUT' });
+      expect(mockedFetch).toHaveBeenCalledWith('http://localhost:3000/fakeurl?test=test', { body: undefined, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer access_token' }, method: 'PUT' });
     });
 
     it('putRequest - Throws error if not ok', async () => {

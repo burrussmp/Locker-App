@@ -5,7 +5,6 @@
  */
 
 import utils from 'api/utils';
-import FormData from 'form-data';
 
 type media = {
   name: string;
@@ -33,7 +32,7 @@ type ProductPostData = {
 */
 const Create = async (productPostData: ProductPostData, productPostMedia: media): Promise<{_id: string}> => {
   const data = new FormData();
-  data.append('media', productPostMedia);
+  data.append('media', productPostMedia as unknown as string);
   data.append('price', productPostData.price);
   data.append('caption', productPostData.caption);
   data.append('tags', productPostData.tags);

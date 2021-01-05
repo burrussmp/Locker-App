@@ -4,7 +4,6 @@
  * @date 12/24/2020
  */
 
-import FormData from 'form-data';
 import utils from 'api/utils';
 
 /**
@@ -44,11 +43,8 @@ type media = {
  */
 
 const Update = async (avatar: media): Promise<Record<string, string>> => {
-  if (avatar.type !== 'image/jpeg' && avatar.type !== 'image/png') {
-    throw Error('The user avatar must be an image e.g. image/jpeg or image/png.');
-  }
   const form = new FormData();
-  form.append('media', avatar);
+  form.append('media', avatar as unknown as Blob);
   const res = await utils.postRequest(`/api/users/${utils.getIDAndAccessToken()._id}/avatar`, form);
   return await res.json() as Record<string, string>;
 };

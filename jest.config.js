@@ -5,16 +5,23 @@
 const tsconfig = require('./tsconfig.json');
 const moduleNameMapper = require('tsconfig-paths-jest')(tsconfig);
 
+
 module.exports = {
   preset: 'jest-expo/universal',
   projects: [
-    // { preset: 'jest-expo/ios' },
-    { preset: 'jest-expo/android' },
+    {
+      preset: 'jest-expo/ios',
+      setupFiles: ['./tests/jest.setup.js'],
+      testEnvironment: 'jsdom',
+    },
+    // {
+    //   preset: 'jest-expo/android',
+    //   setupFiles: ['./tests/jest.setup.js'],
+    //   testEnvironment: 'jsdom',
+    // },
   ],
   transform: { '^.+\\.ts?$': 'ts-jest' },
   testRegex: '/tests/*/.*\\.(test|spec)?\\.(ts|tsx)$',
-  // setupFiles: ['./tests/jestSetup.ts'],
-  testEnvironment: 'jsdom',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper,
 };

@@ -13,50 +13,9 @@ import { Session } from 'store/types/auth.types';
 
 
 /**
- * @desc Login information interface
- */
-interface LoginData extends Record<string, string> {
-  /**
-   * @property {string} login The username, phone number, or email of the user.
-   */
-  'login': string;
-  /**
-   * @property {string} password The password of the user.
-   */
-  'password': string;
-}
-
-interface SignUpData extends Record<string, string> {
-  /**
-   * @property {string} email The email of the user.
-   */
-  'email': string;
-  /**
-   * @property {string} phone_number The phone number of the user. Must be in format +15024567890
-   */
-  'phone_number': string;
-  /**
-   * @property {string} login The username of the user (<= 32 characters).
-   */
-  'username': string;
-  /**
-   * @property {string} password The password of the user (at least 1 number, 1 lower case, 1 upper case
-   * and 1 special character, and >= 8 characters.).
-   */
-  'password': string;
-  /**
-   * @property {string} first_name The first name of the user (optional)
-   */
-  'first_name': string;
-  /**
-   * @property {string} last_name The first name of the user (optional)
-   */
-  'last_name': string;
-}
-
-/**
  * @desc User Login API
- * @param {LoginData} data Contains the login info and password of the
+ * @param {string} login The username, phone number, or email of the user.
+ * @param {string} password The password of the user (at least 1 number, 1 lower case, 1 upper case
  * @return {Promise<Session>} A promise that can be handled. If resolved, the user's token is returned (String)
  * else an error is returned
  * @success
@@ -69,8 +28,8 @@ interface SignUpData extends Record<string, string> {
   }
 ```
  */
-const Login = async (data: LoginData): Promise<Session> => {
-  const res = await utils.postRequest('/auth/login', data);
+const Login = async (login: string, password: string): Promise<Session> => {
+  const res = await utils.postRequest('/auth/login', {login, password});
   const session = await res.json() as Session;
   await apiSession.setSession(session);
   store.dispatch(AuthActions.SetSession(session));
@@ -97,9 +56,14 @@ const Logout = async (): Promise<{message: string}> => {
 
 /**
  * @desc User Sign Up API
- * @param {SignUpData} data The sign in information. Required attributes include username, email,
- * phone number, and password.
- * @return {Promise<Session>} The user session if successful.
+ * @param {string} email The email of the user.
+ * @param {string} phone_number The phone number of the user. Must be in format +15024567890
+ * @param {string} login The username of the user (<= 32 characters).
+ * @param {string} password The password of the user (at least 1 number, 1 lower case, 1 upper case
+ * @param {string} first_name The first name of the user (optional)
+ * @param {string} last_name The first name of the user (optional)
+*
+  * @return {Promise<Session>} The user session if successful.
   * @success
 ```
 {
@@ -110,8 +74,9 @@ const Logout = async (): Promise<{message: string}> => {
 }
 ```
  */
-const SignUp = async (data: SignUpData): Promise<Session> => {
-  const res = await utils.postRequest('/api/users', data);
+const SignUp = async (email: string, phone_number: string, username: string,
+  password: string, first_name: string = '', last_name: string = ''): Promise<Session> => {
+  const res = await utils.postRequest('/api/users', {email, phone_number, username, password, first_name, last_name});
   const session = await res.json() as Session;
   await apiSession.setSession(session);
   store.dispatch(AuthActions.SetSession(session));
