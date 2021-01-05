@@ -75,9 +75,9 @@ describe('API Tests', () => {
       expect(myID).toBe(mockSession._id);
     });
     it('verifyToken - Check access and id token', async () => {
-      const fake_user = helper.getFakeUser();
-      const session = await api.Auth.SignUp(fake_user.email, fake_user.phone_number, fake_user.username,
-        fake_user.password, fake_user.first_name, fake_user.last_name);
+      const fakeUser = helper.getFakeUser();
+      const session = await api.Auth.SignUp(fakeUser.email, fakeUser.phone_number, fakeUser.username,
+        fakeUser.password, fakeUser.first_name, fakeUser.last_name);
       expect(await api.Session.verifyToken(session.access_token)).toBeTruthy();
       expect(await api.Session.verifyToken(session.id_token)).toBeTruthy();
     });

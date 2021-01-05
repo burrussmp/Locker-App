@@ -11,7 +11,6 @@ import AuthActions from 'store/actions/auth.actions';
 import store from 'store/index';
 import { Session } from 'store/types/auth.types';
 
-
 /**
  * @desc User Login API
  * @param {string} login The username, phone number, or email of the user.
@@ -29,7 +28,7 @@ import { Session } from 'store/types/auth.types';
 ```
  */
 const Login = async (login: string, password: string): Promise<Session> => {
-  const res = await utils.postRequest('/auth/login', {login, password});
+  const res = await utils.postRequest('/auth/login', { login, password });
   const session = await res.json() as Session;
   await apiSession.setSession(session);
   store.dispatch(AuthActions.SetSession(session));
@@ -74,9 +73,17 @@ const Logout = async (): Promise<{message: string}> => {
 }
 ```
  */
-const SignUp = async (email: string, phone_number: string, username: string,
-  password: string, first_name: string = '', last_name: string = ''): Promise<Session> => {
-  const res = await utils.postRequest('/api/users', {email, phone_number, username, password, first_name, last_name});
+
+const SignUp = async (email: string, phoneNumber: string, username: string, password: string, firstName = '',
+  lastName = ''): Promise<Session> => {
+  const res = await utils.postRequest('/api/users', {
+    email,
+    phone_number: phoneNumber,
+    username,
+    password,
+    first_name: firstName,
+    last_name: lastName,
+  });
   const session = await res.json() as Session;
   await apiSession.setSession(session);
   store.dispatch(AuthActions.SetSession(session));
@@ -95,9 +102,9 @@ const SignUp = async (email: string, phone_number: string, username: string,
   }
 ```
  */
-const ForgotPassword = async (email: string): Promise<{cognito_username: string}> => {
+const ForgotPassword = async (email: string): Promise<{'cognito_username': string}> => {
   const res = await utils.postRequest('/auth/forgot_password', { email });
-  return await res.json() as {cognito_username: string};
+  return await res.json() as {'cognito_username': string};
 };
 
 /**

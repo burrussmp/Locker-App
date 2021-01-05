@@ -45,7 +45,6 @@ const handleError = async (res: Response): Promise<{status: number, error: strin
   };
 };
 
-
 /**
  * @desc Retrieve the access token from Async Storage and properly set the
  * 'Authorization' header as 'Bearer <access token>'
@@ -88,17 +87,16 @@ const createURI = async (res: Response): Promise<string> => {
  * @param {string} dataURI A data URI
  * @return {Blob} A blob
  */
-const dataURItoBlob = (dataURI: string) => {
-  const splitDataURI = dataURI.split(',')
-  const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1])
-  const mimeString = splitDataURI[0].split(':')[1].split(';')[0]
+const dataURItoBlob = (dataURI: string): Blob => {
+  const splitDataURI = dataURI.split(',');
+  const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1]);
+  const mimeString = splitDataURI[0].split(':')[1].split(';')[0];
 
-  const ia = new Uint8Array(byteString.length)
-  for (let i = 0; i < byteString.length; i++)
-      ia[i] = byteString.charCodeAt(i)
+  const ia = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i += 1) ia[i] = byteString.charCodeAt(i);
 
-  return new Blob([ia], { type: mimeString })
-}
+  return new Blob([ia], { type: mimeString });
+};
 
 /**
  * @desc Generic HTTP GET request
@@ -108,7 +106,7 @@ const dataURItoBlob = (dataURI: string) => {
  * @return {Promise<Response>} The HTTP response if successful otherwise an error is thrown.
  */
 const postRequest = async (url: string, data?: Record<string, string> | FormData, query?: Record<string, string>): Promise<Response> => {
-  const headers = getHeaders(!(data instanceof FormData) ? { 'Content-Type': 'application/json' } :  undefined);
+  const headers = getHeaders(!(data instanceof FormData) ? { 'Content-Type': 'application/json' } : undefined);
   const method = 'POST';
   const body = !(data instanceof FormData) ? JSON.stringify(data) : data;
   const queryString = new URLSearchParams(query).toString();
@@ -137,7 +135,6 @@ const putRequest = async (url: string, data?: Record<string, string> | FormData,
   }
   throw await handleError(res);
 };
-
 
 /**
  * @desc Generic HTTP GET Request

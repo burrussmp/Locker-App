@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 /**
  * @description Users API
  * @author Matthew P. Burruss
@@ -11,12 +12,12 @@ import * as T from 'io-ts';
 */
 const FollowingList = T.type({
   following: T.array(
-    T.type({_id: T.string, username: T.string})
+    T.type({ _id: T.string, username: T.string }),
   ),
   followers: T.array(
-    T.type({_id: T.string, username: T.string})
+    T.type({ _id: T.string, username: T.string }),
   ),
-})
+});
 export type FollowingList = T.TypeOf<typeof FollowingList>;
 
 /**
@@ -28,7 +29,7 @@ export const UsersList = T.array(
     username: T.string,
     updatedAt: T.string,
     createdAt: T.string,
-  })
+  }),
 );
 export type UsersList = T.TypeOf<typeof UsersList>;
 
@@ -36,35 +37,35 @@ export type UsersList = T.TypeOf<typeof UsersList>;
  * @desc User details
  */
 export const UserInfo = T.type({
-  '_id': T.string,
-  'active': T.boolean,
-  'about': T.string,
-  'cognito_username': T.string,
-  'username': T.string,
-  'first_name': T.union([T.undefined, T.string]),
-  'last_name': T.union([T.undefined, T.string]),
-  'createdAt': T.string,
-  'updatedAt': T.string,
-  'profile_photo': T.union([
+  _id: T.string,
+  active: T.boolean,
+  about: T.string,
+  cognito_username: T.string,
+  username: T.string,
+  first_name: T.union([T.undefined, T.string]),
+  last_name: T.union([T.undefined, T.string]),
+  createdAt: T.string,
+  updatedAt: T.string,
+  profile_photo: T.union([
     T.type({
-    '_id': T.string,
-    'key': T.string,
-    'mimetype': T.string,
-    'blurhash': T.union([T.undefined, T.string]),
-  }), T.undefined]),
-  'following': T.array(
+      _id: T.string,
+      key: T.string,
+      mimetype: T.string,
+      blurhash: T.union([T.undefined, T.string]),
+    }), T.undefined]),
+  following: T.array(
     T.type(
       {
         _id: T.string,
-      }
-    )
+      },
+    ),
   ),
-  'followers': T.array(
+  followers: T.array(
     T.type(
       {
         _id: T.string,
-      }
-    )
+      },
+    ),
   ),
 });
 export type UserInfo = T.TypeOf<typeof UserInfo>;

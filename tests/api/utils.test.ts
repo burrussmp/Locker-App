@@ -17,8 +17,9 @@ import fetch from 'node-fetch';
 
 jest.mock('node-fetch');
 const mockedFetch = fetch as any;
-const { Response } = jest.requireActual('node-fetch');
+global.fetch = mockedFetch;
 
+const { Response } = jest.requireActual('node-fetch');
 
 describe('API Tests', () => {
   describe('Utils Tests', () => {
