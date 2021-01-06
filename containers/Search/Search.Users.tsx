@@ -30,7 +30,7 @@ const SearchUsers = () => {
     } else {
       setIsLoading(true);
       try {
-        const data = await api.Search.GetUsers(text);
+        const data = await api.Search.Users(text);
         if (search) {
           setSearchData(data);
         } else {

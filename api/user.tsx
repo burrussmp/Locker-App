@@ -4,6 +4,8 @@
  * @author Matthew P. Burruss
  * @date 12/24/2020
  */
+import AuthActions from 'store/actions/auth.actions';
+import store from 'store/index';
 import utils from 'api/utils';
 import * as T from 'io-ts';
 
@@ -95,8 +97,8 @@ const GetAll = async (): Promise<UsersList> => {
 };
 
 /**
- * @desc Get specific user's information
- * @param {string} userID The user ID of a user.
+ * @desc Get specific user's information. If not provided, get self.
+ * @param {string | undefined} userID The user ID of a user.
  * @return {Promise<UserInfo>} The information of a user
  * @success
   ```
@@ -120,13 +122,13 @@ const GetAll = async (): Promise<UsersList> => {
     }
   ```
  */
-const GetByID = async (userId: string): Promise<UserInfo> => {
-  const res = await utils.getRequest(`/api/users/${userId}`);
+const GetByID = async (userId?: string): Promise<UserInfo> => {
+  const res = await utils.getRequest(`/api/users/${userId || utils.getIDAndAccessToken()._id}`);
   return await res.json() as UserInfo;
 };
 
 /**
- * @desc Delete yourself
+ * @desc Delete yourself and logout.
  * @return {Promise<UserInfo>} The info of yourself.
  * @success
   ```
@@ -156,6 +158,7 @@ const GetByID = async (userId: string): Promise<UserInfo> => {
  */
 const DeleteMe = async (): Promise<UserInfo> => {
   const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken()._id}`);
+  store.dispatch(AuthActions.Logout());
   return await res.json() as UserInfo;
 };
 

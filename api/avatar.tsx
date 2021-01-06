@@ -10,7 +10,7 @@ import utils from 'api/utils';
  * @desc Get the avatar of a specific user
  * @param {string| undefined} userId The user ID of the avatar to retrieve. If this is undefined, retrieve
  * the userID from AsyncStorage.
- * @param {string | undefined} size An optional query parameter to resize the user avatar.
+ * @param {string | undefined} size An optional query parameter to resize the user avatar. Supports small, medium, large, and xlarge
  * @return {Promise<string>}
  * @success
   ```
