@@ -4,7 +4,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/unbound-method */
 
@@ -17,14 +16,12 @@ import { UserSearchResults } from 'api/search';
 describe('API Tests', () => {
   describe('Search Tests', () => {
     let user = {} as any;
-    let session = undefined as any;
-    let session2 = undefined as any;
     beforeAll(async () => {
       user = helper.getFakeUser();
-      session2 = await api.Auth.SignUp(user.email, user.phone_number, user.username,
+      await api.Auth.SignUp(user.email, user.phone_number, user.username,
         user.password, 'Matthias', user.last_name);
       user = helper.getFakeUser();
-      session = await api.Auth.SignUp(user.email, user.phone_number, user.username,
+      await api.Auth.SignUp(user.email, user.phone_number, user.username,
         user.password, 'Matthew', user.last_name);
     });
 

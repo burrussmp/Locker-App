@@ -19,7 +19,7 @@ import utils from 'api/utils';
 const getMedia = async (key: string, size?: string): Promise<string> => {
   const query = size ? { size } : undefined;
   const res = await utils.getRequest(`/api/media/${key}`, query);
-  return await res.json() as string;
+  return utils.createURI(res);
 };
 
 export default {

@@ -4,34 +4,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/unbound-method */
 
 // Import the dependencies for testing
 import helper from 'tests/helper';
 import api from 'api/api';
-import validators from 'services/validators';
-import store from 'store/index';
-import AuthActions from 'store/actions/auth.actions';
-import { UsersList, UserInfo } from 'api/user';
 
 import fs from 'fs';
-
-const dispatchSpy = jest.spyOn(store, 'dispatch');
-jest.mock('api/session');
 
 describe('API Tests', () => {
   describe('Avatar Tests', () => {
     let user = {} as any;
-    let session = undefined as any;
     let session2 = undefined as any;
     beforeAll(async () => {
       user = helper.getFakeUser();
       session2 = await api.Auth.SignUp(user.email, user.phone_number, user.username,
         user.password, user.first_name, user.last_name);
       user = helper.getFakeUser();
-      session = await api.Auth.SignUp(user.email, user.phone_number, user.username,
+      await api.Auth.SignUp(user.email, user.phone_number, user.username,
         user.password, user.first_name, user.last_name);
       await api.Avatar.Update(fs.createReadStream('./tests/assets/freepeople.jpg') as unknown as any);
     });
@@ -65,8 +56,8 @@ describe('API Tests', () => {
     it('Update - Change avatar (success)', async () => {
       await api.Avatar.Update(fs.createReadStream('./tests/assets/freepeople.jpg') as unknown as any);
     });
-    it('Update - Fail if undefined', async () => {
-      await expect(api.Avatar.Update(undefined as any)).rejects.toThrow();
+    it('Update - Fail if invalid input', async () => {
+      await expect(api.Avatar.Update('' as any)).rejects.toBeTruthy();
     });
     it('Delete - Remove Avatar (Goes back to default)', async () => {
       await api.Avatar.Delete();

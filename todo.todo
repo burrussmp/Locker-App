@@ -1,13 +1,7 @@
 API
 
 Unit tests
-- s3
 - replies
 - product_post
 - post
 - comments
-- api
-
-
-Think about
-1. Moving auth action dispatch from store into the auth api
