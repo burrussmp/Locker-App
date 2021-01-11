@@ -11,48 +11,48 @@
 import helper from 'tests/helper';
 import api from 'api/api';
 import validators from 'services/validators';
-import { ReplyType } from 'api/replies';
-import * as T from 'io-ts';
+import { CommentType } from 'api/comments';
 
 describe('API Tests', () => {
-  describe('Organization Tests', () => {
+  describe('Comment Tests', () => {
     let user = {} as any;
+    let postID = '';
     let commentID = '';
-    let replyID = '';
     beforeAll(async () => {
       user = helper.getFakeUser();
       await api.Auth.SignUp(user.email, user.phone_number, user.username,
         user.password, user.first_name, user.last_name);
-      const postID = (await api.Post.GetAll())[0]._id;
-      commentID = (await api.Comments.Create(postID, 'test'))._id;
+      postID = (await api.Post.GetAll())[0]._id;
     });
-    it('Create - Successfully make a reply to a comment', async () => {
-      replyID = (await api.Replies.Create(commentID, 'my reply'))._id;
-      expect(typeof replyID).toEqual('string');
-      const allReplies = await api.Comments.ListReplies(commentID);
-      validators.validateType(T.array(ReplyType), allReplies);
-      expect(allReplies.length).toEqual(1);
+    it('Create - Successfully make a comment', async () => {
+      const { _id } = await api.Comments.Create(postID, 'my comment');
+      expect(typeof _id).toEqual('string');
+      commentID = _id;
     });
-    it('Create - Empty reply not successful', async () => {
-      await expect(api.Replies.Create(commentID, '')).rejects.toBeTruthy();
+    it('Create - Empty comment not successful', async () => {
+      await expect(api.Comments.Create(postID, '')).rejects.toBeTruthy();
     });
-    it('GetByID - Retrieve a reply and validate type', async () => {
-      const reply = await api.Replies.GetByID(commentID, replyID);
-      validators.validateType(ReplyType, reply);
+    it('GetByID - Retrieve a comment and validate type', async () => {
+      const comment = await api.Comments.GetByID(commentID);
+      validators.validateType(CommentType, comment);
     });
-    it('Like - Successfully like a reply', async () => {
-      await api.Replies.Like(commentID, replyID);
-      const comment = await api.Replies.GetByID(commentID, replyID);
+    it('Like - Successfully like a comment', async () => {
+      await api.Comments.Like(commentID);
+      const comment = await api.Comments.GetByID(commentID);
       expect(comment.liked).toBeTruthy();
     });
-    it('Unlike - Successfully unlike a reply', async () => {
-      await api.Replies.Unlike(commentID, replyID);
-      const comment = await api.Replies.GetByID(commentID, replyID);
+    it('Unlike - Successfully unlike a comment', async () => {
+      await api.Comments.Unlike(commentID);
+      const comment = await api.Comments.GetByID(commentID);
       expect(comment.liked).toBeFalsy();
     });
-    it('Delete reply - Should succeed and next GET should fail', async () => {
-      await api.Replies.Delete(commentID, replyID);
-      await expect(api.Replies.GetByID(commentID, replyID)).rejects.toBeTruthy();
+    it('List replies - Should be empty', async () => {
+      const replies = await api.Comments.ListReplies(commentID);
+      expect(replies.length).toEqual(0);
+    });
+    it('Delete comment - Should succeed and next GET should fail', async () => {
+      await api.Comments.Delete(commentID);
+      await expect(api.Comments.GetByID(commentID)).rejects.toBeTruthy();
     });
   });
 });

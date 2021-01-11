@@ -25,7 +25,7 @@ export type ReplyType = T.TypeOf<typeof ReplyType>;
  * @return {Promise<{_id: string}>} The ID of the newly created reply
 */
 const Create = async (commentID: string, text: string): Promise<{_id: string}> => {
-  const res = await utils.postRequest(`/api/${commentID}/replies`, { text });
+  const res = await utils.postRequest(`/api/comments/${commentID}/replies`, { text });
   return await res.json() as {_id: string};
 };
 
@@ -36,7 +36,7 @@ const Create = async (commentID: string, text: string): Promise<{_id: string}> =
  * @return {Promise<ReplyType>} The reply promise.
 */
 const GetByID = async (commentID: string, replyID: string): Promise<ReplyType> => {
-  const res = await utils.getRequest(`/api/${commentID}/replies/${replyID}`);
+  const res = await utils.getRequest(`/api/comments/${commentID}/replies/${replyID}`);
   return await res.json() as ReplyType;
 };
 
@@ -47,7 +47,7 @@ const GetByID = async (commentID: string, replyID: string): Promise<ReplyType> =
  * @return {Promise<{_id: string}>} The ID of the deleted reply.
 */
 const Delete = async (commentID: string, replyID: string): Promise<{_id: string}> => {
-  const res = await utils.deleteRequest(`/api/${commentID}/replies/${replyID}`);
+  const res = await utils.deleteRequest(`/api/comments/${commentID}/replies/${replyID}`);
   return await res.json() as {_id: string};
 };
 
@@ -64,7 +64,7 @@ const Delete = async (commentID: string, replyID: string): Promise<{_id: string}
   ```
 */
 const Like = async (commentID: string, replyID: string): Promise<{_id: string}> => {
-  const res = await utils.putRequest(`/api/${commentID}/replies/${replyID}/likes`);
+  const res = await utils.putRequest(`/api/comments/${commentID}/replies/${replyID}/likes`);
   return await res.json() as {_id: string};
 };
 
@@ -75,7 +75,7 @@ const Like = async (commentID: string, replyID: string): Promise<{_id: string}> 
  * @return {Promise<{_id: string}>} The ID of the unliked reply.
 */
 const Unlike = async (commentID: string, replyID: string): Promise<{_id: string}> => {
-  const res = await utils.deleteRequest(`/api/${commentID}/replies/${replyID}/likes`);
+  const res = await utils.deleteRequest(`/api/comments/${commentID}/replies/${replyID}/likes`);
   return await res.json() as {_id: string};
 };
 
