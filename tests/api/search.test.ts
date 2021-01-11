@@ -11,7 +11,7 @@
 import helper from 'tests/helper';
 import api from 'api/api';
 import validators from 'services/validators';
-import { UserSearchResults } from 'api/search';
+import { UserSearchResultsType } from 'api/search';
 
 describe('API Tests', () => {
   describe('Search Tests', () => {
@@ -29,19 +29,19 @@ describe('API Tests', () => {
       const searchResults = await api.Search.Users('');
       expect(searchResults.length).toEqual(0);
     });
-    it('Users - Search based on first name and validate type (possible that type \'UserSearchResults\' or API changed)', async () => {
+    it('Users - Search based on first name and validate type (possible that type \'UserSearchResultsType\' or API changed)', async () => {
       const searchResults = await api.Search.Users('Matthew');
-      validators.validateType(UserSearchResults, searchResults);
+      validators.validateType(UserSearchResultsType, searchResults);
       expect(searchResults.length).toBeGreaterThanOrEqual(1);
     });
-    it('Users - Search based on last name and validate type (possible that type \'UserSearchResults\' or API changed)', async () => {
+    it('Users - Search based on last name and validate type (possible that type \'UserSearchResultsType\' or API changed)', async () => {
       const searchResults = await api.Search.Users(user.last_name);
-      validators.validateType(UserSearchResults, searchResults);
+      validators.validateType(UserSearchResultsType, searchResults);
       expect(searchResults.length).toBeGreaterThanOrEqual(1);
     });
-    it('Users - Search based on username and validate type (possible that type \'UserSearchResults\' or API changed)', async () => {
+    it('Users - Search based on username and validate type (possible that type \'UserSearchResultsType\' or API changed)', async () => {
       const searchResults = await api.Search.Users(user.username);
-      validators.validateType(UserSearchResults, searchResults);
+      validators.validateType(UserSearchResultsType, searchResults);
       expect(searchResults.length).toBeGreaterThanOrEqual(1);
     });
   });

@@ -10,16 +10,15 @@ import session from 'api/session';
 import user from 'api/user';
 import avatar from 'api/avatar';
 import s3 from 'api/S3';
+import organization from 'api/organization';
 import post from 'api/post';
-import productPost from 'api/product_post';
 import comments from 'api/comments';
 import replies from 'api/replies';
 import search from 'api/search';
 
-type PostAPIType = {
-  Basic: typeof post;
-  ProductPost: typeof productPost;
-};
+// type PostAPIType = {
+//   Basic: typeof post;
+// };
 
 type APIType = {
   Session: typeof session;
@@ -27,16 +26,17 @@ type APIType = {
   User: typeof user;
   Avatar: typeof avatar;
   S3: typeof s3;
-  Post: PostAPIType;
+  Post: typeof post;
   Comments: typeof comments;
   Replies: typeof replies;
   Search: typeof search;
+  Organization: typeof organization;
 };
 
-const postAPI: PostAPIType = {
-  Basic: post,
-  ProductPost: productPost,
-};
+// const postAPI: PostAPIType = {
+//   Basic: post,
+//   ProductPost: productPost,
+// };
 
 const api: APIType = {
   Session: session,
@@ -44,10 +44,11 @@ const api: APIType = {
   User: user,
   Avatar: avatar,
   S3: s3,
-  Post: postAPI,
+  Post: post,
   Comments: comments,
   Replies: replies,
   Search: search,
+  Organization: organization,
 };
 
 export default api;

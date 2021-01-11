@@ -10,7 +10,7 @@ import * as T from 'io-ts';
 /**
  * @desc Results when a user search is performed
  */
-export const UserSearchResults = T.array(
+export const UserSearchResultsType = T.array(
   T.type({
     data: T.type({
       _id: T.string,
@@ -28,7 +28,7 @@ export const UserSearchResults = T.array(
     score: T.number,
   }),
 );
-export type UserSearchResults = T.TypeOf<typeof UserSearchResults>;
+export type UserSearchResultsType = T.TypeOf<typeof UserSearchResultsType>;
 
 /**
  * @desc Search for users based on text. You can retrieve a user by their username,
@@ -36,9 +36,9 @@ export type UserSearchResults = T.TypeOf<typeof UserSearchResults>;
  * @param {string} search Search text.
  * @return {Promise<SearchResults>} A list of users that match the search and the respective confidence.
  */
-const Users = async (search: string): Promise<UserSearchResults> => {
+const Users = async (search: string): Promise<UserSearchResultsType> => {
   const res = await utils.postRequest('/api/search/users', { search });
-  return await res.json() as UserSearchResults;
+  return await res.json() as UserSearchResultsType;
 };
 
 export default {

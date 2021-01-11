@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 /**
  * @description Replies API
  * @author Matthew P. Burruss
@@ -5,27 +6,23 @@
  */
 
 import utils from 'api/utils';
+import * as T from 'io-ts';
 
-export type ReplyType = {
-  _id: string;
-  text: string;
-  postedBy: string;
-  createdAt: string;
-  likes: number;
-  liked: boolean;
-};
+export const ReplyType = T.type({
+  _id: T.string,
+  text: T.string,
+  postedBy: T.string,
+  createdAt: T.string,
+  likes: T.number,
+  liked: T.boolean,
+});
+export type ReplyType = T.TypeOf<typeof ReplyType>;
 
 /**
  * @desc Creates a new reply (returns the ID of the newly created reply)
  * @param {string} commentID The ID of the comment
  * @param {string} text The text of the reply.
  * @return {Promise<{_id: string}>} The ID of the newly created reply
- * @success
- ```
-  {
-      "_id": "5f400fb18b012a65ef46044b",
-  }
-  ```
 */
 const Create = async (commentID: string, text: string): Promise<{_id: string}> => {
   const res = await utils.postRequest(`/api/${commentID}/replies`, { text });
@@ -37,18 +34,8 @@ const Create = async (commentID: string, text: string): Promise<{_id: string}> =
  * @param {string} commentID The ID of the comment
  * @param {string} replyID The ID of the reply
  * @return {Promise<ReplyType>} The reply promise.
- * @success
- ```
- {
-  text: "What a reply!",
-  postedBy: "5f400fb18b012a65ef46044b",
-  createdAt: "2020-08-21T18:17:21.586Z",
-  likes: 0,
-  liked: false
-}
-  ```
 */
-const GetById = async (commentID: string, replyID: string): Promise<ReplyType> => {
+const GetByID = async (commentID: string, replyID: string): Promise<ReplyType> => {
   const res = await utils.getRequest(`/api/${commentID}/replies/${replyID}`);
   return await res.json() as ReplyType;
 };
@@ -58,12 +45,6 @@ const GetById = async (commentID: string, replyID: string): Promise<ReplyType> =
  * @param {string} commentID The ID of the comment
  * @param {string} replyID The ID of the reply
  * @return {Promise<{_id: string}>} The ID of the deleted reply.
- * @success
- ```
-  {
-    "_id": "5f400fb18b012a65ef46044b",
-  }
-  ```
 */
 const Delete = async (commentID: string, replyID: string): Promise<{_id: string}> => {
   const res = await utils.deleteRequest(`/api/${commentID}/replies/${replyID}`);
@@ -92,12 +73,6 @@ const Like = async (commentID: string, replyID: string): Promise<{_id: string}> 
  * @param {string} commentID The ID of the comment
  * @param {string} replyID The ID of the reply
  * @return {Promise<{_id: string}>} The ID of the unliked reply.
- * @success
- ```
-  {
-      "_id": "5f400fb18b012a65ef46044b",
-  }
-  ```
 */
 const Unlike = async (commentID: string, replyID: string): Promise<{_id: string}> => {
   const res = await utils.deleteRequest(`/api/${commentID}/replies/${replyID}/likes`);
@@ -108,6 +83,6 @@ export default {
   Create,
   Like,
   Unlike,
-  GetById,
+  GetByID,
   Delete,
 };

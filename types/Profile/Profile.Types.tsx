@@ -1,8 +1,8 @@
 'use strict';
 
-import {UserInfoType} from 'api/user';
+import {UserInfoTypeType} from 'api/user';
 
 export type ProfileHeaderData = {
-  userInfo: UserInfoType;
+  userInfo: UserInfoTypeType;
   isMyProfile: boolean;
 } | null;

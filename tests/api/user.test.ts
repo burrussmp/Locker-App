@@ -13,7 +13,7 @@ import api from 'api/api';
 import validators from 'services/validators';
 import store from 'store/index';
 import AuthActions from 'store/actions/auth.actions';
-import { UsersList, UserInfo } from 'api/user';
+import { UsersListType, UserInfoType } from 'api/user';
 
 import fs from 'fs';
 
@@ -36,11 +36,11 @@ describe('API Tests', () => {
 
     it('GetAll - Retrieve a list of users', async () => {
       const users = await api.User.GetAll();
-      validators.validateType(UsersList, users);
+      validators.validateType(UsersListType, users);
     });
     it('GetAll - Validate content (possible that type \'UserList\' or API changed)', async () => {
       const users = await api.User.GetAll();
-      validators.validateType(UsersList, users);
+      validators.validateType(UsersListType, users);
     });
 
     it('GetByID - Retrieve self (no input)', async () => {
@@ -51,16 +51,16 @@ describe('API Tests', () => {
       const userInfo = await api.User.GetByID(session2._id);
       expect(userInfo.username).not.toEqual(user.username);
     });
-    it('GetByID - Validate content (no profile) (possible that type \'UserInfo\' or API changed)', async () => {
+    it('GetByID - Validate content (no profile) (possible that type \'UserInfoType\' or API changed)', async () => {
       const newUser = await api.User.GetByID(session._id);
-      validators.validateType(UserInfo, newUser);
+      validators.validateType(UserInfoType, newUser);
       expect(Boolean(user.profile_photo)).toBeFalsy();
     });
-    it('GetByID - Validate content (profile exists) (possible that type \'UserInfo\' or API changed)', async () => {
+    it('GetByID - Validate content (profile exists) (possible that type \'UserInfoType\' or API changed)', async () => {
       const stream = fs.createReadStream('./tests/assets/freepeople.jpg');
       await api.Avatar.Update(stream as unknown as any);
       const newUser = await api.User.GetByID(session._id);
-      validators.validateType(UserInfo, newUser);
+      validators.validateType(UserInfoType, newUser);
     });
 
     it('UpdatePassword - Change password and re-login with new', async () => {
@@ -83,7 +83,7 @@ describe('API Tests', () => {
     it('Follow Someone - Check User Information', async () => {
       await api.User.Follow(session2._id);
       const userInfo = await api.User.GetByID(session2._id);
-      validators.validateType(UserInfo, userInfo);
+      validators.validateType(UserInfoType, userInfo);
       expect(userInfo.followers.length).toEqual(1);
     });
 
@@ -98,7 +98,7 @@ describe('API Tests', () => {
     it('Unfollow Someone - Success', async () => {
       await api.User.Unfollow(session2._id);
       const userInfo = await api.User.GetByID(session2._id);
-      validators.validateType(UserInfo, userInfo);
+      validators.validateType(UserInfoType, userInfo);
       expect(userInfo.followers.length).toEqual(0);
     });
 

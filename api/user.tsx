@@ -12,7 +12,7 @@ import * as T from 'io-ts';
 /**
  * @desc Following list type
 */
-const FollowingList = T.type({
+export const FollowingListType = T.type({
   following: T.array(
     T.type({ _id: T.string, username: T.string }),
   ),
@@ -20,12 +20,12 @@ const FollowingList = T.type({
     T.type({ _id: T.string, username: T.string }),
   ),
 });
-export type FollowingList = T.TypeOf<typeof FollowingList>;
+export type FollowingListType = T.TypeOf<typeof FollowingListType>;
 
 /**
  * @desc User list type
  */
-export const UsersList = T.array(
+export const UsersListType = T.array(
   T.type({
     _id: T.string,
     username: T.string,
@@ -33,12 +33,12 @@ export const UsersList = T.array(
     createdAt: T.string,
   }),
 );
-export type UsersList = T.TypeOf<typeof UsersList>;
+export type UsersListType = T.TypeOf<typeof UsersListType>;
 
 /**
  * @desc User details
  */
-export const UserInfo = T.type({
+export const UserInfoType = T.type({
   _id: T.string,
   active: T.boolean,
   about: T.string,
@@ -70,11 +70,11 @@ export const UserInfo = T.type({
     ),
   ),
 });
-export type UserInfo = T.TypeOf<typeof UserInfo>;
+export type UserInfoType = T.TypeOf<typeof UserInfoType>;
 
 /**
  * @desc List all users
- * @return {Promise<UsersList>} A list of all the users.
+ * @return {Promise<UsersListType>} A list of all the users.
  * @success
   ```
 [{
@@ -91,15 +91,15 @@ export type UserInfo = T.TypeOf<typeof UserInfo>;
   }]
 ```
  */
-const GetAll = async (): Promise<UsersList> => {
+const GetAll = async (): Promise<UsersListType> => {
   const res = await utils.getRequest('/api/users');
-  return await res.json() as UsersList;
+  return await res.json() as UsersListType;
 };
 
 /**
  * @desc Get specific user's information. If not provided, get self.
  * @param {string | undefined} userID The user ID of a user.
- * @return {Promise<UserInfo>} The information of a user
+ * @return {Promise<UserInfoType>} The information of a user
  * @success
   ```
     {
@@ -122,14 +122,14 @@ const GetAll = async (): Promise<UsersList> => {
     }
   ```
  */
-const GetByID = async (userId?: string): Promise<UserInfo> => {
+const GetByID = async (userId?: string): Promise<UserInfoType> => {
   const res = await utils.getRequest(`/api/users/${userId || utils.getIDAndAccessToken()._id}`);
-  return await res.json() as UserInfo;
+  return await res.json() as UserInfoType;
 };
 
 /**
  * @desc Delete yourself and logout.
- * @return {Promise<UserInfo>} The info of yourself.
+ * @return {Promise<UserInfoType>} The info of yourself.
  * @success
   ```
  {
@@ -156,10 +156,10 @@ const GetByID = async (userId?: string): Promise<UserInfo> => {
 }
   ```
  */
-const DeleteMe = async (): Promise<UserInfo> => {
+const DeleteMe = async (): Promise<UserInfoType> => {
   const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken()._id}`);
   store.dispatch(AuthActions.Logout());
-  return await res.json() as UserInfo;
+  return await res.json() as UserInfoType;
 };
 
 /**
@@ -217,7 +217,7 @@ const Unfollow = async (userID: string): Promise<{message: string}> => {
 /**
  * @desc List someone's following/followers
  * @param {string} userID The user ID of a user.
- * @return {Promise<FollowingList>} A users's list of followers/followings.
+ * @return {Promise<FollowingListType>} A users's list of followers/followings.
  * @success
   ```javascript
   {
@@ -240,9 +240,9 @@ const Unfollow = async (userID: string): Promise<{message: string}> => {
   }
 ```
  */
-const GetFollowing = async (userID: string): Promise<FollowingList> => {
+const GetFollowing = async (userID: string): Promise<FollowingListType> => {
   const res = await utils.getRequest(`/api/users/${userID}/follow`);
-  return await res.json() as FollowingList;
+  return await res.json() as FollowingListType;
 };
 
 export default {

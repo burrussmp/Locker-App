@@ -53,7 +53,7 @@ const pickImageFromLibrary = async (): Promise<media> => {
     throw 'User has not permitted access to image library';
   }
   const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    mediaDatas: ImagePicker.MediaTypeOptions.Images,
     allowsEditing: true,
     aspect: [4, 3],
     quality: 1,
