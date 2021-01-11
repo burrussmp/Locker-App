@@ -80,15 +80,15 @@ const GetLogo = async (organizationID: string): Promise<string> => {
  * @param {string} organizationID The ID of the organization.
  * @return {Promise<ProductListType>} A list of product post IDs
  */
-const ListProductPosts = async (organizationID: string): Promise<ProductListType> => {
-  const query = { organization: organizationID, type: 'Product' };
-  const res = await utils.getRequest('/api/posts', query);
+const ListProducts = async (organizationID: string): Promise<ProductListType> => {
+  const query = { organization: organizationID };
+  const res = await utils.getRequest('/api/products', query);
   return await res.json() as ProductListType;
 };
 
 export default {
   GetAll,
   GetByID,
-  ListProductPosts,
+  ListProducts,
   GetLogo,
 };

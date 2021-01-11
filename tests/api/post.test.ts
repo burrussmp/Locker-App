@@ -34,6 +34,12 @@ describe('API Tests', () => {
       const postResult = await api.Post.GetByID(postID);
       validators.validateType(PostType, postResult);
     });
+    it('GetByProductID - Success', async () => {
+      const postResult = await api.Post.GetByID(postID);
+      validators.validateType(PostType, postResult);
+      const postResult2 = await api.Post.GetByProductID(postResult.content._id);
+      validators.validateType(PostType, postResult2);
+    });
     it('ListComments - Add comment and validate type', async () => {
       await api.Comments.Create(postID, 'A comment');
       const commentList = await api.Post.ListComments(postID);

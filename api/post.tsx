@@ -94,6 +94,16 @@ const GetByID = async (postId: string, query?: Record<string, string>): Promise<
 };
 
 /**
+ * @desc Get a specific post by the product ID.
+ * @param {string} productID The ID of the product.
+ * @return {Promise<PostType>} The post information
+*/
+const GetByProductID = async (productID: string): Promise<PostType> => {
+  const res = await utils.getRequest('/api/posts', { product: productID });
+  return await res.json() as PostType;
+};
+
+/**
  * @desc List post comments
  * @param {string} postId The ID of the post.
  * @return {Promise<[CommentType]>} List of comments for a post.
@@ -143,6 +153,7 @@ const GetReactions = async (postId: string): Promise<ReactionsType> => {
 export default {
   GetAll,
   GetByID,
+  GetByProductID,
   // Edit,
   // Delete,
   ListComments,

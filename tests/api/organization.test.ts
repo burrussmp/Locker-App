@@ -32,13 +32,13 @@ describe('API Tests', () => {
       const organizationInfo = await api.Organization.GetByID(organizationID);
       validators.validateType(OrganizationInfoType, organizationInfo);
     });
-    it('ListProductPosts - Success', async () => {
-      const productList = await api.Organization.ListProductPosts(organizationID);
+    it('ListProducts - Success', async () => {
+      const productList = await api.Organization.ListProducts(organizationID);
       validators.validateType(ProductListType, productList);
     });
-    it('ListProductPosts - Use ID in list to retrieve post information', async () => {
-      const productList = await api.Organization.ListProductPosts(organizationID);
-      const productPostInfo = await api.Post.GetByID(productList[0]._id);
+    it('ListProducts - Use ID in list to retrieve post information', async () => {
+      const productList = await api.Organization.ListProducts(organizationID);
+      const productPostInfo = await api.Post.GetByProductID(productList[0]._id);
       validators.validateType(PostType, productPostInfo);
     });
     it('GetLogo - Success', async () => {
