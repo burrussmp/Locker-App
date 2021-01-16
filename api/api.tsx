@@ -15,6 +15,7 @@ import post from 'api/post';
 import comments from 'api/comments';
 import replies from 'api/replies';
 import search from 'api/search';
+import collection from 'api/collection';
 
 // type PostAPIType = {
 //   Basic: typeof post;
@@ -31,6 +32,7 @@ type APIType = {
   Replies: typeof replies;
   Search: typeof search;
   Organization: typeof organization;
+  Collection: typeof collection;
 };
 
 // const postAPI: PostAPIType = {
@@ -49,6 +51,7 @@ const api: APIType = {
   Replies: replies,
   Search: search,
   Organization: organization,
+  Collection: collection,
 };
 
 export default api;
