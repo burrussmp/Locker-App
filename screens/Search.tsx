@@ -31,7 +31,7 @@ const SearchNavigation = () => {
           if (props.route.params && props.route.params.userId) {
             return <ProfileScreen userId={props.route.params.userId} />;
           } else {
-            throw 'Error: Navigating to the FoundUser but not userID';
+            throw 'Error: Navigating to the FoundUser but not userId';
           }
         }}
         options={{headerShown: false}}

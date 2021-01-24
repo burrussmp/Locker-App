@@ -27,7 +27,7 @@ const Authenticate = async (dispatch: any, session: Session) => {
 };
 
 /**
- * @desc Retrieve the my userID from redux
+ * @desc Retrieve the my userId from redux
  * @return "{
  *  "id" : user ID,
  * } if it exists otherwise throws an error

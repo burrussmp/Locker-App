@@ -10,12 +10,12 @@ import { mediaData } from 'api/S3';
 /**
  * @desc Get the avatar of a specific user
  * @param {string| undefined} userId The user ID of the avatar to retrieve. If this is undefined, retrieve
- * the userID from AsyncStorage.
+ * the userId from AsyncStorage.
  * @param {string | undefined} size An optional query parameter to resize the user avatar. Supports small, medium, large, and xlarge
  * @return {Promise<string>}
  * @success
   ```
-  let img_src = await getAvatar(userID);
+  let img_src = await getAvatar(userId);
   <img src={URL.createObjectURL(img_src)} />
   ```
  */

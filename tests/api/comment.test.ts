@@ -16,43 +16,43 @@ import { CommentType } from 'api/comments';
 describe('API Tests', () => {
   describe('Comment Tests', () => {
     let user = {} as any;
-    let postID = '';
-    let commentID = '';
+    let postId = '';
+    let commentId = '';
     beforeAll(async () => {
       user = helper.getFakeUser();
       await api.Auth.SignUp(user.email, user.phone_number, user.username,
         user.password, user.first_name, user.last_name);
-      postID = (await api.Post.GetAll())[0]._id;
+      postId = (await api.Post.GetAll())[0]._id;
     });
     it('Create - Successfully make a comment', async () => {
-      const { _id } = await api.Comments.Create(postID, 'my comment');
+      const { _id } = await api.Comments.Create(postId, 'my comment');
       expect(typeof _id).toEqual('string');
-      commentID = _id;
+      commentId = _id;
     });
     it('Create - Empty comment not successful', async () => {
-      await expect(api.Comments.Create(postID, '')).rejects.toBeTruthy();
+      await expect(api.Comments.Create(postId, '')).rejects.toBeTruthy();
     });
     it('GetByID - Retrieve a comment and validate type', async () => {
-      const comment = await api.Comments.GetByID(commentID);
+      const comment = await api.Comments.GetByID(commentId);
       validators.validateType(CommentType, comment);
     });
     it('Like - Successfully like a comment', async () => {
-      await api.Comments.Like(commentID);
-      const comment = await api.Comments.GetByID(commentID);
+      await api.Comments.Like(commentId);
+      const comment = await api.Comments.GetByID(commentId);
       expect(comment.liked).toBeTruthy();
     });
     it('Unlike - Successfully unlike a comment', async () => {
-      await api.Comments.Unlike(commentID);
-      const comment = await api.Comments.GetByID(commentID);
+      await api.Comments.Unlike(commentId);
+      const comment = await api.Comments.GetByID(commentId);
       expect(comment.liked).toBeFalsy();
     });
     it('List replies - Should be empty', async () => {
-      const replies = await api.Comments.ListReplies(commentID);
+      const replies = await api.Comments.ListReplies(commentId);
       expect(replies.length).toEqual(0);
     });
     it('Delete comment - Should succeed and next GET should fail', async () => {
-      await api.Comments.Delete(commentID);
-      await expect(api.Comments.GetByID(commentID)).rejects.toBeTruthy();
+      await api.Comments.Delete(commentId);
+      await expect(api.Comments.GetByID(commentId)).rejects.toBeTruthy();
     });
   });
 });

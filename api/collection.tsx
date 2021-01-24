@@ -15,7 +15,7 @@ export const CollectionInfoType = T.type({
   _id: T.string,
   name: T.string,
   organization: T.string,
-  hero: mediaType,
+  hero: T.union([T.undefined, mediaType]),
   product_list: T.array(T.string),
   description: T.string,
   visible: T.boolean,

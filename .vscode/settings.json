@@ -6,6 +6,7 @@
         "blurhash",
         "filereader",
         "freepeople",
+        "lockercollection",
         "mockttp"
     ]
 }

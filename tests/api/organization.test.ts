@@ -17,7 +17,7 @@ import { OrganizationListType, OrganizationInfoType, ProductListType } from 'api
 describe('API Tests', () => {
   describe('Organization Tests', () => {
     let user = {} as any;
-    let organizationID = '';
+    let organizationId = '';
     beforeAll(async () => {
       user = helper.getFakeUser();
       await api.Auth.SignUp(user.email, user.phone_number, user.username,
@@ -26,23 +26,23 @@ describe('API Tests', () => {
     it('GetAll - Success', async () => {
       const organizationList = await api.Organization.GetAll();
       validators.validateType(OrganizationListType, organizationList);
-      organizationID = organizationList[0]._id;
+      organizationId = organizationList[0]._id;
     });
     it('GetByID - Success', async () => {
-      const organizationInfo = await api.Organization.GetByID(organizationID);
+      const organizationInfo = await api.Organization.GetByID(organizationId);
       validators.validateType(OrganizationInfoType, organizationInfo);
     });
     it('ListProducts - Success', async () => {
-      const productList = await api.Organization.ListProducts(organizationID);
+      const productList = await api.Organization.ListProducts(organizationId);
       validators.validateType(ProductListType, productList);
     });
     it('ListProducts - Use ID in list to retrieve post information', async () => {
-      const productList = await api.Organization.ListProducts(organizationID);
+      const productList = await api.Organization.ListProducts(organizationId);
       const productPostInfo = await api.Post.GetByProductID(productList[0]._id);
       validators.validateType(PostType, productPostInfo);
     });
     it('GetLogo - Success', async () => {
-      const logo = await api.Organization.GetLogo(organizationID);
+      const logo = await api.Organization.GetLogo(organizationId);
       expect(typeof logo).toEqual('string');
     });
   });

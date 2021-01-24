@@ -98,7 +98,7 @@ const GetAll = async (): Promise<UsersListType> => {
 
 /**
  * @desc Get specific user's information. If not provided, get self.
- * @param {string | undefined} userID The user ID of a user.
+ * @param {string | undefined} userId The user ID of a user.
  * @return {Promise<UserInfoType>} The information of a user
  * @success
   ```
@@ -184,7 +184,7 @@ const UpdatePassword = async (newPassword: string, oldPassword: string): Promise
 
 /**
  * @desc Follow someone
- * @param {string} userID The user ID of a user.
+ * @param {string} userId The user ID of a user.
  * @return {Promise<{message: string}>} A success message
  * @success
   ```
@@ -193,14 +193,14 @@ const UpdatePassword = async (newPassword: string, oldPassword: string): Promise
     }
   ```
  */
-const Follow = async (userID: string): Promise<{message: string}> => {
-  const res = await utils.putRequest(`/api/users/${userID}/follow`);
+const Follow = async (userId: string): Promise<{message: string}> => {
+  const res = await utils.putRequest(`/api/users/${userId}/follow`);
   return await res.json() as {message: string};
 };
 
 /**
  * @desc Unfollow someone
- * @param {string} userID The user ID of a user.
+ * @param {string} userId The user ID of a user.
  * @return {Promise<{message: string}>} A success message
  * @success
   ```
@@ -209,14 +209,14 @@ const Follow = async (userID: string): Promise<{message: string}> => {
     }
   ```
  */
-const Unfollow = async (userID: string): Promise<{message: string}> => {
-  const res = await utils.deleteRequest(`/api/users/${userID}/follow`);
+const Unfollow = async (userId: string): Promise<{message: string}> => {
+  const res = await utils.deleteRequest(`/api/users/${userId}/follow`);
   return await res.json() as {message: string};
 };
 
 /**
  * @desc List someone's following/followers
- * @param {string} userID The user ID of a user.
+ * @param {string} userId The user ID of a user.
  * @return {Promise<FollowingListType>} A users's list of followers/followings.
  * @success
   ```javascript
@@ -240,8 +240,8 @@ const Unfollow = async (userID: string): Promise<{message: string}> => {
   }
 ```
  */
-const GetFollowing = async (userID: string): Promise<FollowingListType> => {
-  const res = await utils.getRequest(`/api/users/${userID}/follow`);
+const GetFollowing = async (userId: string): Promise<FollowingListType> => {
+  const res = await utils.getRequest(`/api/users/${userId}/follow`);
   return await res.json() as FollowingListType;
 };
 

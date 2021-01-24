@@ -31,21 +31,21 @@ const Create = async (postId: string, text: string): Promise<{'_id': string}> =>
 
 /**
  * @desc Retrieve a comment by ID and return information like who liked it, when it was created, who posted it, etc.
- * @param {string} commentID The ID of the comment.
+ * @param {string} commentId The ID of the comment.
  * @return {Promise<CommentType>} The comment object.
 */
-const GetByID = async (commentID: string): Promise<CommentType> => {
-  const res = await utils.getRequest(`/api/comments/${commentID}`);
+const GetByID = async (commentId: string): Promise<CommentType> => {
+  const res = await utils.getRequest(`/api/comments/${commentId}`);
   return await res.json() as CommentType;
 };
 
 /**
  * @desc Like a comment.
- * @param {string} commentID The ID of the comment.
+ * @param {string} commentId The ID of the comment.
  * @return {Promise<{'message': string}>} A success message.
 */
-const Like = async (commentID: string): Promise<{'message': string}> => {
-  const res = await utils.putRequest(`/api/comments/${commentID}/likes`);
+const Like = async (commentId: string): Promise<{'message': string}> => {
+  const res = await utils.putRequest(`/api/comments/${commentId}/likes`);
   return await res.json() as {'message': string};
 };
 
@@ -54,8 +54,8 @@ const Like = async (commentID: string): Promise<{'message': string}> => {
  * @param {string} commendID The ID of the comment.
  * @return {Promise<{message: string}>} A success message.
 */
-const Unlike = async (commentID: string): Promise<{message: string}> => {
-  const res = await utils.deleteRequest(`/api/comments/${commentID}/likes`);
+const Unlike = async (commentId: string): Promise<{message: string}> => {
+  const res = await utils.deleteRequest(`/api/comments/${commentId}/likes`);
   return await res.json() as {'message': string};
 };
 
@@ -64,8 +64,8 @@ const Unlike = async (commentID: string): Promise<{message: string}> => {
  * @param {string} commendID The ID of the comment.
  * @return {Promise<{_id: string}>} a promise that resolves if the API went through otherwise the error
 */
-const Delete = async (commentID: string): Promise<{_id: string}> => {
-  const res = await utils.deleteRequest(`/api/comments/${commentID}`);
+const Delete = async (commentId: string): Promise<{_id: string}> => {
+  const res = await utils.deleteRequest(`/api/comments/${commentId}`);
   return await res.json() as {'_id': string};
 };
 
@@ -74,8 +74,8 @@ const Delete = async (commentID: string): Promise<{_id: string}> => {
  * @param {string} commendID The ID of the comment.
  * @return {Promise<[ReplyType]>} A list of replies to comments.
 */
-const ListReplies = async (commentID: string): Promise<[ReplyType]> => {
-  const res = await utils.getRequest(`/api/comments/${commentID}/replies`);
+const ListReplies = async (commentId: string): Promise<[ReplyType]> => {
+  const res = await utils.getRequest(`/api/comments/${commentId}/replies`);
   return await res.json() as [ReplyType];
 };
 

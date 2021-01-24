@@ -16,6 +16,8 @@ import comments from 'api/comments';
 import replies from 'api/replies';
 import search from 'api/search';
 import collection from 'api/collection';
+import locker from 'api/locker';
+import lockerCollection from 'api/lockercollection';
 
 // type PostAPIType = {
 //   Basic: typeof post;
@@ -33,6 +35,8 @@ type APIType = {
   Search: typeof search;
   Organization: typeof organization;
   Collection: typeof collection;
+  Locker: typeof locker;
+  LockerCollection: typeof lockerCollection;
 };
 
 // const postAPI: PostAPIType = {
@@ -52,6 +56,8 @@ const api: APIType = {
   Search: search,
   Organization: organization,
   Collection: collection,
+  Locker: locker,
+  LockerCollection: lockerCollection,
 };
 
 export default api;

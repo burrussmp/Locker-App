@@ -95,11 +95,11 @@ const GetByID = async (postId: string, query?: Record<string, string>): Promise<
 
 /**
  * @desc Get a specific post by the product ID.
- * @param {string} productID The ID of the product.
+ * @param {string} productId The ID of the product.
  * @return {Promise<PostType>} The post information
 */
-const GetByProductID = async (productID: string): Promise<PostType> => {
-  const res = await utils.getRequest('/api/posts', { product: productID });
+const GetByProductID = async (productId: string): Promise<PostType> => {
+  const res = await utils.getRequest('/api/posts', { product: productId });
   return await res.json() as PostType;
 };
 
@@ -184,7 +184,7 @@ export default {
 // ): Promise<{_id: string} | Error> => {
 //   const id_and_token = utils.getIDAndAccessToken();
 //   if (!id_and_token) {
-//     throw 'Unable to retrieve userID and/or access_token from redux store';
+//     throw 'Unable to retrieve userId and/or access_token from redux store';
 //   }
 //   const data = {
 //     caption: postUpdate.caption,
@@ -209,7 +209,7 @@ export default {
 
 // /**
 //  * @desc Deletes a post (user must be owner)
-//  * @param postId : string : the postID to retrieve
+//  * @param postId : string : the postId to retrieve
 //  * @return a promise that resolves if the API went through otherwise the error
 //  * @success
 //  ```
@@ -221,7 +221,7 @@ export default {
 // const Delete = async (postId: string): Promise<{_id: string} | Error> => {
 //   const id_and_token = utils.getIDAndAccessToken();
 //   if (!id_and_token) {
-//     throw 'Unable to retrieve userID and/or access_token from redux store';
+//     throw 'Unable to retrieve userId and/or access_token from redux store';
 //   }
 //   const res = await global.fetch(
 //     `${config.server}/api/posts/${postId}/comments?access_token=${id_and_token.access_token}`,

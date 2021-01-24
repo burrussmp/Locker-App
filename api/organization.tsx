@@ -57,31 +57,31 @@ const GetAll = async (): Promise<OrganizationListType> => {
 
 /**
  * @desc Get specific organization's information.
- * @param {string} organizationID The ID of the organization.
+ * @param {string} organizationId The ID of the organization.
  * @return {Promise<OrganizationInfoType>} The information of a user
  */
-const GetByID = async (organizationID: string): Promise<OrganizationInfoType> => {
-  const res = await utils.getRequest(`/api/organizations/${organizationID}`);
+const GetByID = async (organizationId: string): Promise<OrganizationInfoType> => {
+  const res = await utils.getRequest(`/api/organizations/${organizationId}`);
   return await res.json() as OrganizationInfoType;
 };
 
 /**
  * @desc Retrieve the logo of an organization.
- * @param {string} organizationID The ID of the organization.
+ * @param {string} organizationId The ID of the organization.
  * @return {Promise<string>} The URI for the logo
  */
-const GetLogo = async (organizationID: string): Promise<string> => {
-  const res = await utils.getRequest(`/api/organizations/${organizationID}/logo`);
+const GetLogo = async (organizationId: string): Promise<string> => {
+  const res = await utils.getRequest(`/api/organizations/${organizationId}/logo`);
   return utils.createURI(res);
 };
 
 /**
  * @desc List all available products for an organization.
- * @param {string} organizationID The ID of the organization.
+ * @param {string} organizationId The ID of the organization.
  * @return {Promise<ProductListType>} A list of product post IDs
  */
-const ListProducts = async (organizationID: string): Promise<ProductListType> => {
-  const query = { organization: organizationID };
+const ListProducts = async (organizationId: string): Promise<ProductListType> => {
+  const query = { organization: organizationId };
   const res = await utils.getRequest('/api/products', query);
   return await res.json() as ProductListType;
 };
