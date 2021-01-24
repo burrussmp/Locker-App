@@ -28,10 +28,11 @@ export type LockerInfoType = T.TypeOf<typeof LockerInfoType>;
  */
 export const LockerProductInfoType = T.type({
   _id: T.string,
+  user: T.string,
   product: T.string,
   locker: T.string,
   locker_collections: T.array(T.string),
-  timestamp_locked: T.array(T.string),
+  timestamp_locked: T.string,
 });
 export type LockerProductInfoType = T.TypeOf<typeof LockerProductInfoType>;
 
