@@ -6,7 +6,7 @@
  */
 import utils from 'api/utils';
 import * as T from 'io-ts';
-import { mediaType } from 'api/S3';
+import { mediaData, mediaType } from 'api/S3';
 import { retrieveLocker, LockerProductInfoType } from 'api/locker';
 
 export const ASYNC_STORAGE_LOCKER_ID_KEY = 'locker';
@@ -20,15 +20,25 @@ export const LockerCollectionInfoType = T.type({
   user: T.string,
   hero: T.union([T.undefined, mediaType]),
   description: T.union([T.undefined, T.string]),
+  createdAt: T.string,
+  updatedAt: T.string,
 
 });
 export type LockerCollectionInfoType = T.TypeOf<typeof LockerCollectionInfoType>;
+
+/**
+ * @desc The API output when you clone a locker collection.
+ */
+export const LockerCollectionCloneType = T.type({
+  _id: T.string,
+  locker_products: T.array(T.string),
+});
+export type LockerCollectionCloneType = T.TypeOf<typeof LockerCollectionCloneType>;
 
 const LOCKER_COLLECTION_URL = '/api/lockers/:lockerId/collections';
 
 /**
  * @desc List collections in a locker.
- * @param {string | undefined} lockerId The ID of the locker (default is user's locker)
  * @param {Record<string, string> | undefined} query Optional query parameters
  * @return {Promise<[string]>} A list of the locker collection IDs.
  */
@@ -46,8 +56,25 @@ const GetAll = async (lockerId?: string): Promise<[string]> => {
  */
 const GetByID = async (collectionId: string, lockerId?: string): Promise<LockerCollectionInfoType> => {
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', lockerId || await retrieveLocker());
-  const res = await utils.getRequest(`${url}/collections/${collectionId}`);
+  const res = await utils.getRequest(`${url}/${collectionId}`);
   return await res.json() as LockerCollectionInfoType;
+};
+
+/**
+ * @desc Create a new locker collection.
+ * @param {string | undefined} name A new name for the locker.
+ * @param {string | undefined} description A new description for the locker.
+ * @param {mediaData | undefined} hero An object with a name, type, and uri attribute (see react-native-image-picker)
+ * @return {Promise<{'_id': string}>} The ID of the newly created locker collection.
+ */
+const Create = async (name?: string, description?: string, hero?: mediaData): Promise<{'_id': string}> => {
+  const form = new FormData();
+  if (name) form.append('name', name);
+  if (description) form.append('description', description);
+  if (hero) form.append('hero', hero as unknown as Blob);
+  const url = LOCKER_COLLECTION_URL.replace(':lockerId', await retrieveLocker());
+  const res = await utils.postRequest(`${url}`, form);
+  return await res.json() as {'_id': string};
 };
 
 /**
@@ -55,12 +82,17 @@ const GetByID = async (collectionId: string, lockerId?: string): Promise<LockerC
  * @param {string} collectionId The ID of the locker collection.
  * @param {string | undefined} name A new name for the locker.
  * @param {string | undefined} description A new description for the locker.
+ * @param {mediaData | undefined} hero An object with a name, type, and uri attribute (see react-native-image-picker)
  * @return {Promise<LockerCollectionInfoType>} The updated locker collection.
  */
-const Update = async (collectionId: string, name?: string, description?: string): Promise<LockerCollectionInfoType> => {
+const Update = async (collectionId: string, name?: string, description?: string, hero?: mediaData): Promise<LockerCollectionInfoType> => {
+  const form = new FormData();
+  if (name) form.append('name', name);
+  if (description) form.append('description', description);
+  if (hero) form.append('hero', hero as unknown as Blob);
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', await retrieveLocker());
   const updateBody = JSON.parse(JSON.stringify({ name, description })) as Record<string, string>;
-  const res = await utils.putRequest(`${url}/collections/${collectionId}`, updateBody);
+  const res = await utils.putRequest(`${url}/${collectionId}`, updateBody);
   return await res.json() as LockerCollectionInfoType;
 };
 
@@ -71,7 +103,7 @@ const Update = async (collectionId: string, name?: string, description?: string)
  */
 const Delete = async (collectionId: string): Promise<LockerCollectionInfoType> => {
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', await retrieveLocker());
-  const res = await utils.deleteRequest(`${url}/collections/${collectionId}`);
+  const res = await utils.deleteRequest(`${url}/${collectionId}`);
   return await res.json() as LockerCollectionInfoType;
 };
 
@@ -83,7 +115,7 @@ const Delete = async (collectionId: string): Promise<LockerCollectionInfoType> =
  */
 const GetProducts = async (collectionId: string, lockerId?: string): Promise<[LockerProductInfoType]> => {
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', lockerId || await retrieveLocker());
-  const res = await utils.getRequest(`${url}/collections/${collectionId}`);
+  const res = await utils.getRequest(`${url}/${collectionId}/products`);
   return await res.json() as [LockerProductInfoType];
 };
 
@@ -95,7 +127,7 @@ const GetProducts = async (collectionId: string, lockerId?: string): Promise<[Lo
  */
 const AddProduct = async (collectionId: string, productId: string): Promise<{'_id': string}> => {
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', await retrieveLocker());
-  const res = await utils.postRequest(`${url}/collections/${collectionId}/products`, { product: productId });
+  const res = await utils.postRequest(`${url}/${collectionId}/products`, { product: productId });
   return await res.json() as {'_id': string};
 };
 
@@ -107,7 +139,7 @@ const AddProduct = async (collectionId: string, productId: string): Promise<{'_i
  */
 const RemoveProduct = async (collectionId: string, lockerProductId: string): Promise<{'_id': string}> => {
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', await retrieveLocker());
-  const res = await utils.deleteRequest(`${url}/collections/${collectionId}/products/${lockerProductId}`);
+  const res = await utils.deleteRequest(`${url}/${collectionId}/products/${lockerProductId}`);
   return await res.json() as {'_id': string};
 };
 
@@ -115,12 +147,12 @@ const RemoveProduct = async (collectionId: string, lockerProductId: string): Pro
  * @desc Clone a locker collection by making a deep copy of someone's collection which includes their products.
  * @param {string} collectionId The ID of the locker collection.
  * @param {string | undefined} lockerId A locker ID. If undefined, default to user's locker.
- * @return {Promise<{'_id': string}>} The created collection
+ * @return {Promise<LockerCollectionCloneType>} The created collection and locker products.
  */
-const Clone = async (collectionId: string, lockerId?: string): Promise<{'_id': string}> => {
+const Clone = async (collectionId: string, lockerId?: string): Promise<LockerCollectionCloneType> => {
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', lockerId || await retrieveLocker());
-  const res = await utils.postRequest(`${url}/collections/${collectionId}/clone`);
-  return await res.json() as {'_id': string};
+  const res = await utils.postRequest(`${url}/${collectionId}/clone`);
+  return await res.json() as LockerCollectionCloneType;
 };
 
 /**
@@ -131,11 +163,12 @@ const Clone = async (collectionId: string, lockerId?: string): Promise<{'_id': s
  */
 const Reference = async (collectionId: string, lockerId: string): Promise<{'_id': string}> => {
   const url = LOCKER_COLLECTION_URL.replace(':lockerId', lockerId);
-  const res = await utils.postRequest(`${url}/collections/${collectionId}/clone`);
+  const res = await utils.postRequest(`${url}/${collectionId}/reference`);
   return await res.json() as {'_id': string};
 };
 
 export default {
+  Create,
   GetAll,
   GetByID,
   Update,

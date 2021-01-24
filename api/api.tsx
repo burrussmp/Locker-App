@@ -17,7 +17,7 @@ import replies from 'api/replies';
 import search from 'api/search';
 import collection from 'api/collection';
 import locker from 'api/locker';
-import lockerCollection from 'api/lockercollection';
+import lockerCollection from 'api/locker.collection';
 
 // type PostAPIType = {
 //   Basic: typeof post;

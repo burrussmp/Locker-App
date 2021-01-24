@@ -34,7 +34,7 @@ describe('API Tests', () => {
       lockerId = lockerList[0]._id;
     });
     it('GetAll - With "user" query - Success', async () => {
-      const lockerList = await api.Locker.GetAll({ user: session._id });
+      const lockerList = await api.Locker.GetAll(session._id);
       validators.validateType(LockerListType, lockerList);
       expect(lockerList.length).toEqual(1);
     });

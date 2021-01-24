@@ -51,10 +51,11 @@ const LOCKER_URL = '/api/lockers';
 
 /**
  * @desc List off the lockers
- * @param {Record<string, string> | undefined} query Optional query parameters
+ * @param {string | undefined} userId Optionally query by user ID.
  * @return {Promise<LockerListType>} A list of the locker
  */
-const GetAll = async (query?: Record<string, string>): Promise<LockerListType> => {
+const GetAll = async (userId?: string): Promise<LockerListType> => {
+  const query = JSON.parse(JSON.stringify({ user: userId })) as Record<string, string>;
   const res = await utils.getRequest(LOCKER_URL, query);
   return await res.json() as LockerListType;
 };
@@ -66,7 +67,7 @@ const GetAll = async (query?: Record<string, string>): Promise<LockerListType> =
 export const retrieveLocker = async (): Promise<string> => {
   let lockerId = await AsyncStorage.getItem(ASYNC_STORAGE_LOCKER_ID_KEY);
   if (!lockerId) {
-    lockerId = (await GetAll({ user: utils.getIDAndAccessToken()._id }))[0]._id;
+    lockerId = (await GetAll(utils.getIDAndAccessToken()._id))[0]._id;
     await AsyncStorage.setItem(ASYNC_STORAGE_LOCKER_ID_KEY, lockerId);
   }
   return lockerId;
