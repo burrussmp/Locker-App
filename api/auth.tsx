@@ -3,13 +3,14 @@
  * @author Matthew P. Burruss
  * @date 12/24/2020
  */
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiSession from 'api/session';
 import utils from 'api/utils';
 
 import AuthActions from 'store/actions/auth.actions';
 import store from 'store/index';
 import { Session } from 'store/types/auth.types';
+import { ASYNC_STORAGE_LOCKER_ID_KEY } from 'api/locker';
 
 /**
  * @desc User Login API
@@ -50,6 +51,7 @@ const Logout = async (): Promise<{message: string}> => {
   await apiSession.setSession();
   store.dispatch(AuthActions.Logout());
   const res = await utils.getRequest('/auth/logout');
+  await AsyncStorage.setItem(ASYNC_STORAGE_LOCKER_ID_KEY, '');
   return await res.json() as {message: string};
 };
 
