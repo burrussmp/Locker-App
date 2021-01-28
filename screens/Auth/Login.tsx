@@ -131,7 +131,7 @@ const LoginScreen = (props: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     Login: async (session: Session) => {
-      await AuthSelectors.Authenticate(dispatch, session);
+      await AuthSelectors.authenticate(dispatch, session);
     },
   };
 };

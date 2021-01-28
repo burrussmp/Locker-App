@@ -153,7 +153,7 @@ const mapStateToProps = (state: any) => state;
 
 const mapDispatchToProps = (dispatch: any) => ({
   SignUp: async (session: Session) => {
-    await AuthSelectors.Authenticate(dispatch, session);
+    await AuthSelectors.authenticate(dispatch, session);
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

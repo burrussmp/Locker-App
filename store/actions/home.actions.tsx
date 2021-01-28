@@ -9,11 +9,11 @@
 import { Animated } from 'react-native';
 import { HomeActions, CHANGE_TAB } from 'store/types/home.types';
 
-const ChangeTab = (scrollTracker: Animated.Value): HomeActions => ({
+const changeTab = (scrollTracker: Animated.Value): HomeActions => ({
   type: CHANGE_TAB,
   scrollTracker,
 });
 
 export default {
-  ChangeTab,
+  changeTab,
 };

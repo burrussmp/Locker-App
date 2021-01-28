@@ -32,7 +32,7 @@ const Login = async (login: string, password: string): Promise<Session> => {
   const res = await utils.postRequest('/auth/login', { login, password });
   const session = await res.json() as Session;
   await apiSession.setSession(session);
-  store.dispatch(AuthActions.SetSession(session));
+  store.dispatch(AuthActions.setSession(session));
   return session;
 };
 
@@ -88,7 +88,7 @@ const SignUp = async (email: string, phoneNumber: string, username: string, pass
   });
   const session = await res.json() as Session;
   await apiSession.setSession(session);
-  store.dispatch(AuthActions.SetSession(session));
+  store.dispatch(AuthActions.setSession(session));
   return session;
 };
 

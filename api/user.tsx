@@ -97,7 +97,7 @@ const GetByID = async (userId?: string): Promise<UserInfoType> => {
  */
 const DeleteMe = async (): Promise<UserInfoType> => {
   const res = await utils.deleteRequest(`/api/users/${utils.getIDAndAccessToken()._id}`);
-  store.dispatch(AuthActions.Logout());
+  store.dispatch(AuthActions.logout());
   return await res.json() as UserInfoType;
 };
 

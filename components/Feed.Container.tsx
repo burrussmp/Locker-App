@@ -38,7 +38,7 @@ const FeedContainer: React.FunctionComponent = (props: any) => {
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
-      props.ContractPost();
+      props.contractPost();
     });
     return unsubscribe;
   }, [props.navigation]);
@@ -103,11 +103,11 @@ const mapStateToProps = (state: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    ChangeTab: (scrollTracker: Animated.Value) => {
-      dispatch(HomeActions.ChangeTab(scrollTracker));
+    changeTab: (scrollTracker: Animated.Value) => {
+      dispatch(HomeActions.changeTab(scrollTracker));
     },
-    ContractPost: () => {
-      dispatch(PostActions.ContractPost());
+    contractPost: () => {
+      dispatch(PostActions.contractPost());
     },
   };
 };

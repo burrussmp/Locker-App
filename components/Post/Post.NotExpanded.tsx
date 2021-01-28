@@ -36,7 +36,7 @@ interface PostProps {
   image: string;
   scrollY: Animated.Value;
   onContentExpand(index: number): void;
-  ExpandPost(): void;
+  expandPost(): void;
   cardColor: string;
   author: string;
   authorAvatar: {
@@ -77,7 +77,7 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
 
   const onEllipsesTap = (event: any) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      props.ExpandPost();
+      props.expandPost();
       navigation.navigate('PostExpanded');
     }
   };
@@ -287,8 +287,8 @@ const PostNotExpanded: React.FunctionComponent<PostProps> = (
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    ExpandPost: () => {
-      dispatch(PostActions.ExpandPost());
+    expandPost: () => {
+      dispatch(PostActions.expandPost());
     },
   };
 };

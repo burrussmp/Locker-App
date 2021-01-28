@@ -111,7 +111,7 @@ describe('API Tests', () => {
     });
     it('DeleteMe - Success', async () => {
       await api.User.DeleteMe();
-      expect(dispatchSpy).toBeCalledWith(AuthActions.Logout());
+      expect(dispatchSpy).toBeCalledWith(AuthActions.logout());
     });
   });
 });

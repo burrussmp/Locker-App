@@ -5,16 +5,20 @@
  * produce a new state given the old state and the action
  */
 
-import { PostActions, EXPAND, CONTRACT } from 'store/types/post.types';
-
-interface PostState {
-  isExpanded: boolean;
-}
+import {
+  PostActions, PostState, EXPAND, CONTRACT,
+} from 'store/types/post.types';
 
 const PostInitialState = {
   isExpanded: false,
 };
 
+/**
+ * @desc A reducer for post state and actions
+ * @param {AuthState} state The post state.
+ * @param {AuthActions} action The dispatched action.
+ * @return {AuthState} A new state.
+ */
 const PostReducer = (state = PostInitialState, action: PostActions): PostState => {
   switch (action.type) {
     case EXPAND:

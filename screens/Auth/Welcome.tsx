@@ -6,13 +6,15 @@
  * @date Sep 2020
  * @desc First time logging in welcome screen
  */
+import React, { useRef, useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  StyleSheet, View, Animated, Text, Image,
+} from 'react-native';
 
-import React, {useRef, useEffect, useState} from 'react';
-import {StyleSheet, View, Animated, Text, Image} from 'react-native';
-import {AsyncStorage} from 'react-native';
 import SafeArea from 'components/Common/SafeArea';
 
-const logoImage = require('assets/images/logo.png');
+import logoImage from 'assets/images/logo.png';
 
 const WelcomeStyles = StyleSheet.create({
   container: {
@@ -34,9 +36,9 @@ const WelcomeStyles = StyleSheet.create({
 
 const FadeInView = (props: any) => {
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-  const order = props.order;
-  const incrementOrder = props.incrementOrder;
-  const fadeout = props.fadeout;
+  const { order } = props;
+  const { incrementOrder } = props;
+  const { fadeout } = props;
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -71,7 +73,7 @@ const FadeInView = (props: any) => {
 
 const Welcome = (props: any) => {
   const [order, setOrder] = useState(0);
-  const setFirstTime = props.setFirstTime;
+  const { setFirstTime } = props;
   let content;
   if (order === 0) {
     content = <Text style={WelcomeStyles.textHeader}>W E L C O M E</Text>;
@@ -81,7 +83,7 @@ const Welcome = (props: any) => {
     content = (
       <>
         <Text style={WelcomeStyles.textHeader}>L O C K E R</Text>
-        <Image style={{marginTop: 20, tintColor: 'tan'}} source={logoImage} />
+        <Image style={{ marginTop: 20, tintColor: 'tan' }} source={logoImage} />
       </>
     );
   } else {
@@ -91,8 +93,8 @@ const Welcome = (props: any) => {
   }
   return (
     <SafeArea
-      containerStyle={{backgroundColor: '#000'}}
-      children={
+      containerStyle={{ backgroundColor: '#000' }}
+      children={(
         <View style={WelcomeStyles.container}>
           <FadeInView
             style={WelcomeStyles.center}
@@ -102,7 +104,7 @@ const Welcome = (props: any) => {
             fadeout
           />
         </View>
-      }
+      )}
     />
   );
 };

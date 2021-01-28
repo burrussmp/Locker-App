@@ -13,6 +13,7 @@
     "target": "es6",
     "rootDir": "./",
     "sourceMap": true,
+    "typeRoots" : ["node_modules/@types", "types/"],
     "paths": {
       "components/*": ["components/*"],
       "screens/*": ["screens/*"],

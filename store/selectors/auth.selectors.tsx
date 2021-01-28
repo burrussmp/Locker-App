@@ -1,28 +1,37 @@
-import {Session} from 'store/types/auth.types';
-import AuthActions from 'store/actions/auth.actions';
-import api from 'api/api';
-import store from 'store/index';
-
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
  * @desc Selectors are easy ways to retrieve certain information from the store
+*/
+import { Dispatch } from 'redux';
+
+import { Session } from 'store/types/auth.types';
+import AuthActions from 'store/actions/auth.actions';
+import api from 'api/api';
+import store, { RootAction, RootState } from 'store/index';
+
+/**
+ * @desc Check Redux state and see if logged in.
+ * @param {RootState} state The redux root state.
+ * @return {boolean} True if logged in else False.
  */
+const isLoggedIn = (state: RootState): boolean => (
+  Boolean(state.auth
+    && state.auth.session
+    && state.auth.verified
+    && state.auth.session.access_token)
+);
 
-const isLoggedIn = (state: any): boolean => {
-  return (
-    state.auth &&
-    state.auth.session &&
-    state.auth.verified &&
-    state.auth.session.access_token
-  );
-};
-
-const Authenticate = async (dispatch: any, session: Session) => {
-  dispatch(AuthActions.SetSession(session));
+/**
+ * @desc Authenticate a user.
+ * @param dispatch
+ * @param session
+ */
+const authenticate = async (dispatch: Dispatch<RootAction>, session: Session): Promise<void> => {
+  dispatch(AuthActions.setSession(session));
   if (session) {
-    const verified = await api.Session.verifyToken(session['access_token']);
-    dispatch(AuthActions.VerifyToken(verified));
+    const verified = await api.Session.verifyToken(session.access_token);
+    dispatch(AuthActions.verifyToken(verified));
   }
 };
 
@@ -37,10 +46,11 @@ const getMyID = (): undefined | string => {
   if (state.auth && state.auth.session) {
     return state.auth.session._id;
   }
+  return undefined;
 };
 
 export default {
   isLoggedIn,
-  Authenticate,
+  authenticate,
   getMyID,
 };

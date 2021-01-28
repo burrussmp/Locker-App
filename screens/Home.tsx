@@ -8,10 +8,10 @@
  */
 
 import * as React from 'react';
-import {View} from 'react-native';
-import {connect} from 'react-redux';
+import { View } from 'react-native';
+import { connect } from 'react-redux';
 
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TopTabBar from 'components/Navigation.TopTabBar';
 import PostSelectors from 'store/selectors/post.selectors';
 import Feed from 'screens/Feed';
@@ -44,8 +44,8 @@ const HomeScreen = (props: any) => {
 
   return (
     <SafeArea
-      children={
-        <View style={{flex: 1}}>
+      children={(
+        <View style={{ flex: 1 }}>
           <HomeTopTab.Navigator
             tabBar={TopTabBar}
             swipeEnabled={!postIsExpanded}
@@ -55,15 +55,13 @@ const HomeScreen = (props: any) => {
             <HomeTopTab.Screen name="For You" component={Feed} />
           </HomeTopTab.Navigator>
         </View>
-      }
+      )}
     />
   );
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    state: state,
-  };
-};
+const mapStateToProps = (state: any) => ({
+  state,
+});
 
 export default connect(mapStateToProps, null)(HomeScreen);

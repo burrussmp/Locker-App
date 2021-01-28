@@ -6,26 +6,39 @@
  * @date Aug 2020
  * @desc Create the app container with all of the stack navigations (App.js imports this)
  */
-
-import React, {useState, useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {connect} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect, FC } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { connect, Dispatch } from 'react-redux';
 
 import AuthNavigation from 'navigation/AuthNavigation';
 import AppNavigation from 'navigation/AppNavigation';
 import WelcomeScreen from 'screens/Auth/Welcome';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/Splash';
-import {AsyncStorage} from 'react-native';
 import api from 'api/api';
-import {Session} from 'store/types/auth.types';
+import { Session } from 'store/types/auth.types';
 
-const Navigation = (props: any) => {
+const mapStateToProps = (state: any) => ({
+  state,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<>) => ({
+  Login: async (session: Session) => {
+    await AuthSelectors.authenticate(dispatch, session);
+  },
+});
+
+type Props = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps> & {
+    label: string;
+};
+
+const Navigation: FC = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [firstTime, setFirstTime] = useState(true);
   useEffect(() => {
-    (async () => {
-      const isFirstTime = await AsyncStorage.getItem('firstTime');
+    AsyncStorage.getItem('firstTime').then(async (isFirstTime: string | null) => {
       setFirstTime(isFirstTime !== 'done');
       try {
         const session = await api.Session.getSession();
@@ -34,7 +47,9 @@ const Navigation = (props: any) => {
       } catch (err) {
         setIsLoading(false);
       }
-    })();
+    }).catch(() => {
+      setIsLoading(false);
+    });
   }, []);
 
   const Application = firstTime ? (
@@ -49,19 +64,6 @@ const Navigation = (props: any) => {
     </NavigationContainer>
   );
   return isLoading ? <Splash /> : Application;
-};
-
-const mapStateToProps = (state: any) => {
-  return {
-    state: state,
-  };
-};
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    Login: async (session: Session) => {
-      await AuthSelectors.Authenticate(dispatch, session);
-    },
-  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

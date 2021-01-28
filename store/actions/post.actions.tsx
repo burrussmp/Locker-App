@@ -8,15 +8,15 @@
 
 import { PostActions, EXPAND, CONTRACT } from 'store/types/post.types';
 
-const ExpandPost = (): PostActions => ({
+const expandPost = (): PostActions => ({
   type: EXPAND,
 });
 
-const ContractPost = (): PostActions => ({
+const contractPost = (): PostActions => ({
   type: CONTRACT,
 });
 
 export default {
-  ExpandPost,
-  ContractPost,
+  expandPost,
+  contractPost,
 };

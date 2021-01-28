@@ -7,11 +7,15 @@
 export const EXPAND = 'home/expand_post';
 export const CONTRACT = 'home/contract_post';
 
-interface ExpandPostAction {
+export interface ExpandPostAction {
   type: typeof EXPAND;
 }
-interface ContractPostAction {
+export interface ContractPostAction {
   type: typeof CONTRACT;
 }
 
 export type PostActions = ExpandPostAction | ContractPostAction;
+
+export interface PostState {
+  isExpanded: boolean;
+}

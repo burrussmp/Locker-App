@@ -9,20 +9,36 @@ import {
 } from 'redux';
 import { createLogger } from 'redux-logger';
 
+// import reducers
 import AuthReducer from 'store/reducers/auth.reducer';
 import HomeReducer from 'store/reducers/home.reducer';
 import PostReducer from 'store/reducers/post.reducer';
 
+// import states
+import { AuthActions, AuthState } from 'store/types/auth.types';
+import { HomeActions, HomeState } from 'store/types/home.types';
+import { PostActions, PostState } from 'store/types/post.types';
+
+// add logger if development
 const middleware = [];
 if (process.env.NODE_ENV === 'development') {
-  // Add logging if in development mode
   middleware.push(createLogger());
 }
 
+// Root state
+export interface RootState {
+  auth: AuthState;
+  home: HomeState;
+  post: PostState;
+}
+
+// Root Action
+export type RootAction = AuthActions | HomeActions | PostActions;
+
+// Root reducer
 export const reducers = combineReducers({
-  // create the combined reducer with all the reducer slices
-  home: HomeReducer,
   auth: AuthReducer,
+  home: HomeReducer,
   post: PostReducer,
 });
 

@@ -20,7 +20,7 @@ const PostExpanded: React.FunctionComponent = (props: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     Contract: () => {
-      dispatch(PostActions.ContractPost());
+      dispatch(PostActions.contractPost());
     },
   };
 };
