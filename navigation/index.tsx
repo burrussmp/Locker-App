@@ -9,9 +9,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect, FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { connect, MapDispatchToProps } from 'react-redux';
+import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import PropTypes from 'prop-types';
 import AuthNavigation from 'navigation/AuthNavigation';
 import AppNavigation from 'navigation/AppNavigation';
 import WelcomeScreen from 'screens/Auth/Welcome';
@@ -43,15 +42,11 @@ const Navigation = ({ authState, Login }: IProps) => {
   useEffect(() => {
     AsyncStorage.getItem('firstTime').then(async (isFirstTime: string | null) => {
       setFirstTime(isFirstTime !== 'done');
-      try {
-        const session = await api.Session.getSession();
-        if (session) {
-          await Login(session);
-        }
-        setIsLoading(false);
-      } catch (err) {
-        setIsLoading(false);
+      const session = await api.Session.getSession();
+      if (session) {
+        await Login(session);
       }
+      setIsLoading(false);
     }).catch(() => {
       setIsLoading(false);
     });

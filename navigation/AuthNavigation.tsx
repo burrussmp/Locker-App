@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
  * @desc Stack navigation for authorization (login, registration, reset password, etc.)
  */
 
-import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import React, { FC } from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from 'screens/Auth/Auth';
 import LoginScreen from 'screens/Auth/Login';
 import RegisterScreen from 'screens/Register';
@@ -16,19 +14,17 @@ import ResetPasswordScreen from 'screens/Auth/ResetPassword';
 
 const AuthStack = createStackNavigator();
 
-const AuthNavigation = () => {
-  return (
-    <AuthStack.Navigator headerMode="none" initialRouteName="Auth" mode="modal">
-      <AuthStack.Screen name="Auth" component={AuthScreen} />
-      <AuthStack.Screen name="Login" component={LoginScreen} />
-      <AuthStack.Screen
-        name="ForgotPassword"
-        component={ForgotPasswordScreen}
-      />
-      <AuthStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
-      <AuthStack.Screen name="Register" component={RegisterScreen} />
-    </AuthStack.Navigator>
-  );
-};
+const AuthNavigation: FC = () => (
+  <AuthStack.Navigator headerMode="none" initialRouteName="Auth" mode="modal">
+    <AuthStack.Screen name="Auth" component={AuthScreen} />
+    <AuthStack.Screen name="Login" component={LoginScreen} />
+    <AuthStack.Screen
+      name="ForgotPassword"
+      component={ForgotPasswordScreen}
+    />
+    <AuthStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+    <AuthStack.Screen name="Register" component={RegisterScreen} />
+  </AuthStack.Navigator>
+);
 
 export default AuthNavigation;

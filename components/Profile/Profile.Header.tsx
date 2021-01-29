@@ -10,7 +10,7 @@ import {useNavigation} from '@react-navigation/native';
 import ImageLibrary from 'services/Images/ImageLibrary';
 import api from 'api/api';
 
-import {ProfileHeaderData} from 'types/Profile/Profile.Types';
+import {ProfileHeaderData} from 'types/Profile/profile';
 
 import styles from 'styles/Profile/Profile.Styles';
 import BlurHashService from 'services/Images/BlurHashDecoder';

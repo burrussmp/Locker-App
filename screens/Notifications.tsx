@@ -30,7 +30,7 @@ const NotificationScreen = (props: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     Logout: () => {
-      dispatch(AuthActions.Logout());
+      dispatch(AuthActions.logout());
     },
   };
 };

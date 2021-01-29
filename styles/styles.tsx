@@ -5,11 +5,11 @@
  * and allow code re-use.
  */
 
-import {StyleSheet, Platform, StatusBar} from 'react-native';
+import { StyleSheet, Platform, StatusBar } from 'react-native';
 
 const styles = StyleSheet.create({
   safeArea:
-    Platform.OS === 'ios' ? {flex: 0} : {height: StatusBar.currentHeight},
+    Platform.OS === 'ios' ? { flex: 0 } : { height: StatusBar.currentHeight },
   container: {
     flex: 1,
   },

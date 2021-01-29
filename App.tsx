@@ -12,9 +12,9 @@ import store from 'store/index';
 import AppContainer from 'navigation/index';
 
 // import fonts
-import CircularBlack from 'assets/fonts/CircularStd-Black.otf';
-import CircularBook from 'assets/fonts/CircularStd-Book.otf';
-import CircularMedium from 'assets/fonts/CircularStd-Medium.otf';
+const CircularBlack = require('assets/fonts/CircularStd-Black.otf');
+const CircularBook = require('assets/fonts/CircularStd-Book.otf');
+const CircularMedium = require('assets/fonts/CircularStd-Medium.otf');
 
 const App: FC = () => {
   const AppContext = React.createContext({
