@@ -7,7 +7,7 @@
  * @desc Login Screen
  */
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   View,
@@ -16,8 +16,8 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import {connect} from 'react-redux';
-import {Session} from 'store/types/auth.types';
+import { connect } from 'react-redux';
+import { Session } from 'store/types/auth.types';
 import styles from 'styles/styles';
 import AuthButton from 'components/Auth.Button';
 import AuthTextInput from 'components/Auth/BasicTextInput';
@@ -29,13 +29,14 @@ import api from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import config from 'config';
 
+import logoImage from 'assets/images/logo.png';
+
 const DefaultUser = config.default_user;
-const logoImage = require('assets/images/logo.png');
 
 const LoginScreen = (props: any) => {
   // state
   const [loginInfo, setLoginInfo] = useState(
-    props.route.params && props.route.params.login
+    props.route.params && props.route.params.login,
   );
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -45,15 +46,15 @@ const LoginScreen = (props: any) => {
   const handleSubmit = () => {
     const data = {
       login: loginInfo,
-      password: password,
+      password,
     };
     setLoading(true);
     api.Auth.Login(data)
-      .then(session => {
+      .then((session) => {
         props.Login(session);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         setLoading(false);
         const error = JSON.parse(err.message);
         Alert.alert(error.error);
@@ -66,11 +67,11 @@ const LoginScreen = (props: any) => {
   const handleAutoFill = () => {
     setLoading(true);
     api.Auth.Login(DefaultUser)
-      .then(session => {
+      .then((session) => {
         props.Login(session);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         setLoading(false);
         console.log(err);
       });
@@ -85,10 +86,10 @@ const LoginScreen = (props: any) => {
   return (
     <SafeArea
       keyboardAvoidView
-      children={
+      children={(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={AuthStyles.TopContainer}>
-            <Image source={logoImage} style={AuthStyles.Logo}></Image>
+            <Image source={logoImage} style={AuthStyles.Logo} />
             <View style={AuthStyles.InputContainerMain}>
               <AuthTextInput
                 placeholder={placeHolderLogin}
@@ -105,13 +106,13 @@ const LoginScreen = (props: any) => {
               />
               <View style={AuthStyles.RowContainer}>
                 <LinkText
-                  screen={'ForgotPassword'}
-                  style={{marginLeft: 5, marginTop: 5}}
+                  screen="ForgotPassword"
+                  style={{ marginLeft: 5, marginTop: 5 }}
                   placeHolder={ForgotPasswordText}
                 />
                 <LinkText
-                  screen={'Register'}
-                  style={{marginRight: 5, marginTop: 5}}
+                  screen="Register"
+                  style={{ marginRight: 5, marginTop: 5 }}
                   placeHolder={RegisterText}
                 />
               </View>
@@ -123,17 +124,15 @@ const LoginScreen = (props: any) => {
             {LoadingComponent}
           </View>
         </TouchableWithoutFeedback>
-      }
+      )}
     />
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    Login: async (session: Session) => {
-      await AuthSelectors.authenticate(dispatch, session);
-    },
-  };
-};
+const mapDispatchToProps = (dispatch: any) => ({
+  Login: async (session: Session) => {
+    await AuthSelectors.authenticate(dispatch, session);
+  },
+});
 
 export default connect(null, mapDispatchToProps)(LoginScreen);

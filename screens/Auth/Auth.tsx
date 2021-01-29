@@ -7,11 +7,11 @@
  * @desc Authorization Screen
  */
 
-import React, { Fragment } from 'react';
+import React, { FC } from 'react';
 import {
-  ImageBackground, Image, View, SafeAreaView, Alert, Text,
-  ImageSourcePropType,
+  ImageBackground, Image, View, ImageSourcePropType,
 } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import SafeArea from 'components/Common/SafeArea';
 import AuthButton from 'components/Auth.Button';
 import styles from 'styles/styles';
@@ -20,7 +20,12 @@ import backgroundImage from 'assets/images/splash.png';
 import logoTextImage from 'assets/images/logo_text.png';
 import logoImage from 'assets/images/logo.png';
 
-const AuthScreen = (props: any) => (
+interface IProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  navigation: StackNavigationProp<any, any>
+}
+
+const AuthScreen: FC<IProps> = ({ navigation }: IProps) => (
   <SafeArea>
     <View style={styles.container}>
       <ImageBackground
@@ -35,14 +40,14 @@ const AuthScreen = (props: any) => (
           <AuthButton
             text="Get Started"
             onPress={() => {
-              props.navigation.navigate('Register');
+              navigation.navigate('Register');
             }}
           />
           <AuthButton
             text="Login"
             mode="blurred"
             onPress={() => {
-              props.navigation.navigate('Login');
+              navigation.navigate('Login');
             }}
           />
         </View>
