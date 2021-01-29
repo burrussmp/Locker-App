@@ -8,18 +8,19 @@ import { Dispatch } from 'redux';
 import { Session } from 'store/types/auth.types';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
-import store, { RootAction, RootState } from 'store/index';
+import { AuthState } from 'store/types/auth.types';
+import store, { RootAction } from 'store/index';
 
 /**
  * @desc Check Redux state and see if logged in.
- * @param {RootState} state The redux root state.
+ * @param {AuthState} authState The redux auth state
  * @return {boolean} True if logged in else False.
  */
-const isLoggedIn = (state: RootState): boolean => (
-  Boolean(state.auth
-    && state.auth.session
-    && state.auth.verified
-    && state.auth.session.access_token)
+const isLoggedIn = (authState: AuthState): boolean => (
+  Boolean(authState
+    && authState.session
+    && authState.verified
+    && authState.session.access_token)
 );
 
 /**

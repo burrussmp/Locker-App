@@ -7,10 +7,10 @@
  */
 
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import styles from 'styles/styles';
-import {BlurView} from 'expo-blur';
+import { BlurView } from 'expo-blur';
 
 interface AuthButtonProps {
   text?: string;
@@ -20,45 +20,43 @@ interface AuthButtonProps {
 }
 
 const AuthButton: React.FunctionComponent<AuthButtonProps> = (
-  props: AuthButtonProps
-) => {
-  return (
-    <View style={{height: props.height}}>
-      <BlurView
-        tint={'default'}
-        intensity={props.mode === 'blurred' ? 100 : 0}
-        style={styles.authButton}
+  props: AuthButtonProps,
+) => (
+  <View style={{ height: props.height }}>
+    <BlurView
+      tint="default"
+      intensity={props.mode === 'blurred' ? 100 : 0}
+      style={styles.authButton}
+    >
+      <View
+        style={[
+          styles.authButtonW,
+          props.mode === 'light' ? styles.whiteBackground : {},
+          props.mode === 'dark' ? styles.blackBackground : {},
+        ]}
       >
-        <View
-          style={[
-            styles.authButton,
-            props.mode === 'light' ? styles.whiteBackground : {},
-            props.mode === 'dark' ? styles.blackBackground : {},
-          ]}
-        >
-          <Text
-            style={
+        <Text
+          style={
               props.mode === 'light'
                 ? styles.authButtonText
                 : styles.authButtonSecondaryText
             }
-          >
-            {props.text}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={[styles.authButton, styles.authButtonOverlay]}
-          activeOpacity={1}
-          onPress={() => {
-            if (props.onPress) props.onPress();
-          }}
         >
-          <Text style={styles.authButtonSecondaryText}>{props.text}</Text>
-        </TouchableOpacity>
-      </BlurView>
-    </View>
-  );
-};
+          {props.text}
+        </Text>
+      </View>
+      <TouchableOpacity
+        style={[styles.authButton, styles.authButtonOverlay]}
+        activeOpacity={1}
+        onPress={() => {
+          if (props.onPress) props.onPress();
+        }}
+      >
+        <Text style={styles.authButtonSecondaryText}>{props.text}</Text>
+      </TouchableOpacity>
+    </BlurView>
+  </View>
+);
 
 const defaultProps: AuthButtonProps = {
   text: '',

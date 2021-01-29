@@ -9,32 +9,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect, FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { connect, Dispatch } from 'react-redux';
-
+import { connect, MapDispatchToProps } from 'react-redux';
+import { Dispatch } from 'redux';
+import PropTypes from 'prop-types';
 import AuthNavigation from 'navigation/AuthNavigation';
 import AppNavigation from 'navigation/AppNavigation';
 import WelcomeScreen from 'screens/Auth/Welcome';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/Splash';
 import api from 'api/api';
-import { Session } from 'store/types/auth.types';
+import { Session, AuthState } from 'store/types/auth.types';
 
-const mapStateToProps = (state: any) => ({
-  state,
+import { RootAction, RootState } from 'store/index';
+
+const mapStateToProps = (state: RootState) => ({
+  authState: state.auth,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   Login: async (session: Session) => {
     await AuthSelectors.authenticate(dispatch, session);
   },
 });
 
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps> & {
-    label: string;
-};
+type IProps = {
+  authState: AuthState;
+  Login: (session: Session) => Promise<void>;
+}
 
-const Navigation: FC = (props) => {
+const Navigation = ({ authState, Login }: IProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [firstTime, setFirstTime] = useState(true);
   useEffect(() => {
@@ -42,7 +45,9 @@ const Navigation: FC = (props) => {
       setFirstTime(isFirstTime !== 'done');
       try {
         const session = await api.Session.getSession();
-        await props.Login(session);
+        if (session) {
+          await Login(session);
+        }
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
@@ -56,7 +61,7 @@ const Navigation: FC = (props) => {
     <WelcomeScreen setFirstTime={setFirstTime} />
   ) : (
     <NavigationContainer>
-      {AuthSelectors.isLoggedIn(props.state) ? (
+      {AuthSelectors.isLoggedIn(authState) ? (
         <AppNavigation />
       ) : (
         <AuthNavigation />
