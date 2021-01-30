@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
@@ -11,7 +8,7 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import AuthNavigation from 'navigation/AuthNavigation';
 import AppNavigation from 'navigation/AppNavigation';
@@ -19,7 +16,7 @@ import WelcomeScreen from 'screens/Auth/Welcome';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/Splash';
 import api from 'api/api';
-import { AuthState, Session } from 'store/types/auth.types';
+import { Session } from 'store/types/auth.types';
 
 import { RootAction, RootState } from 'store/index';
 
@@ -32,11 +29,11 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
     await AuthSelectors.authenticate(dispatch, session);
   },
 });
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
-type IProps = {
-  authState: AuthState;
-  Login: (session: Session) => Promise<void>;
-}
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+type IProps = PropsFromRedux;
 
 const Navigation = ({ authState, Login }: IProps) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -68,4 +65,4 @@ const Navigation = ({ authState, Login }: IProps) => {
   return isLoading ? <Splash /> : Application;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default connector(Navigation);

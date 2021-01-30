@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 /**
  * @author Paul H. Sullivan
  * @date Sep 2020
