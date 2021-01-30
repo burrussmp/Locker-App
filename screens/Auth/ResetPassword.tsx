@@ -7,16 +7,16 @@
  * @desc Login Screen
  */
 
-import React, {useState} from 'react';
+import React, { useState, FC } from 'react';
 import {
   Image,
   View,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
-  Text,
-  ScrollView,
+  ImageSourcePropType,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import PasswordInput from 'containers/Auth/PasswordInput';
 import ConfirmationCodeTextInput from 'components/Auth/ConfirmationCodeTextInput';
@@ -25,20 +25,17 @@ import SafeArea from 'components/Common/SafeArea';
 import LoadingAll from 'components/Common/LoadingAll';
 import LinkText from 'components/Auth/LinkText';
 
-import {useNavigation} from '@react-navigation/native';
-import api from 'api/api';
+import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 
-const logoImage = require('assets/images/logo.png');
+import { ResetPasswordProp } from 'types/navigation.types';
 
-const ResetPassword = (props: any) => {
+import logoImage from 'assets/images/logo.png';
+
+type IProps = ResetPasswordProp;
+
+const ResetPassword: FC<IProps> = ({ route }: IProps) => {
   // extract props
-  const cognito_username = props.route.params.cognito_username;
-  const email = props.route.params.email;
-  if (!cognito_username || !email) {
-    throw 'Error: Cognito username and email not found. Must navigate from "Reset Password" Screen';
-  }
-  // state
   const [confirmationCode, setConfirmationCode] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmed, confirmPassword] = useState(false);
@@ -46,72 +43,67 @@ const ResetPassword = (props: any) => {
   const navigation = useNavigation();
   const BackToLoginText = 'Back to login';
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!confirmationCode || confirmationCode.length !== 6) {
       return Alert.alert('Please enter the confirmation code');
     }
     if (!passwordConfirmed) {
       return Alert.alert('Please enter and confirm a new password');
     }
-    try {
-      setLoading(true);
-      await api.Auth.ConfirmForgotPassword(
-        cognito_username,
-        confirmationCode,
-        password
-      );
+    setLoading(true);
+    return api.Auth.ConfirmForgotPassword(
+      route.params.cognito_username,
+      confirmationCode,
+      password,
+    ).then(() => {
       Alert.alert('Password successfully reset!');
-      navigation.navigate('Login', {login: email});
-    } catch (err) {
+      navigation.navigate('Login', { login: route.params.email });
+    }).catch((err: APIErrorType) => {
       setLoading(false);
-      const error = JSON.parse(err.message);
-      Alert.alert(error.error);
-    }
+      Alert.alert(err.error);
+    });
   };
 
-  const confirmationCodePrompt =
-    'Please enter the confirmation code emailed to you below';
+  const confirmationCodePrompt = 'Please enter the confirmation code emailed to you below';
   const submitButtonText = 'Change Password';
   const LoadingComponent = loading ? <LoadingAll /> : undefined;
   return (
-    <SafeArea
-      keyboardAvoidView
-      children={
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={AuthStyles.TopContainer}>
-            <Image source={logoImage} style={AuthStyles.Logo}></Image>
-            <View style={AuthStyles.InputContainerMain}>
-              <ConfirmationCodeTextInput
-                onChangeText={setConfirmationCode}
-                prompt={confirmationCodePrompt}
-                cell_count={6}
-                email={email}
-                promptSendNewCode
-              />
-              <PasswordInput
-                labelPassword={'New password:'}
-                labelConfirmPassword={'Confirm new password:'}
-                setPassword={setPassword}
-                confirmPassword={confirmPassword}
-              />
-              <LinkText
-                screen={'Login'}
-                style={{marginLeft: 5}}
-                placeHolder={BackToLoginText}
-              />
-            </View>
-            <View style={AuthStyles.AuthButtonContainer}>
-              <AuthButton
-                text={submitButtonText}
-                mode="dark"
-                onPress={handleSubmit}
-              />
-            </View>
-            {LoadingComponent}
+    <SafeArea keyboardAvoidView>
+
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={AuthStyles.TopContainer}>
+          <Image source={logoImage as ImageSourcePropType} style={AuthStyles.Logo} />
+          <View style={AuthStyles.InputContainerMain}>
+            <ConfirmationCodeTextInput
+              onChangeText={setConfirmationCode}
+              prompt={confirmationCodePrompt}
+              cell_count={6}
+              email={route.params.email}
+              promptSendNewCode
+            />
+            <PasswordInput
+              labelPassword="New password:"
+              labelConfirmPassword="Confirm new password:"
+              setPassword={setPassword}
+              confirmPassword={confirmPassword}
+            />
+            <LinkText
+              screen="Login"
+              style={{ marginLeft: 5 }}
+              placeHolder={BackToLoginText}
+            />
           </View>
-        </TouchableWithoutFeedback>
-      }
-    ></SafeArea>
+          <View style={AuthStyles.AuthButtonContainer}>
+            <AuthButton
+              text={submitButtonText}
+              mode="dark"
+              onPress={handleSubmit}
+            />
+          </View>
+          {LoadingComponent}
+        </View>
+      </TouchableWithoutFeedback>
+    </SafeArea>
   );
 };
 

@@ -13,9 +13,9 @@ import {
   Alert,
   ImageSourcePropType,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Session } from 'store/types/auth.types';
 import styles from 'styles/styles';
@@ -41,11 +41,13 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   },
 });
 
-type IProps = {
-  Login: (session: Session) => Promise<void>;
-}
+const connector = connect(null, mapDispatchToProps);
 
-const LoginScreen = ({ Login }: IProps) => {
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+type IProps = PropsFromRedux;
+
+const LoginScreen: FC<IProps> = ({ Login }: IProps) => {
   // state
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -127,4 +129,4 @@ const LoginScreen = ({ Login }: IProps) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default connector(LoginScreen) as FC<IProps>;

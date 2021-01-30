@@ -12,7 +12,9 @@ import RegisterScreen from 'screens/Register';
 import ForgotPasswordScreen from 'screens/Auth/ForgotPassword';
 import ResetPasswordScreen from 'screens/Auth/ResetPassword';
 
-const AuthStack = createStackNavigator();
+import { AuthParamList } from 'types/navigation.types';
+
+const AuthStack = createStackNavigator<AuthParamList>();
 
 const AuthNavigation: FC = () => (
   <AuthStack.Navigator headerMode="none" initialRouteName="Auth" mode="modal">
