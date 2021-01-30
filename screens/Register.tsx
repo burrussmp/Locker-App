@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @author Matthew P. Burruss
- * @date Aug 2020
+ * @date 1/27/2021
  * @desc Registration screen
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, FC } from 'react';
 import {
   Keyboard,
   Text,
@@ -16,22 +13,28 @@ import {
   View,
   Alert,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
+  ImageSourcePropType,
 } from 'react-native';
+import { Dispatch } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
+
 import AuthButton from 'components/Auth.Button';
 import AuthTextInput from 'components/Auth/BasicTextInput';
 import PasswordInput from 'containers/Auth/PasswordInput';
 import PhoneNumberTextInput from 'components/Auth/PhoneNumberTextInput';
 import LoadingAll from 'components/Common/LoadingAll';
 import SafeArea from 'components/Common/SafeArea';
-import api from 'api/api';
+import api, { APIErrorType } from 'api/api';
 import { Session } from 'store/types/auth.types';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import AuthStyles from 'styles/Auth/Auth.Styles';
-import { connect } from 'react-redux';
 
-const logoImage = require('assets/images/logo.png');
+import { RootAction } from 'store/index';
+
+import { ResetPasswordProp } from 'types/Navigation/auth.navigation.types';
+
+import logoImage from 'assets/images/logo.png';
 
 const RegisterStyles = StyleSheet.create({
   authHeaderText: {
@@ -41,7 +44,20 @@ const RegisterStyles = StyleSheet.create({
     color: 'tan',
   },
 });
-const RegisterScreen = (props: any) => {
+
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
+  SignUp: async (session: Session) => {
+    await AuthSelectors.authenticate(dispatch, session);
+  },
+});
+
+const connector = connect(null, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+type IProps = PropsFromRedux & ResetPasswordProp;
+
+const RegisterScreen: FC<IProps> = ({ SignUp }: IProps) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -65,95 +81,77 @@ const RegisterScreen = (props: any) => {
       return Alert.alert('Please enter and confirm a new password');
     }
     setLoading(true);
-    const data = {
-      username,
-      password,
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      phone_number: phoneNumber,
-    };
-    api.Auth.SignUp(data)
-      .then((session) => {
-        props.SignUp(session);
+    return api.Auth.SignUp(email, phoneNumber, username, password, firstName, lastName)
+      .then(async (session: Session) => {
+        await SignUp(session);
       })
-      .catch((err) => {
+      .catch((err: APIErrorType) => {
         setLoading(false);
-        const error = JSON.parse(err.message);
-        Alert.alert(error.error);
+        Alert.alert(err.error);
       });
   };
   const headerText = 'W E L C O M E';
   const LoadingAnimation = loading ? <LoadingAll /> : undefined;
   return (
-    <SafeArea
-      children={(
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView>
-            <View style={[AuthStyles.TopContainer]}>
-              <Image source={logoImage} style={AuthStyles.Logo} />
-              <Text style={RegisterStyles.authHeaderText}>{headerText}</Text>
-              <View style={AuthStyles.InputContainerMain}>
-                <Text style={AuthStyles.Label}>Username:</Text>
-                <AuthTextInput
-                  placeholder="Username"
-                  value={username}
-                  onChangeText={setUsername}
-                  textContentType="username"
-                />
-                <Text style={AuthStyles.Label}>First name (optional):</Text>
-                <AuthTextInput
-                  placeholder="First Name"
-                  value={firstName}
-                  onChangeText={setFirstName}
-                  textContentType="name"
-                />
-                <Text style={AuthStyles.Label}>Last name (optional):</Text>
-                <AuthTextInput
-                  placeholder="Last Name"
-                  value={lastName}
-                  onChangeText={setLastName}
-                  textContentType="familyName"
-                />
-                <Text style={AuthStyles.Label}>
-                  Phone number (select country code below):
-                </Text>
-                <PhoneNumberTextInput setPhoneNumber={setPhoneNumber} />
-                <Text style={AuthStyles.Label}>Email address:</Text>
-                <AuthTextInput
-                  placeholder="Email"
-                  value={email}
-                  onChangeText={setEmail}
-                  textContentType="emailAddress"
-                />
-                <PasswordInput
-                  labelPassword="Password"
-                  labelConfirmPassword="Confirm password:"
-                  setPassword={setPassword}
-                  confirmPassword={confirmPassword}
-                />
-              </View>
-              <View
-                style={{
-                  width: '100%',
-                  marginTop: 50,
-                }}
+    <SafeArea>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView>
+          <View style={[AuthStyles.TopContainer]}>
+            <Image source={logoImage as ImageSourcePropType} style={AuthStyles.Logo} />
+            <Text style={RegisterStyles.authHeaderText}>{headerText}</Text>
+            <View style={AuthStyles.InputContainerMain}>
+              <Text style={AuthStyles.Label}>Username:</Text>
+              <AuthTextInput
+                placeholder="Username"
+                value={username}
+                onChangeText={setUsername}
+                textContentType="username"
+              />
+              <Text style={AuthStyles.Label}>First name (optional):</Text>
+              <AuthTextInput
+                placeholder="First Name"
+                value={firstName}
+                onChangeText={setFirstName}
+                textContentType="name"
+              />
+              <Text style={AuthStyles.Label}>Last name (optional):</Text>
+              <AuthTextInput
+                placeholder="Last Name"
+                value={lastName}
+                onChangeText={setLastName}
+                textContentType="familyName"
+              />
+              <Text style={AuthStyles.Label}>
+                Phone number (select country code below):
+              </Text>
+              <PhoneNumberTextInput setPhoneNumber={setPhoneNumber} />
+              <Text style={AuthStyles.Label}>Email address:</Text>
+              <AuthTextInput
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+                textContentType="emailAddress"
+              />
+              <PasswordInput
+                labelPassword="Password"
+                labelConfirmPassword="Confirm password:"
+                setPassword={setPassword}
+                confirmPassword={confirmPassword}
               />
             </View>
-            <AuthButton text="Register" mode="dark" onPress={handleSubmit} />
-            {LoadingAnimation}
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      )}
-    />
+            <View
+              style={{
+                width: '100%',
+                marginTop: 50,
+              }}
+            />
+          </View>
+          <AuthButton text="Register" mode="dark" onPress={handleSubmit} />
+          {LoadingAnimation}
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </SafeArea>
   );
 };
 
-const mapStateToProps = (state: any) => state;
-
-const mapDispatchToProps = (dispatch: any) => ({
-  SignUp: async (session: Session) => {
-    await AuthSelectors.authenticate(dispatch, session);
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+export default connect(null, mapDispatchToProps)(RegisterScreen) as FC<IProps>;

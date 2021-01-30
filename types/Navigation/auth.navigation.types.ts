@@ -28,3 +28,8 @@ export type ForgotPasswordProp = {
   navigation: StackNavigationProp<AuthParamList, 'ForgotPassword'>;
   route: RouteProp<AuthParamList, 'ForgotPassword'>;
 };
+
+export type RegisterProp = {
+  navigation: StackNavigationProp<AuthParamList, 'Register'>;
+  route: RouteProp<AuthParamList, 'Register'>;
+};
