@@ -32,7 +32,7 @@ import AuthStyles from 'styles/Auth/Auth.Styles';
 
 import { RootAction } from 'store/index';
 
-import { ResetPasswordProp } from 'types/Navigation/auth.navigation.types';
+import { RegisterProp } from 'types/Navigation/auth.navigation.types';
 
 import logoImage from 'assets/images/logo.png';
 
@@ -55,7 +55,7 @@ const connector = connect(null, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
-type IProps = PropsFromRedux & ResetPasswordProp;
+type IProps = PropsFromRedux & RegisterProp;
 
 const RegisterScreen: FC<IProps> = ({ SignUp }: IProps) => {
   const [username, setUsername] = useState('');

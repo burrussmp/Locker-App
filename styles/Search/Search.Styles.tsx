@@ -3,7 +3,7 @@
  * @date Sep 2020
  * @desc Authorization Screen
  */
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const SearchStyles = StyleSheet.create({
   container: {
