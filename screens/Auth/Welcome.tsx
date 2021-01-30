@@ -8,13 +8,12 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  StyleSheet, View, Animated, Text, Image,
+  StyleSheet, View, Animated, Text, Image, ImageSourcePropType,
 } from 'react-native';
 
 import SafeArea from 'components/Common/SafeArea';
 
 import logoImage from 'assets/images/logo.png';
-import { ImageSourcePropType } from 'react-native';
 
 const WelcomeStyles = StyleSheet.create({
   container: {

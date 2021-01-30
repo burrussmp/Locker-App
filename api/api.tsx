@@ -19,9 +19,10 @@ import collection from 'api/collection';
 import locker from 'api/locker';
 import lockerCollection from 'api/locker.collection';
 
-// type PostAPIType = {
-//   Basic: typeof post;
-// };
+export type APIErrorType = {
+  error: string;
+  status: string;
+}
 
 type APIType = {
   Session: typeof session;
@@ -38,11 +39,6 @@ type APIType = {
   Locker: typeof locker;
   LockerCollection: typeof lockerCollection;
 };
-
-// const postAPI: PostAPIType = {
-//   Basic: post,
-//   ProductPost: productPost,
-// };
 
 const api: APIType = {
   Session: session,

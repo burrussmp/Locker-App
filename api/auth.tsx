@@ -49,7 +49,7 @@ const Login = async (login: string, password: string): Promise<Session> => {
  */
 const Logout = async (): Promise<{message: string}> => {
   await apiSession.setSession();
-  store.dispatch(AuthActions.Logout());
+  store.dispatch(AuthActions.logout());
   const res = await utils.getRequest('/auth/logout');
   await AsyncStorage.setItem(ASYNC_STORAGE_LOCKER_ID_KEY, '');
   return await res.json() as {message: string};

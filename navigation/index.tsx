@@ -6,8 +6,10 @@
  * @date Aug 2020
  * @desc Create the app container with all of the stack navigations (App.js imports this)
  */
+import React, {
+  useEffect, useState,
+} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useState, useEffect, FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -17,7 +19,7 @@ import WelcomeScreen from 'screens/Auth/Welcome';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/Splash';
 import api from 'api/api';
-import { Session, AuthState } from 'store/types/auth.types';
+import { AuthState, Session } from 'store/types/auth.types';
 
 import { RootAction, RootState } from 'store/index';
 

@@ -1,13 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
  * @desc Login Screen
  */
 
-import React, { useState } from 'react';
 import {
   Image,
   View,
@@ -15,8 +11,12 @@ import {
   Keyboard,
   Button,
   Alert,
+  ImageSourcePropType,
 } from 'react-native';
+import React, { useState } from 'react';
+
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { Session } from 'store/types/auth.types';
 import styles from 'styles/styles';
 import AuthButton from 'components/Auth.Button';
@@ -25,55 +25,56 @@ import Loading from 'components/Common/LoadingAll';
 import LinkText from 'components/Auth/LinkText';
 import SafeArea from 'components/Common/SafeArea';
 import AuthSelectors from 'store/selectors/auth.selectors';
-import api from 'api/api';
+import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import config from 'config';
 
 import logoImage from 'assets/images/logo.png';
 
+import { RootAction } from 'store/index';
+
 const DefaultUser = config.default_user;
 
-const LoginScreen = (props: any) => {
+const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
+  Login: async (session: Session) => {
+    await AuthSelectors.authenticate(dispatch, session);
+  },
+});
+
+type IProps = {
+  Login: (session: Session) => Promise<void>;
+}
+
+const LoginScreen = ({ Login }: IProps) => {
   // state
-  const [loginInfo, setLoginInfo] = useState(
-    props.route.params && props.route.params.login,
-  );
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  /**
-   * @desc Log the user in or alert them of an error
-   */
+
   const handleSubmit = () => {
-    const data = {
-      login: loginInfo,
-      password,
-    };
     setLoading(true);
-    api.Auth.Login(data)
-      .then((session) => {
-        props.Login(session);
+    api.Auth.Login(login, password)
+      .then(async (session: Session) => {
+        await Login(session);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch((err: APIErrorType) => {
         setLoading(false);
-        const error = JSON.parse(err.message);
-        Alert.alert(error.error);
+        Alert.alert(err.error);
       });
   };
 
-  /**
-   * @desc purely for dev purposes to save time
-   */
   const handleAutoFill = () => {
     setLoading(true);
-    api.Auth.Login(DefaultUser)
-      .then((session) => {
-        props.Login(session);
+    api.Auth.Login(DefaultUser.login, DefaultUser.password)
+      .then(async (session: Session) => {
+        await Login(session);
         setLoading(false);
       })
-      .catch((err) => {
-        setLoading(false);
+      .catch((err: APIErrorType) => {
         console.log(err);
+        setLoading(false);
+        Alert.alert(err.error);
       });
   };
 
@@ -84,55 +85,46 @@ const LoginScreen = (props: any) => {
 
   const LoadingComponent = loading ? <Loading /> : undefined;
   return (
-    <SafeArea
-      keyboardAvoidView
-      children={(
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={AuthStyles.TopContainer}>
-            <Image source={logoImage} style={AuthStyles.Logo} />
-            <View style={AuthStyles.InputContainerMain}>
-              <AuthTextInput
-                placeholder={placeHolderLogin}
-                value={loginInfo}
-                onChangeText={setLoginInfo}
-                textContentType="emailAddress"
+    <SafeArea keyboardAvoidView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={AuthStyles.TopContainer}>
+          <Image source={logoImage as ImageSourcePropType} style={AuthStyles.Logo} />
+          <View style={AuthStyles.InputContainerMain}>
+            <AuthTextInput
+              placeholder={placeHolderLogin}
+              value={login}
+              onChangeText={setLogin}
+              textContentType="emailAddress"
+            />
+            <AuthTextInput
+              placeholder={placeHolderPassword}
+              value={password}
+              onChangeText={setPassword}
+              textContentType="password"
+              secureTextEntry
+            />
+            <View style={AuthStyles.RowContainer}>
+              <LinkText
+                screen="ForgotPassword"
+                style={{ marginLeft: 5, marginTop: 5 }}
+                placeHolder={ForgotPasswordText}
               />
-              <AuthTextInput
-                placeholder={placeHolderPassword}
-                value={password}
-                onChangeText={setPassword}
-                textContentType="password"
-                secureTextEntry
+              <LinkText
+                screen="Register"
+                style={{ marginRight: 5, marginTop: 5 }}
+                placeHolder={RegisterText}
               />
-              <View style={AuthStyles.RowContainer}>
-                <LinkText
-                  screen="ForgotPassword"
-                  style={{ marginLeft: 5, marginTop: 5 }}
-                  placeHolder={ForgotPasswordText}
-                />
-                <LinkText
-                  screen="Register"
-                  style={{ marginRight: 5, marginTop: 5 }}
-                  placeHolder={RegisterText}
-                />
-              </View>
             </View>
-            <View style={styles.AuthButtonContainer}>
-              <AuthButton text="Login" mode="dark" onPress={handleSubmit} />
-              <Button title="AutoLogin" onPress={handleAutoFill} />
-            </View>
-            {LoadingComponent}
           </View>
-        </TouchableWithoutFeedback>
-      )}
-    />
+          <View style={styles.AuthButtonContainer}>
+            <AuthButton text="Login" mode="dark" onPress={handleSubmit} />
+            <Button title="AutoLogin" onPress={handleAutoFill} />
+          </View>
+          {LoadingComponent}
+        </View>
+      </TouchableWithoutFeedback>
+    </SafeArea>
   );
 };
-
-const mapDispatchToProps = (dispatch: any) => ({
-  Login: async (session: Session) => {
-    await AuthSelectors.authenticate(dispatch, session);
-  },
-});
 
 export default connect(null, mapDispatchToProps)(LoginScreen);
