@@ -77,8 +77,8 @@ const Welcome: FC<IPropsFadeIn> = ({ setFirstTime }: IPropsFadeIn) => {
       });
     });
     return function cleanup() {
-      complete = true
-    }
+      complete = true;
+    };
   }, [order]);
 
   return (

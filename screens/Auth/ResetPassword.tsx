@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @author Matthew P. Burruss
- * @date Aug 2020
+ * @date 1/21/2021
  * @desc Login Screen
  */
 
@@ -28,7 +25,7 @@ import LinkText from 'components/Auth/LinkText';
 import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 
-import { ResetPasswordProp } from 'types/navigation.types';
+import { ResetPasswordProp } from 'types/Navigation/auth.navigation.types';
 
 import logoImage from 'assets/images/logo.png';
 

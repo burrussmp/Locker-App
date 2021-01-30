@@ -74,7 +74,6 @@ const LoginScreen: FC<IProps> = ({ Login }: IProps) => {
         setLoading(false);
       })
       .catch((err: APIErrorType) => {
-        console.log(err);
         setLoading(false);
         Alert.alert(err.error);
       });

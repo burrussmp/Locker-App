@@ -12,7 +12,7 @@ import RegisterScreen from 'screens/Register';
 import ForgotPasswordScreen from 'screens/Auth/ForgotPassword';
 import ResetPasswordScreen from 'screens/Auth/ResetPassword';
 
-import { AuthParamList } from 'types/navigation.types';
+import { AuthParamList } from 'types/Navigation/auth.navigation.types';
 
 const AuthStack = createStackNavigator<AuthParamList>();
 

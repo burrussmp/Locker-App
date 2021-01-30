@@ -23,3 +23,8 @@ export type ResetPasswordProp = {
   navigation: StackNavigationProp<AuthParamList, 'ResetPassword'>;
   route: RouteProp<AuthParamList, 'ResetPassword'>;
 };
+
+export type ForgotPasswordProp = {
+  navigation: StackNavigationProp<AuthParamList, 'ForgotPassword'>;
+  route: RouteProp<AuthParamList, 'ForgotPassword'>;
+};

@@ -1,15 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
  * @desc Forgot password screen
  */
 
-import React, {useState} from 'react';
+import React, { useState, FC } from 'react';
 import {
-  TextInput,
   Image,
   View,
   TouchableWithoutFeedback,
@@ -17,17 +13,20 @@ import {
   Text,
   StyleSheet,
   Alert,
+  ImageSourcePropType,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AuthButton from 'components/Auth.Button';
 import AuthTextInput from 'components/Auth/BasicTextInput';
 import LinkText from 'components/Auth/LinkText';
-import api from 'api/api';
+import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import SafeArea from 'components/Common/SafeArea';
 import LoadingAll from 'components/Common/LoadingAll';
 
-const logoImage = require('assets/images/logo.png');
+import { ForgotPasswordProp } from 'types/Navigation/auth.navigation.types';
+
+import logoImage from 'assets/images/logo.png';
 
 const styles = StyleSheet.create({
   promptText: {
@@ -39,7 +38,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const ForgotPassword = () => {
+type IProps = ForgotPasswordProp;
+
+const ForgotPassword: FC<IProps> = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
@@ -54,54 +55,49 @@ const ForgotPassword = () => {
       return Alert.alert('Please enter your email');
     }
     setLoading(true);
-    try {
-      const response = await api.Auth.ForgotPassword(email);
+    return api.Auth.ForgotPassword(email).then((res) => {
       setLoading(false);
       navigation.navigate('ResetPassword', {
-        cognito_username: response.cognito_username,
-        email: email,
+        cognito_username: res.cognito_username,
+        email,
       });
-    } catch (err) {
-      const error = JSON.parse(err.message);
+    }).catch((err: APIErrorType) => {
       setLoading(false);
-      return Alert.alert(error.error);
-    }
+      return Alert.alert(err.error);
+    });
   };
 
   const LoadingComponent = loading ? <LoadingAll /> : undefined;
   return (
-    <SafeArea
-      keyboardAvoidView
-      children={
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={AuthStyles.TopContainer}>
-            <Image source={logoImage} style={AuthStyles.Logo}></Image>
-            <View style={AuthStyles.InputContainerMain}>
-              <Text style={styles.promptText}>{PromptText}</Text>
-              <AuthTextInput
-                placeholder={inputTextPrompt}
-                value={email}
-                onChangeText={setEmail}
-                textContentType="emailAddress"
-              />
-              <LinkText
-                screen={'Login'}
-                style={{marginLeft: 5}}
-                placeHolder={BackToLoginText}
-              />
-            </View>
-            <View style={AuthStyles.AuthButtonContainer}>
-              <AuthButton
-                text={ButtonText}
-                mode="dark"
-                onPress={handleSubmit}
-              />
-            </View>
-            {LoadingComponent}
+    <SafeArea keyboardAvoidView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={AuthStyles.TopContainer}>
+          <Image source={logoImage as ImageSourcePropType} style={AuthStyles.Logo} />
+          <View style={AuthStyles.InputContainerMain}>
+            <Text style={styles.promptText}>{PromptText}</Text>
+            <AuthTextInput
+              placeholder={inputTextPrompt}
+              value={email}
+              onChangeText={setEmail}
+              textContentType="emailAddress"
+            />
+            <LinkText
+              screen="Login"
+              style={{ marginLeft: 5 }}
+              placeHolder={BackToLoginText}
+            />
           </View>
-        </TouchableWithoutFeedback>
-      }
-    />
+          <View style={AuthStyles.AuthButtonContainer}>
+            <AuthButton
+              text={ButtonText}
+              mode="dark"
+              onPress={handleSubmit}
+            />
+          </View>
+          {LoadingComponent}
+        </View>
+      </TouchableWithoutFeedback>
+    </SafeArea>
   );
 };
 
