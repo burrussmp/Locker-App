@@ -23,7 +23,8 @@
       "styles/*" : ["styles/*"],
       "assets/*" : ["assets/*"],
       "container/*" : ["containers/*"],
-      "tests/*": ["tests/*"]
+      "tests/*": ["tests/*"],
+      "common/*": ["common/*"]
     }
   }
 }

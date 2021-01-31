@@ -21,8 +21,8 @@ import AuthTextInput from 'screens/Auth/components/BasicTextInput';
 import LinkText from 'screens/Auth/components/LinkText';
 import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
-import SafeArea from 'components/Common/SafeArea';
-import LoadingAll from 'components/Common/LoadingAll';
+import SafeArea from 'common/components/SafeArea';
+import LoadingAll from 'common/components/LoadingAll';
 
 import { ForgotPasswordProp } from 'types/Navigation/auth.navigation.types';
 

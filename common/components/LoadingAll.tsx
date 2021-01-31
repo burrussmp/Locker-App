@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
 import { BlurView } from 'expo-blur';
-import SafeArea from 'components/Common/SafeArea';
+import SafeArea from 'common/components/SafeArea';
 
 const LoadingStyle = StyleSheet.create({
   container: {

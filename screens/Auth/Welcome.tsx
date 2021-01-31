@@ -11,7 +11,7 @@ import {
   StyleSheet, View, Animated, Text, Image, ImageSourcePropType,
 } from 'react-native';
 
-import SafeArea from 'components/Common/SafeArea';
+import SafeArea from 'common/components/SafeArea';
 
 import logoImage from 'assets/images/logo.png';
 

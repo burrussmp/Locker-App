@@ -12,7 +12,7 @@ import api, { APIErrorType } from 'api/api';
 import { UserSearchResultsType } from 'api/search';
 
 import SearchResults from 'screens/App/Search/Results';
-import SafeArea from 'components/Common/SafeArea';
+import SafeArea from 'common/components/SafeArea';
 
 import SearchStyles from 'styles/Search/Search.Styles';
 

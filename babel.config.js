@@ -20,6 +20,7 @@ module.exports = function (api) {
             assets: './assets',
             containers: './containers',
             tests: './tests',
+            common: './common',
           },
         },
       ],

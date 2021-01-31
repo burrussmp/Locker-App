@@ -9,7 +9,7 @@ import {
   ImageBackground, Image, View, ImageSourcePropType,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import SafeArea from 'components/Common/SafeArea';
+import SafeArea from 'common/components/SafeArea';
 import AuthButton from 'screens/Auth/components/Basic.Button';
 import styles from 'styles/styles';
 

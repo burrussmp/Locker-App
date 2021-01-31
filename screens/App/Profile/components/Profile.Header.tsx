@@ -1,16 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-'use strict';
-import React, {useState, useEffect} from 'react';
-import {Text, View, Button, TouchableOpacity, Platform} from 'react-native';
-import {Avatar} from 'react-native-elements';
+/**
+ * @author Matthew P. Burruss
+ * @date 1/27/2021
+ * @desc Profile header
+*/
+
+import React, { useState, useEffect } from 'react';
+import {
+  Text, View, Button, TouchableOpacity, Platform,
+} from 'react-native';
+import { Avatar } from 'react-native-elements';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import ImageLibrary from 'services/Images/ImageLibrary';
 import api from 'api/api';
 
-import {ProfileHeaderData} from 'types/Profile/profile';
+import { ProfileHeaderData } from 'types/Profile/profile';
 
 import styles from 'styles/Profile/Profile.Styles';
 import BlurHashService from 'services/Images/BlurHashDecoder';
@@ -20,19 +26,16 @@ import BlurHashService from 'services/Images/BlurHashDecoder';
  * @props The 'data' attribute specifies the avatarURI and userInfo contains from API
  */
 const ProfileHeader = (props: {data: ProfileHeaderData}) => {
-  if (!props.data) {
-    throw 'Cannot render Profile Header without data';
-  }
   // props
-  const isMyProfile = props.data.isMyProfile;
-  const userInfo = props.data.userInfo;
+  const { isMyProfile } = props.data;
+  const { userInfo } = props.data;
   // get blur hash
-  const profile_photo = props.data.userInfo.profile_photo;
+  const { profile_photo } = props.data.userInfo;
   const blur_hash = profile_photo?.blurhash;
 
   // state
   const [avatarURI, setAvatarURI] = useState('');
-  const avatarSource = avatarURI ? {uri: avatarURI} : undefined;
+  const avatarSource = avatarURI ? { uri: avatarURI } : undefined;
   const navigation = useNavigation();
 
   // variables that depend on state or props
@@ -56,11 +59,11 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
     if (isMyProfile) {
       ImageLibrary
         .pickImageFromLibrary()
-        .then(async media => {
+        .then(async (media) => {
           await api.Avatar.Update(media);
           setAvatarURI(media.uri);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -74,7 +77,7 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
       if (blur_hash_uri && Platform.OS === 'android') {
         const resized_uri = await BlurHashService.asyncImageResize(
           blur_hash_uri,
-          200
+          200,
         );
         setAvatarURI(resized_uri);
       } else if (blur_hash_uri && Platform.OS === 'ios') {
@@ -82,8 +85,8 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
       }
       const profile_uri = (await api.Avatar.Get(
         userInfo._id,
-        'xlarge'
-      )) as string;
+        'xlarge',
+      ));
       setAvatarURI(profile_uri);
     })();
   }, []);
@@ -101,7 +104,7 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
           }}
         >
           <Icons
-            name={'arrow-back'}
+            name="arrow-back"
             size={25}
             color="#000"
             style={{
@@ -134,7 +137,7 @@ const ProfileHeader = (props: {data: ProfileHeaderData}) => {
             containerStyle={ComponentStyles.avatarImageContainer}
             source={avatarSource}
             onPress={on_avatar_press}
-          ></Avatar>
+          />
         </View>
       </View>
       <View style={ComponentStyles.bottomContainer}>

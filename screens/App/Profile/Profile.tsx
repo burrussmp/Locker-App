@@ -1,16 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/**
+ * @author Matthew P. Burruss
+ * @date 1/27/2021
+ * @desc Profile
+*/
 
 // outside imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 // services
 import { Alert } from 'react-native';
 import api, { APIErrorType } from 'api/api';
 import authSelectors from 'store/selectors/auth.selectors';
 // high level containers (well actually profile header is a component rn)
-import SafeArea from 'components/Common/SafeArea';
-import ProfileHeader from 'components/Profile/Profile.Header';
-import ProfileLoading from 'components/Common/LoadingRelative';
-import ProfileNavigation from 'components/Profile/Profile.Navigation';
+import SafeArea from 'common/components/SafeArea';
+import ProfileHeader from 'screens/App/Profile/components/Profile.Header';
+import ProfileLoading from 'common/components/LoadingRelative';
+import ProfileNavigation from 'screens/App/Profile/components/Profile.Navigation';
 // types
 import { ProfileHeaderData } from 'types/Profile/profile';
 
@@ -18,7 +22,7 @@ type IProps = {
   userId: string;
 }
 
-const ProfileScreen = ({ userId }: IProps) => {
+const ProfileScreen: FC<IProps> = ({ userId }: IProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [headerData, setHeaderData] = useState(null as ProfileHeaderData);
   const isMyProfile = userId === authSelectors.getMyID();
