@@ -33,7 +33,7 @@ import logoImage from 'assets/images/logo.png';
 
 import { RootAction } from 'store/index';
 
-const DefaultUser = config.default_user;
+const DefaultUser = config.defaultUser;
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   Login: async (session: Session) => {
