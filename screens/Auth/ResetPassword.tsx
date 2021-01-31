@@ -16,11 +16,11 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import PasswordInput from 'containers/Auth/PasswordInput';
-import ConfirmationCodeTextInput from 'components/Auth/ConfirmationCodeTextInput';
+import ConfirmationCodeTextInput from 'screens/Auth/components/ConfirmationCodeTextInput';
 import AuthButton from 'components/Auth.Button';
 import SafeArea from 'components/Common/SafeArea';
 import LoadingAll from 'components/Common/LoadingAll';
-import LinkText from 'components/Auth/LinkText';
+import LinkText from 'screens/Auth/components/LinkText';
 
 import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
@@ -72,11 +72,11 @@ const ResetPassword: FC<IProps> = ({ route }: IProps) => {
           <Image source={logoImage as ImageSourcePropType} style={AuthStyles.Logo} />
           <View style={AuthStyles.InputContainerMain}>
             <ConfirmationCodeTextInput
-              onChangeText={setConfirmationCode}
+              value={confirmationCode}
+              setValue={setConfirmationCode}
               prompt={confirmationCodePrompt}
-              cell_count={6}
+              cellCount={6}
               email={route.params.email}
-              promptSendNewCode
             />
             <PasswordInput
               labelPassword="New password:"

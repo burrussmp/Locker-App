@@ -20,9 +20,9 @@ import { Dispatch } from 'redux';
 import { Session } from 'store/types/auth.types';
 import styles from 'styles/styles';
 import AuthButton from 'components/Auth.Button';
-import AuthTextInput from 'components/Auth/BasicTextInput';
 import Loading from 'components/Common/LoadingAll';
-import LinkText from 'components/Auth/LinkText';
+import AuthTextInput from 'screens/Auth/components/BasicTextInput';
+import LinkText from 'screens/Auth/components/LinkText';
 import SafeArea from 'components/Common/SafeArea';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import api, { APIErrorType } from 'api/api';
@@ -92,15 +92,15 @@ const LoginScreen: FC<IProps> = ({ Login }: IProps) => {
           <Image source={logoImage as ImageSourcePropType} style={AuthStyles.Logo} />
           <View style={AuthStyles.InputContainerMain}>
             <AuthTextInput
-              placeholder={placeHolderLogin}
+              placeHolder={placeHolderLogin}
               value={login}
-              onChangeText={setLogin}
+              setValue={setLogin}
               textContentType="emailAddress"
             />
             <AuthTextInput
-              placeholder={placeHolderPassword}
+              placeHolder={placeHolderPassword}
               value={password}
-              onChangeText={setPassword}
+              setValue={setPassword}
               textContentType="password"
               secureTextEntry
             />

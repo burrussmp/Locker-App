@@ -20,9 +20,9 @@ import { Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 
 import AuthButton from 'components/Auth.Button';
-import AuthTextInput from 'components/Auth/BasicTextInput';
 import PasswordInput from 'containers/Auth/PasswordInput';
-import PhoneNumberTextInput from 'components/Auth/PhoneNumberTextInput';
+import AuthTextInput from 'screens/Auth/components/BasicTextInput';
+import PhoneNumberTextInput from 'screens/Auth/components/PhoneNumberTextInput';
 import LoadingAll from 'components/Common/LoadingAll';
 import SafeArea from 'components/Common/SafeArea';
 import api, { APIErrorType } from 'api/api';
@@ -102,34 +102,34 @@ const RegisterScreen: FC<IProps> = ({ SignUp }: IProps) => {
             <View style={AuthStyles.InputContainerMain}>
               <Text style={AuthStyles.Label}>Username:</Text>
               <AuthTextInput
-                placeholder="Username"
+                placeHolder="Username"
                 value={username}
-                onChangeText={setUsername}
+                setValue={setUsername}
                 textContentType="username"
               />
               <Text style={AuthStyles.Label}>First name (optional):</Text>
               <AuthTextInput
-                placeholder="First Name"
+                placeHolder="First Name"
                 value={firstName}
-                onChangeText={setFirstName}
+                setValue={setFirstName}
                 textContentType="name"
               />
               <Text style={AuthStyles.Label}>Last name (optional):</Text>
               <AuthTextInput
-                placeholder="Last Name"
+                placeHolder="Last Name"
                 value={lastName}
-                onChangeText={setLastName}
+                setValue={setLastName}
                 textContentType="familyName"
               />
               <Text style={AuthStyles.Label}>
                 Phone number (select country code below):
               </Text>
-              <PhoneNumberTextInput setPhoneNumber={setPhoneNumber} />
+              <PhoneNumberTextInput setValue={setPhoneNumber} />
               <Text style={AuthStyles.Label}>Email address:</Text>
               <AuthTextInput
-                placeholder="Email"
+                placeHolder="Email"
                 value={email}
-                onChangeText={setEmail}
+                setValue={setEmail}
                 textContentType="emailAddress"
               />
               <PasswordInput

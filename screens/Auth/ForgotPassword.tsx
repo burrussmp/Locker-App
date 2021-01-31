@@ -17,8 +17,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AuthButton from 'components/Auth.Button';
-import AuthTextInput from 'components/Auth/BasicTextInput';
-import LinkText from 'components/Auth/LinkText';
+import AuthTextInput from 'screens/Auth/components/BasicTextInput';
+import LinkText from 'screens/Auth/components/LinkText';
 import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import SafeArea from 'components/Common/SafeArea';
@@ -76,9 +76,9 @@ const ForgotPassword: FC<IProps> = () => {
           <View style={AuthStyles.InputContainerMain}>
             <Text style={styles.promptText}>{PromptText}</Text>
             <AuthTextInput
-              placeholder={inputTextPrompt}
+              placeHolder={inputTextPrompt}
               value={email}
-              onChangeText={setEmail}
+              setValue={setEmail}
               textContentType="emailAddress"
             />
             <LinkText

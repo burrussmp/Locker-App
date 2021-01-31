@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import Validators from 'services/validators';
-import PasswordTextInput from 'components/Auth/PasswordTextInput';
+import PasswordTextInput from 'screens/Auth/components/PasswordTextInput';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -109,7 +109,7 @@ const PasswordInput = (props: any) => {
         placeHolder="New password"
         toggleVisibility
         value={newPassword}
-        onChangeText={validationNewPassword}
+        setValue={validationNewPassword}
       />
       <View style={AuthStyles.RowContainer}>
         <Text style={AuthStyles.Label}>{labelConfirmPassword}</Text>
@@ -118,8 +118,7 @@ const PasswordInput = (props: any) => {
       <PasswordTextInput
         placeHolder="Confirm password"
         value={confirmedPassword}
-        onChangeText={validationConfirmPassword}
-        hideValidation={false}
+        setValue={validationConfirmPassword}
       />
     </>
   );
