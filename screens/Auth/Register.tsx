@@ -154,4 +154,4 @@ const RegisterScreen: FC<IProps> = ({ SignUp }: IProps) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(RegisterScreen) as FC<IProps>;
+export default connector(RegisterScreen) as FC<IProps>;

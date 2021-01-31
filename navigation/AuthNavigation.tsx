@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from 'screens/Auth/Auth';
 import LoginScreen from 'screens/Auth/Login';
-import RegisterScreen from 'screens/App/Register';
+import RegisterScreen from 'screens/Auth/Register';
 import ForgotPasswordScreen from 'screens/Auth/ForgotPassword';
 import ResetPasswordScreen from 'screens/Auth/ResetPassword';
 
