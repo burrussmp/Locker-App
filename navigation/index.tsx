@@ -14,7 +14,7 @@ import AuthNavigation from 'navigation/AuthNavigation';
 import AppNavigation from 'navigation/AppNavigation';
 import WelcomeScreen from 'screens/Auth/Welcome';
 import AuthSelectors from 'store/selectors/auth.selectors';
-import Splash from 'screens/Splash';
+import Splash from 'screens/App/Splash';
 import api from 'api/api';
 import { Session } from 'store/types/auth.types';
 

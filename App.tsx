@@ -6,7 +6,7 @@
  */
 import React, { useEffect, useState, FC } from 'react';
 import { Provider } from 'react-redux';
-import SplashScreen from 'screens/Splash';
+import SplashScreen from 'screens/App/Splash';
 import * as Font from 'expo-font';
 import store from 'store/index';
 import AppContainer from 'navigation/index';

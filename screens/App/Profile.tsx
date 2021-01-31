@@ -3,7 +3,8 @@
 // outside imports
 import React, { useState, useEffect } from 'react';
 // services
-import api from 'api/api';
+import { Alert } from 'react-native';
+import api, { APIErrorType } from 'api/api';
 import authSelectors from 'store/selectors/auth.selectors';
 // high level containers (well actually profile header is a component rn)
 import SafeArea from 'components/Common/SafeArea';
@@ -13,36 +14,34 @@ import ProfileNavigation from 'components/Profile/Profile.Navigation';
 // types
 import { ProfileHeaderData } from 'types/Profile/profile';
 
-const ProfileScreen = (props: {userId: string}) => {
+type IProps = {
+  userId: string;
+}
+
+const ProfileScreen = ({ userId }: IProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [headerData, setHeaderData] = useState(null as ProfileHeaderData);
-  const { userId } = props;
   const isMyProfile = userId === authSelectors.getMyID();
   useEffect(() => {
-    (async () => {
-      try {
-        const userInfo = await api.User.GetByID(userId);
+    (() => {
+      api.User.GetByID(userId).then((userInfo) => {
         setHeaderData({
           userInfo,
           isMyProfile,
         } as ProfileHeaderData);
         setIsLoaded(true);
-      } catch (err) {
-        console.log(err);
-      }
+      }).catch((err: APIErrorType) => {
+        Alert.alert(err.error);
+      });
     })();
   }, []);
   return !isLoaded ? (
     <ProfileLoading />
   ) : (
-    <SafeArea
-      children={(
-        <>
-          <ProfileHeader data={headerData} />
-          <ProfileNavigation />
-        </>
-      )}
-    />
+    <SafeArea>
+      <ProfileHeader data={headerData} />
+      <ProfileNavigation />
+    </SafeArea>
   );
 };
 

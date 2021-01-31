@@ -67,9 +67,7 @@ const getHeaders = (optionalHeaders:Record<string, string> | undefined = undefin
  * @return {Promise<string>} The URI of the media object which can be dynamically rendered.
  */
 const createURI = async (res: Response): Promise<string> => {
-  const arrayBuffer = await res.arrayBuffer();
-  const blob = new Blob([arrayBuffer]);
-
+  const blob = await res.blob();
   if (Platform.OS === 'ios') {
     return (URL || webkitURL).createObjectURL(blob);
   }

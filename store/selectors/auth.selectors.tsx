@@ -5,10 +5,10 @@
 */
 import { Dispatch } from 'redux';
 
-import { Session } from 'store/types/auth.types';
+import { Session, AuthState } from 'store/types/auth.types';
 import AuthActions from 'store/actions/auth.actions';
 import api from 'api/api';
-import { AuthState } from 'store/types/auth.types';
+
 import store, { RootAction } from 'store/index';
 
 /**
@@ -42,12 +42,12 @@ const authenticate = async (dispatch: Dispatch<RootAction>, session: Session): P
  *  "id" : user ID,
  * } if it exists otherwise throws an error
  */
-const getMyID = (): undefined | string => {
+const getMyID = (): string => {
   const state = store.getState();
   if (state.auth && state.auth.session) {
     return state.auth.session._id;
   }
-  return undefined;
+  return '';
 };
 
 export default {

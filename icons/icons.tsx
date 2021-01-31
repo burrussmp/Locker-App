@@ -22,6 +22,8 @@ import likeIconSmallSelected from 'assets/icons/liked_small.png';
 import lockIcon from 'assets/icons/lock.png';
 import lockIconSelected from 'assets/icons/locked.png';
 import moreIcon from 'assets/icons/more.png';
+import savingsIcon from 'assets/icons/savings.png';
+import savingsIconSelected from 'assets/icons/savings_selected.png';
 
 const icons = {
   home: {
@@ -56,6 +58,10 @@ const icons = {
   },
   more: {
     more: moreIcon as ImageSourcePropType,
+  },
+  savings: {
+    focused: savingsIconSelected as ImageSourcePropType,
+    unfocused: savingsIcon as ImageSourcePropType,
   },
 };
 

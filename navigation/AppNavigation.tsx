@@ -1,21 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import React, { FC } from 'react';
 import { Image, Platform, KeyboardAvoidingView } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MainTabBar from 'components/Navigation.MainTabBar';
 import icons from 'icons/icons';
 
-import CartScreen from 'screens/Cart';
-import HomeScreen from 'screens/Home';
-import ProfileScreen from 'screens/Profile';
-import SearchScreen from 'screens/Search';
-import authSelectors from 'store/selectors/auth.selectors';
+import CartScreen from 'screens/App/Cart';
+import HomeScreen from 'screens/App/Home';
+import LockerScreen from 'screens/App/Locker';
+import SavingsScreen from 'screens/App/Savings';
+import SearchScreen from 'screens/App/Search/Search';
 
 import { AppParamList } from 'types/Navigation/app.navigation.types';
 
 const AppNavigation: FC = () => {
-  const myID = authSelectors.getMyID();
   const BottomTab = createBottomTabNavigator<AppParamList>();
   return (
     <KeyboardAvoidingView
@@ -24,18 +21,6 @@ const AppNavigation: FC = () => {
       keyboardVerticalOffset={Platform.OS === 'ios' ? -100 : 20}
       enabled={Platform.OS === 'ios'}
     >
-      <BottomTab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: '',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={focused ? icons.home.focused : icons.home.unfocused}
-            />
-          ),
-        }}
-      />
       <BottomTab.Navigator
         initialRouteName="Search"
         tabBar={MainTabBar}
@@ -53,6 +38,16 @@ const AppNavigation: FC = () => {
         }}
       >
         <BottomTab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: '',
+            tabBarIcon: ({ focused }: {focused: boolean}) => (
+              <Image source={focused ? icons.home.focused : icons.home.unfocused} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
           name="Search"
           component={SearchScreen}
           options={{
@@ -64,11 +59,21 @@ const AppNavigation: FC = () => {
         />
         <BottomTab.Screen
           name="Locker"
-          component={CartScreen}
+          component={LockerScreen}
           options={{
             tabBarLabel: '',
             tabBarIcon: ({ focused }: {focused: boolean}) => (
               <Image source={focused ? icons.locker.focused : icons.locker.unfocused} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Savings"
+          component={SavingsScreen}
+          options={{
+            tabBarLabel: '',
+            tabBarIcon: ({ focused }: {focused: boolean}) => (
+              <Image source={focused ? icons.savings.focused : icons.savings.unfocused} />
             ),
           }}
         />

@@ -7,8 +7,10 @@ import React, { FC } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { Button, Text, View } from 'react-native';
-import api from 'api/api';
+import {
+  Alert, Button, Text, View,
+} from 'react-native';
+import api, { APIErrorType } from 'api/api';
 import AuthActions from 'store/actions/auth.actions';
 
 import { RootAction } from 'store/index';
@@ -31,11 +33,11 @@ const CartScreen: FC<IProps> = ({ Logout }: IProps) => (
       title="LogOut"
       onPress={async () => api.Auth.Logout().then(() => {
         Logout();
-      }).catch((err) => {
-        console.log(err);
+      }).catch((err: APIErrorType) => {
+        Alert.alert(err.error);
       })}
     />
-    <Text>Notifications!</Text>
+    <Text>CART PAGE!</Text>
   </View>
 );
 

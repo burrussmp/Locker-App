@@ -8,8 +8,12 @@ import { RouteProp } from '@react-navigation/native';
 
 export type AppParamList = {
   Home: undefined;
-  Search: undefined;
-  Locker: undefined;
+  Search: {
+    userId?: string;
+  };
+  Locker: {
+    userId?: string;
+  };
   Savings: undefined
   Cart: undefined;
 };
