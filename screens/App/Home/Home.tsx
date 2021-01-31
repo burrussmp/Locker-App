@@ -11,7 +11,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import TopTabBar from 'navigation/components/TopTabBar';
 import PostSelectors from 'store/selectors/post.selectors';
-import Feed from 'screens/App/Feed';
+import Feed from 'screens/App/Home/Feed';
 import SafeArea from 'components/Common/SafeArea';
 
 import { RootState } from 'store/index';
