@@ -1,3 +1,9 @@
+/**
+ * @author Matthew P. Burruss
+ * @date Sep 2020
+ * @desc Loading the entire page.
+ */
+
 import React, { FC } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 

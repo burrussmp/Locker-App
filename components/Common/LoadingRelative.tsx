@@ -1,7 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-'use strict';
-import React from 'react';
-import {View, ActivityIndicator, StyleSheet} from 'react-native';
+/**
+ * @author Matthew P. Burruss
+ * @date Sep 2020
+ * @desc A general loading icon.
+ */
+
+import React, { FC } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
 const LoadingStyle = StyleSheet.create({
   container: {
@@ -11,15 +15,11 @@ const LoadingStyle = StyleSheet.create({
     alignItems: 'center',
   },
 });
-/**
- * @desc Renders the original loading container
- */
-const Loading = () => {
-  return (
-    <View style={LoadingStyle.container}>
-      <ActivityIndicator size="large" color="lightblue"></ActivityIndicator>
-    </View>
-  );
-};
+
+const Loading: FC = () => (
+  <View style={LoadingStyle.container}>
+    <ActivityIndicator size="large" color="lightblue" />
+  </View>
+);
 
 export default Loading;
