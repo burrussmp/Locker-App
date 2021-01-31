@@ -8,7 +8,8 @@ import React, { FC } from 'react';
 import { View } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import TopTabBar from 'components/Navigation.TopTabBar';
+
+import TopTabBar from 'navigation/components/TopTabBar';
 import PostSelectors from 'store/selectors/post.selectors';
 import Feed from 'screens/App/Feed';
 import SafeArea from 'components/Common/SafeArea';
@@ -61,7 +62,7 @@ const HomeScreen: FC<IProps> = ({ postState }: IProps) => {
           tabBarOptions={TabBarOptions}
         >
           <HomeTopTab.Screen name="Following" component={Feed} />
-          <HomeTopTab.Screen name="ForYou" component={Feed} />
+          <HomeTopTab.Screen name="For You" component={Feed} />
         </HomeTopTab.Navigator>
       </View>
     </SafeArea>

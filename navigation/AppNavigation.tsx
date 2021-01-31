@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Image, Platform, KeyboardAvoidingView } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainTabBar from 'components/Navigation.MainTabBar';
 import icons from 'icons/icons';
 
 import CartScreen from 'screens/App/Cart';
@@ -9,6 +8,8 @@ import HomeScreen from 'screens/App/Home';
 import LockerScreen from 'screens/App/Locker';
 import SavingsScreen from 'screens/App/Savings';
 import SearchScreen from 'screens/App/Search/Search';
+
+import MainTabBar from 'navigation/components/MainTabBar';
 
 import { AppParamList } from 'types/Navigation/app.navigation.types';
 
