@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import SafeArea from 'components/Common/SafeArea';
-import AuthButton from 'components/Auth.Button';
+import AuthButton from 'screens/Auth/components/Basic.Button';
 import styles from 'styles/styles';
 
 import backgroundImage from 'assets/images/splash.png';

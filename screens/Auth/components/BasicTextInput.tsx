@@ -4,7 +4,7 @@
  * @desc Basic Text Input for auth
  */
 
-import React, { FC, JSXElementConstructor } from 'react';
+import React, { FC } from 'react';
 import {
   TextInput, ImageSourcePropType, View, ViewStyle,
 } from 'react-native';

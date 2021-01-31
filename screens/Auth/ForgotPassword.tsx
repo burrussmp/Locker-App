@@ -16,7 +16,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AuthButton from 'components/Auth.Button';
+import AuthButton from 'screens/Auth/components/Basic.Button';
 import AuthTextInput from 'screens/Auth/components/BasicTextInput';
 import LinkText from 'screens/Auth/components/LinkText';
 import api, { APIErrorType } from 'api/api';

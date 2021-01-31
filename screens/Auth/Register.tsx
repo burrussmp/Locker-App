@@ -19,7 +19,7 @@ import {
 import { Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 
-import AuthButton from 'components/Auth.Button';
+import AuthButton from 'screens/Auth/components/Basic.Button';
 import PasswordInput from 'screens/Auth/containers/PasswordInput';
 import AuthTextInput from 'screens/Auth/components/BasicTextInput';
 import PhoneNumberTextInput from 'screens/Auth/components/PhoneNumberTextInput';

@@ -19,7 +19,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Session } from 'store/types/auth.types';
 import styles from 'styles/styles';
-import AuthButton from 'components/Auth.Button';
+import AuthButton from 'screens/Auth/components/Basic.Button';
 import Loading from 'components/Common/LoadingAll';
 import AuthTextInput from 'screens/Auth/components/BasicTextInput';
 import LinkText from 'screens/Auth/components/LinkText';
