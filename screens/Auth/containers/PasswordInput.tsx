@@ -4,27 +4,23 @@
  * @desc A container for submitting a new password
  */
 
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { Text, View } from 'react-native';
 import Validators from 'services/validators';
 import PasswordTextInput from 'screens/Auth/components/PasswordTextInput';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-/**
- * @desc A container to abstract the password containers
- * @param {function} confirmPassword A function that accepts a single parameter
- * that is true when password is confirmed else false
- * @param {function} setPassword A function that accepts the current password
- */
-const PasswordInput = (props: any) => {
-  const { labelPassword } = props;
-  const { labelConfirmPassword } = props;
+type IProps = {
+  labelPassword: string;
+  labelConfirmPassword: string;
+  confirmPassword: (isConfirmed: boolean) => void;
+  setPassword: (password: string) => void;
+};
 
-  // get parent state
-  const { confirmPassword } = props;
-  const { setPassword } = props;
-
+const PasswordInput: FC<IProps> = ({
+  labelPassword, labelConfirmPassword, confirmPassword, setPassword,
+}: IProps) => {
   // for child state
   const [newPassword, setNewPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
@@ -83,16 +79,16 @@ const PasswordInput = (props: any) => {
 
   const ValidationStatusCreator = (
     password: string,
-    validation_result: {valid: boolean; message: string},
+    validationResult: {valid: boolean; message: string},
   ) => {
-    const ValidationIcon = password && validation_result.valid ? (
+    const ValidationIcon = password && validationResult.valid ? (
       <Icon name="ios-checkmark" size={17} color="green" />
     ) : undefined;
-    const ValidationTextColorStyle = { ...AuthStyles.Label, color: validation_result.valid ? 'green' : 'red' };
+    const ValidationTextColorStyle = { ...AuthStyles.Label, color: validationResult.valid ? 'green' : 'red' };
     return (
       <View style={AuthStyles.ValidationStatusContainer}>
         <Text style={[ValidationTextColorStyle, { paddingRight: 5 }]}>
-          {validation_result.message}
+          {validationResult.message}
         </Text>
         {ValidationIcon}
       </View>
@@ -118,6 +114,7 @@ const PasswordInput = (props: any) => {
       <PasswordTextInput
         placeHolder="Confirm password"
         value={confirmedPassword}
+        toggleVisibility
         setValue={validationConfirmPassword}
       />
     </>

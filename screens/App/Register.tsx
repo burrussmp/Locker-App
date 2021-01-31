@@ -20,7 +20,7 @@ import { Dispatch } from 'redux';
 import { connect, ConnectedProps } from 'react-redux';
 
 import AuthButton from 'components/Auth.Button';
-import PasswordInput from 'containers/Auth/PasswordInput';
+import PasswordInput from 'screens/Auth/containers/PasswordInput';
 import AuthTextInput from 'screens/Auth/components/BasicTextInput';
 import PhoneNumberTextInput from 'screens/Auth/components/PhoneNumberTextInput';
 import LoadingAll from 'components/Common/LoadingAll';
