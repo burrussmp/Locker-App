@@ -16,7 +16,6 @@ import api, { APIErrorType } from 'api/api';
 import { UserSearchResultsType } from 'api/search';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
-import authSelectors from 'store/selectors/auth.selectors';
 
 import DefaultAvatar from 'assets/images/profile-pic.png';
 
@@ -64,13 +63,9 @@ const SearchRow: FC<IProps> = ({ userSearchResult }: IProps) => {
     <ListItem
       bottomDivider
       onPress={() => {
-        if (userSearchResult.data._id === authSelectors.getMyID()) {
-          navigation.navigate('Profile');
-        } else {
-          navigation.navigate('FoundUser', {
-            userId: userSearchResult.data._id,
-          });
-        }
+        navigation.navigate('FoundUser', {
+          userId: userSearchResult.data._id,
+        });
       }}
     >
       <Avatar rounded size="small" source={source} />
