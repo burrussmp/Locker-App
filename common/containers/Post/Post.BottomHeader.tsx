@@ -18,13 +18,7 @@ import LikeButton from 'common/components/buttons/LikeButton';
 import LockButton from 'common/components/buttons/LockButton';
 import icons from 'icons/icons';
 
-type IProps = {
-  color?: string;
-  author?: string;
-  avatar?: {
-    uri: string;
-  };
-};
+import { PostType } from 'api/post';
 
 const PostFeedBottomHeaderStyles = StyleSheet.create({
   container: {
@@ -60,12 +54,23 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
   },
 });
 
-const PostFeedBottomHeader: FC<IProps> = ({ color, avatar, author }: IProps) => {
+type IProps = {
+  postData: PostType;
+  color?: string;
+  author?: string;
+  avatar?: {
+    uri: string;
+  };
+};
+
+const PostFeedBottomHeader: FC<IProps> = ({
+  postData, color, avatar, author,
+}: IProps) => {
   const navigation = useNavigation();
 
   const onEllipsesTap = (event: TapGestureHandlerStateChangeEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      navigation.navigate('PostDetails');
+      navigation.navigate('PostDetails', { postData });
     }
   };
 

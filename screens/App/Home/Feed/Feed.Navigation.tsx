@@ -1,38 +1,72 @@
 /**
- * @author Paul H. Sullivan
- * @date Sep 2020
- * @desc Authorization Screen
+ * @author Matthew P. Burruss
+ * @date Aug 2020
+ * @desc Home screen
  */
 
 import React, { FC } from 'react';
+import { View } from 'react-native';
+import { connect, ConnectedProps } from 'react-redux';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import { createStackNavigator } from '@react-navigation/stack';
-
+import TopTabBar from 'navigation/components/TopTabBar';
+import PostSelectors from 'store/selectors/post.selectors';
 import FeedContainer from 'screens/App/Home/Feed/Feed.Container';
-import PostDetails from 'components/Post/Post.Expanded';
+import SafeArea from 'common/components/SafeArea';
 
+import { RootState } from 'store/index';
 import { FeedParamList } from 'types/Navigation/feed.navigation.types';
 
-const Feed: FC = () => {
-  const FeedNavigator = createStackNavigator<FeedParamList>();
+const mapStateToProps = (state: RootState) => ({
+  postState: state.post,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+type IProps = PropsFromRedux;
+
+const TabBarOptions = {
+  activeTintColor: '#0c0b0b',
+  inactiveTintColor: '#737373',
+  pressOpacity: 1,
+  style: {
+    borderBottomColor: '#c6b9bb',
+    borderBottomWidth: 1,
+    backgroundColor: '#f1e4e6ab',
+    elevation: 0,
+    paddingLeft: 35,
+    paddingRight: 35,
+  },
+  indicatorStyle: {
+    backgroundColor: '#000000',
+    height: 2,
+  },
+  labelStyle: {
+    fontFamily: 'CircularBlack',
+    fontSize: 14,
+  },
+};
+
+const FeedNavigator: FC<IProps> = ({ postState }: IProps) => {
+  const FeedTopTab = createMaterialTopTabNavigator<FeedParamList>();
+  const postIsExpanded = PostSelectors.isExpanded(postState);
+
   return (
-    <FeedNavigator.Navigator headerMode="screen">
-      <FeedNavigator.Screen
-        name="Feed"
-        component={FeedContainer}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <FeedNavigator.Screen
-        name="PostDetails"
-        component={PostDetails}
-        options={{
-          headerTransparent: true,
-        }}
-      />
-    </FeedNavigator.Navigator>
+    <SafeArea>
+      <View style={{ flex: 1 }}>
+        <FeedTopTab.Navigator
+          tabBar={TopTabBar}
+          swipeEnabled={!postIsExpanded}
+          tabBarOptions={TabBarOptions}
+        >
+          <FeedTopTab.Screen name="Following" component={FeedContainer} />
+          <FeedTopTab.Screen name="For You" component={FeedContainer} />
+        </FeedTopTab.Navigator>
+      </View>
+    </SafeArea>
   );
 };
 
-export default Feed;
+export default connector(FeedNavigator) as FC<IProps>;

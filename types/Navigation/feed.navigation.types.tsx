@@ -7,16 +7,16 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 export type FeedParamList = {
-  Feed: undefined;
-  PostDetails: undefined;
+  Following: undefined;
+  'For You' : undefined;
 };
 
-export type FeedProp = {
-  navigation: StackNavigationProp<FeedParamList, 'Feed'>;
-  route: RouteProp<FeedParamList, 'Feed'>;
+export type FollowingProp = {
+  navigation: StackNavigationProp<FeedParamList, 'Following'>;
+  route: RouteProp<FeedParamList, 'Following'>;
 };
 
-export type PostDetailsProp = {
-  navigation: StackNavigationProp<FeedParamList, 'PostDetails'>;
-  route: RouteProp<FeedParamList, 'PostDetails'>;
+export type ForYouProp = {
+  navigation: StackNavigationProp<FeedParamList, 'For You'>;
+  route: RouteProp<FeedParamList, 'For You'>;
 };

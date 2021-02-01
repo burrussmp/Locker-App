@@ -5,18 +5,21 @@
 */
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { PostType } from 'api/post';
 
 export type HomeParamList = {
-  Following: undefined;
-  'For You' : undefined;
+  Feed: undefined;
+  PostDetails: {
+    postData: PostType
+  };
 };
 
-export type FollowingProp = {
-  navigation: StackNavigationProp<HomeParamList, 'Following'>;
-  route: RouteProp<HomeParamList, 'Following'>;
+export type FeedProp = {
+  navigation: StackNavigationProp<HomeParamList, 'Feed'>;
+  route: RouteProp<HomeParamList, 'Feed'>;
 };
 
-export type ForYouProp = {
-  navigation: StackNavigationProp<HomeParamList, 'For You'>;
-  route: RouteProp<HomeParamList, 'For You'>;
+export type PostDetailsProp = {
+  navigation: StackNavigationProp<HomeParamList, 'PostDetails'>;
+  route: RouteProp<HomeParamList, 'PostDetails'>;
 };

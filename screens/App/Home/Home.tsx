@@ -1,72 +1,39 @@
 /**
- * @author Matthew P. Burruss
- * @date Aug 2020
- * @desc Home screen
+ * @author Paul H. Sullivan
+ * @date Sep 2020
+ * @desc Authorization Screen
  */
 
 import React, { FC } from 'react';
-import { View } from 'react-native';
-import { connect, ConnectedProps } from 'react-redux';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import TopTabBar from 'navigation/components/TopTabBar';
-import PostSelectors from 'store/selectors/post.selectors';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import FeedNavigation from 'screens/App/Home/Feed/Feed.Navigation';
-import SafeArea from 'common/components/SafeArea';
+import PostDetails from 'common/containers/Post/Post.Details';
 
-import { RootState } from 'store/index';
 import { HomeParamList } from 'types/Navigation/home.navigation.types';
 
-const mapStateToProps = (state: RootState) => ({
-  postState: state.post,
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>
-
-type IProps = PropsFromRedux;
-
-const TabBarOptions = {
-  activeTintColor: '#0c0b0b',
-  inactiveTintColor: '#737373',
-  pressOpacity: 1,
-  style: {
-    borderBottomColor: '#c6b9bb',
-    borderBottomWidth: 1,
-    backgroundColor: '#f1e4e6ab',
-    elevation: 0,
-    paddingLeft: 35,
-    paddingRight: 35,
-  },
-  indicatorStyle: {
-    backgroundColor: '#000000',
-    height: 2,
-  },
-  labelStyle: {
-    fontFamily: 'CircularBlack',
-    fontSize: 14,
-  },
-};
-
-const HomeScreen: FC<IProps> = ({ postState }: IProps) => {
-  const HomeTopTab = createMaterialTopTabNavigator<HomeParamList>();
-  const postIsExpanded = PostSelectors.isExpanded(postState);
-
+const Home: FC = () => {
+  const HomeNavigator = createStackNavigator<HomeParamList>();
   return (
-    <SafeArea>
-      <View style={{ flex: 1 }}>
-        <HomeTopTab.Navigator
-          tabBar={TopTabBar}
-          swipeEnabled={!postIsExpanded}
-          tabBarOptions={TabBarOptions}
-        >
-          <HomeTopTab.Screen name="Following" component={FeedNavigation} />
-          <HomeTopTab.Screen name="For You" component={FeedNavigation} />
-        </HomeTopTab.Navigator>
-      </View>
-    </SafeArea>
+    <HomeNavigator.Navigator headerMode="screen">
+      <HomeNavigator.Screen
+        name="Feed"
+        component={FeedNavigation}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <HomeNavigator.Screen
+        name="PostDetails"
+        component={PostDetails}
+        options={{
+          headerShown: false,
+          headerTransparent: true,
+        }}
+      />
+    </HomeNavigator.Navigator>
   );
 };
 
-export default connector(HomeScreen) as FC<IProps>;
+export default Home;

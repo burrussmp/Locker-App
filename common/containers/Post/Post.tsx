@@ -18,6 +18,7 @@ import BottomHeader from 'common/containers/Post/Post.BottomHeader';
 import PostFront from 'common/containers/Post/Post.Front';
 import PostBack from 'common/containers/Post/Post.Back';
 
+import BlurHashService from 'services/Images/BlurHashDecoder';
 import { flipAnimation } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
 
@@ -35,6 +36,9 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
     let complete = false;
     api.Post.GetByID(id).then((postInfo) => {
       if (!complete) {
+        if (postInfo.content.media.blurhash) {
+          setHeroImageURI(BlurHashService.BlurHashDecoder(postInfo.content.media.blurhash).getURI());
+        }
         setPostData(postInfo);
         api.S3.getMedia(postInfo.content.media.key).then((dataURI) => {
           setHeroImageURI(dataURI);
@@ -84,7 +88,7 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
           </View>
         </TapElement>
       </View>
-      <BottomHeader color="#fff" author={author} />
+      <BottomHeader postData={postData as PostType} color="#fff" author={author} />
     </LoadingView>
   );
 };
