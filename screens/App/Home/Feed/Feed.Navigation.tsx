@@ -6,26 +6,13 @@
 
 import React, { FC } from 'react';
 import { View } from 'react-native';
-import { connect, ConnectedProps } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import TopTabBar from 'navigation/components/TopTabBar';
-import PostSelectors from 'store/selectors/post.selectors';
 import FeedContainer from 'screens/App/Home/Feed/Feed.Container';
 import SafeArea from 'common/components/SafeArea';
 
-import { RootState } from 'store/index';
 import { FeedParamList } from 'types/Navigation/feed.navigation.types';
-
-const mapStateToProps = (state: RootState) => ({
-  postState: state.post,
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>
-
-type IProps = PropsFromRedux;
 
 const TabBarOptions = {
   activeTintColor: '#0c0b0b',
@@ -49,16 +36,13 @@ const TabBarOptions = {
   },
 };
 
-const FeedNavigator: FC<IProps> = ({ postState }: IProps) => {
+const FeedNavigator: FC = () => {
   const FeedTopTab = createMaterialTopTabNavigator<FeedParamList>();
-  const postIsExpanded = PostSelectors.isExpanded(postState);
-
   return (
     <SafeArea>
       <View style={{ flex: 1 }}>
         <FeedTopTab.Navigator
           tabBar={TopTabBar}
-          swipeEnabled={!postIsExpanded}
           tabBarOptions={TabBarOptions}
         >
           <FeedTopTab.Screen name="Following" component={FeedContainer} />
@@ -69,4 +53,4 @@ const FeedNavigator: FC<IProps> = ({ postState }: IProps) => {
   );
 };
 
-export default connector(FeedNavigator) as FC<IProps>;
+export default FeedNavigator;

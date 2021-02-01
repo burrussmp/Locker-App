@@ -14,9 +14,9 @@ import api, { APIErrorType } from 'api/api';
 import { State, TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 
 import TapElement from 'common/components/TapElement';
-import BottomHeader from 'common/containers/Post/Post.BottomHeader';
-import PostFront from 'common/containers/Post/Post.Front';
-import PostBack from 'common/containers/Post/Post.Back';
+import BottomHeader from 'screens/App/Home/Feed/Post/Post.BottomHeader';
+import PostFront from 'screens/App/Home/Feed/Post/Post.Front';
+import PostBack from 'screens/App/Home/Feed/Post/Post.Back';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { flipAnimation } from 'services/animations/PostAnimations';

@@ -8,7 +8,7 @@ import React, { useEffect, useState, FC } from 'react';
 import { Alert, FlatList, View } from 'react-native';
 
 import SafeArea from 'common/components/SafeArea';
-import Post from 'common/containers/Post/Post';
+import Post from 'screens/App/Home/Feed/Post/Post';
 
 import api, { APIErrorType } from 'api/api';
 import { PostListType } from 'api/post';

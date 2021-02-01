@@ -9,7 +9,7 @@ import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import FeedNavigation from 'screens/App/Home/Feed/Feed.Navigation';
-import PostDetails from 'common/containers/Post/Post.Details';
+import PostDetails from 'screens/App/Home/Feed/Post/Post.Details';
 
 import { HomeParamList } from 'types/Navigation/home.navigation.types';
 
