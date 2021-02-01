@@ -13,10 +13,10 @@ import { Dispatch } from 'redux';
 
 import Auth from 'screens/Auth/Auth';
 import App from 'screens/App/App';
-import WelcomeScreen from 'screens/Auth/Welcome';
+import Welcome from 'screens/Welcome';
 
 import AuthSelectors from 'store/selectors/auth.selectors';
-import Splash from 'screens/App/Splash';
+import Splash from 'screens/Splash';
 import api from 'api/api';
 import { Session } from 'store/types/auth.types';
 
@@ -54,7 +54,7 @@ const Navigation = ({ authState, Login }: IProps) => {
   }, []);
 
   const Application = firstTime ? (
-    <WelcomeScreen setFirstTime={setFirstTime} />
+    <Welcome setFirstTime={setFirstTime} />
   ) : (
     <NavigationContainer>
       {AuthSelectors.isLoggedIn(authState) ? (
