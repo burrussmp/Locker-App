@@ -9,7 +9,9 @@ import {
   Animated, StyleSheet, Text, View,
 } from 'react-native';
 
-import { Avatar, Divider } from 'react-native-elements';
+import { Avatar, Divider, Linking } from 'react-native-elements';
+
+import LinkText from 'common/components/text/LinkText';
 
 import { flipAnimationTransform } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
@@ -42,6 +44,10 @@ const PostBackStyles = StyleSheet.create({
     fontWeight: '200',
     marginTop: 5,
   },
+  urlText: {
+    fontSize: 12,
+    fontWeight: '100',
+  },
   smallHero: {
     height: 100,
     width: 100,
@@ -63,14 +69,16 @@ type IProps = {
 
 const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
   const priceText = `$${postData.content.price}`;
-  const descriptionText = 'Description: A cool product';
+  const productUrl = postData.content.url;
+  const descriptionText = '';
   return (
     <Animated.View style={[PostBackStyles.container, flipAnimationTransform(rotationRef, false)]}>
       <View style={PostBackStyles.topRowContainer}>
-        <View style={{ flex: 0.8 }}>
+        <View style={{ flex: 0.9 }}>
           <Text style={PostBackStyles.priceText}>
             {priceText}
           </Text>
+          <LinkText url={productUrl} style={PostBackStyles.urlText} />
           <Text style={PostBackStyles.descriptionText} numberOfLines={5}>
             {descriptionText}
           </Text>

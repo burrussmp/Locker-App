@@ -4,7 +4,7 @@
  * @desc This is the the component for a basic post
  */
 
-import React, { FC } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import {
   Alert, Image, Text, View, StyleSheet,
 } from 'react-native';
@@ -19,6 +19,9 @@ import LockButton from 'common/components/buttons/LockButton';
 import icons from 'icons/icons';
 
 import { PostType } from 'api/post';
+import api, { APIErrorType } from 'api/api';
+import BlurHashService from 'services/Images/BlurHashDecoder';
+import { OrganizationInfoType } from 'api/organization';
 
 const PostFeedBottomHeaderStyles = StyleSheet.create({
   container: {
@@ -32,17 +35,13 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: 12.5,
+    paddingTop: 10,
     paddingLeft: 17.5,
   },
   avatar: {
-    height: 25,
-    width: 25,
-    borderRadius: 15,
-  },
-  avatarText: {
-    marginLeft: 10,
-    fontSize: 12,
+    height: 30,
+    width: 50,
+    borderRadius: 5,
   },
   interactionContainer: {
     flex: 1,
@@ -52,20 +51,25 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
     paddingRight: 15,
     paddingTop: 10,
   },
+  ellipsesContainer: {
+    alignItems: 'center',
+    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    height: '100%',
+  },
 });
 
 type IProps = {
   postData: PostType;
+  orgId: string;
   color?: string;
-  author?: string;
-  avatar?: {
-    uri: string;
-  };
 };
 
-const PostFeedBottomHeader: FC<IProps> = ({
-  postData, color, avatar, author,
-}: IProps) => {
+const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
+  const [orgData, setOrgData] = useState<OrganizationInfoType | undefined>(undefined);
+  const [orgLogoURI, setOrgLogoURI] = useState('');
+
   const navigation = useNavigation();
 
   const onEllipsesTap = (event: TapGestureHandlerStateChangeEvent) => {
@@ -74,23 +78,43 @@ const PostFeedBottomHeader: FC<IProps> = ({
     }
   };
 
+  useEffect(() => {
+    let complete = false;
+    if (!complete) {
+      api.Organization.GetByID(orgId).then((orgInfo) => {
+        setOrgData(orgInfo);
+        if (orgInfo.logo.blurhash) {
+          const blurHashServicer = BlurHashService.BlurHashDecoder(orgInfo.logo.blurhash);
+          setOrgLogoURI(blurHashServicer.getURI());
+        }
+        api.S3.getMedia(orgInfo.logo.key).then((dataURI) => {
+          setOrgLogoURI(dataURI);
+        }).catch((err: APIErrorType) => {
+          Alert.alert(err.error);
+        });
+      }).catch((err: APIErrorType) => {
+        Alert.alert(err.error);
+      });
+    }
+    return function cleanup() {
+      complete = true;
+    };
+  }, []);
+
   return (
     <View style={[PostFeedBottomHeaderStyles.container, { backgroundColor: color }]}>
       <View style={PostFeedBottomHeaderStyles.avatarContainer}>
         <Avatar
-          source={avatar}
+          source={orgLogoURI ? { uri: orgLogoURI } : undefined}
           rounded
           containerStyle={PostFeedBottomHeaderStyles.avatar}
           onPress={() => Alert.alert('Avatar pressed.')}
-          activeOpacity={0.5}
+          activeOpacity={1}
         />
-        <Text style={PostFeedBottomHeaderStyles.avatarText}>
-          {author}
-        </Text>
       </View>
       <View style={{ paddingTop: 10 }}>
         <TapGestureHandler onHandlerStateChange={onEllipsesTap}>
-          <View style={{ alignItems: 'center', paddingTop: 11 }}>
+          <View style={PostFeedBottomHeaderStyles.ellipsesContainer}>
             <Image source={icons.more.more} style={{ opacity: 0.25 }} />
           </View>
         </TapGestureHandler>
@@ -103,10 +127,8 @@ const PostFeedBottomHeader: FC<IProps> = ({
   );
 };
 
-PostFeedBottomHeader.defaultProps = {
+PostFooter.defaultProps = {
   color: '#fff',
-  author: '',
-  avatar: undefined,
 };
 
-export default PostFeedBottomHeader;
+export default PostFooter;

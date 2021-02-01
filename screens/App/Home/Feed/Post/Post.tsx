@@ -14,13 +14,14 @@ import api, { APIErrorType } from 'api/api';
 import { State, TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 
 import TapElement from 'common/components/TapElement';
-import BottomHeader from 'screens/App/Home/Feed/Post/PostBottomHeader';
+import Footer from 'screens/App/Home/Feed/Post/PostFooter';
 import PostFront from 'screens/App/Home/Feed/Post/PostFront';
 import PostBack from 'screens/App/Home/Feed/Post/PostBack';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { flipAnimation } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
+import { OrganizationInfoType } from 'api/organization';
 
 type IProps = {
   id: string;
@@ -37,7 +38,8 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
     api.Post.GetByID(id).then((postInfo) => {
       if (!complete) {
         if (postInfo.content.media.blurhash) {
-          setHeroImageURI(BlurHashService.BlurHashDecoder(postInfo.content.media.blurhash).getURI());
+          const blurHashServicer = BlurHashService.BlurHashDecoder(postInfo.content.media.blurhash);
+          setHeroImageURI(blurHashServicer.getURI());
         }
         setPostData(postInfo);
         api.S3.getMedia(postInfo.content.media.key).then((dataURI) => {
@@ -45,11 +47,6 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
         }).catch((err: APIErrorType) => {
           Alert.alert(err.error);
         });
-        // api.Organization.GetByID(postInfo.content.organization).then((orgData) => {
-        //   orgData
-        // }).catch((err: APIErrorType) => {
-        //   Alert.alert(err.error);
-        // });
       }
     }).catch((err: APIErrorType) => {
       Alert.alert(err.error);
@@ -76,8 +73,6 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
     }
   };
 
-  const author = 'Author to be added';
-  const authorAvatar = 'Author avatar to be added';
   return (
     <LoadingView style={{ height: 500 }} isLoaded={Boolean(postData)}>
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -88,7 +83,7 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
           </View>
         </TapElement>
       </View>
-      <BottomHeader postData={postData as PostType} color="#fff" author={author} />
+      <Footer postData={postData as PostType} orgId={postData?.content.organization || ''} />
     </LoadingView>
   );
 };

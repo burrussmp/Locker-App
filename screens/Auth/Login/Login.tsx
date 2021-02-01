@@ -69,8 +69,8 @@ const LoginScreen: FC<IProps> = ({ Login }: IProps) => {
   const handleAutoFill = () => {
     setLoading(true);
     api.Auth.Login(DefaultUser.login, DefaultUser.password).then(async (session: Session) => {
-      await Login(session);
       setLoading(false);
+      await Login(session);
     }).catch((err: APIErrorType) => {
       setLoading(false);
       Alert.alert(err.error);

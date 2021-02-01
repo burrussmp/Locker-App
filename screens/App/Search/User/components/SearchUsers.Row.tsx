@@ -44,7 +44,8 @@ const SearchRow: FC<IProps> = ({ userSearchResult }: IProps) => {
   const navigation = useNavigation();
   const [source, setSource] = useState(DefaultAvatar as ImageSourcePropType);
   useEffect(() => {
-    (() => {
+    let complete = false;
+    if (!complete) {
       if (userSearchResult.data.profile_photo && userSearchResult.data.profile_photo.blurhash) {
         const BlurHashDecoder = BlurHashService.BlurHashDecoder(userSearchResult.data.profile_photo.blurhash);
         setSource({ uri: BlurHashDecoder.getURI() });
@@ -56,7 +57,10 @@ const SearchRow: FC<IProps> = ({ userSearchResult }: IProps) => {
         });
       }
       setSource(DefaultAvatar);
-    })();
+    }
+    return function cleanup() {
+      complete = true;
+    };
   }, []);
   const subtitleText = `${userSearchResult.data.first_name || ''} ${userSearchResult.data.last_name || ''}`;
   return (

@@ -41,10 +41,7 @@ const FeedNavigator: FC = () => {
   return (
     <SafeArea>
       <View style={{ flex: 1 }}>
-        <FeedTopTab.Navigator
-          tabBar={FeedTopBar}
-          tabBarOptions={TabBarOptions}
-        >
+        <FeedTopTab.Navigator tabBar={FeedTopBar} tabBarOptions={TabBarOptions}>
           <FeedTopTab.Screen name="Following" component={FeedContainer} />
           <FeedTopTab.Screen name="For You" component={FeedContainer} />
         </FeedTopTab.Navigator>

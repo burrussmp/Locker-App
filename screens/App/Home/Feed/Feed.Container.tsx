@@ -18,13 +18,13 @@ const FeedContainer: FC = () => {
 
   useEffect(() => {
     let complete = false;
-    api.Post.GetAll().then((data) => {
-      if (!complete) {
+    if (!complete) {
+      api.Post.GetAll().then((data) => {
         setFeedData(data);
-      }
-    }).catch((err: APIErrorType) => {
-      Alert.alert(err.error);
-    });
+      }).catch((err: APIErrorType) => {
+        Alert.alert(err.error);
+      });
+    }
     return function cleanup() {
       complete = true;
     };

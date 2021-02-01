@@ -16,22 +16,9 @@ import { HomeParamList } from 'types/navigation/home.navigation.types';
 const Home: FC = () => {
   const HomeNavigator = createStackNavigator<HomeParamList>();
   return (
-    <HomeNavigator.Navigator headerMode="screen">
-      <HomeNavigator.Screen
-        name="Feed"
-        component={FeedNavigation}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <HomeNavigator.Screen
-        name="PostDetails"
-        component={PostDetails}
-        options={{
-          headerShown: false,
-          headerTransparent: true,
-        }}
-      />
+    <HomeNavigator.Navigator initialRouteName="Feed" headerMode="none">
+      <HomeNavigator.Screen name="Feed" component={FeedNavigation} />
+      <HomeNavigator.Screen name="PostDetails" component={PostDetails} />
     </HomeNavigator.Navigator>
   );
 };

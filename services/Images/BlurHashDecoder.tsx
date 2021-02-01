@@ -120,7 +120,7 @@ const pixelArrayToURI = (
 };
 
 type BlurHashDecoderType = {
-  getTabColor: (percentageFromBottom?: number) => Array<number>;
+  getTabColor: (percentageFromBottom?: number) => string;
   getURI: () => string;
 }
 
@@ -133,10 +133,11 @@ const BlurHashDecoder = (blurHash: string): BlurHashDecoderType => {
   const width = 16;
   const pixelArray = decodeBlurHash(blurHash, width, height);
   return {
-    getTabColor: (percentageFromBottom?: number): Array<number> => {
+    getTabColor: (percentageFromBottom?: number): string=> {
       const mPercentageFromBottom = percentageFromBottom || 10;
       const startHeight = ~~(height - height * (mPercentageFromBottom / 100.0));
-      return getAveragePixels(pixelArray, 0, startHeight, width, height, 4);
+      const RGB = getAveragePixels(pixelArray, 0, startHeight, width, height, 4);
+      return `rbg(${RGB[0]}, ${RGB[1]}, ${RGB[2]})`;
     },
     getURI: (): string => pixelArrayToURI(pixelArray, width, height),
   };

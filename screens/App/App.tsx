@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import icons from 'icons/icons';
 
 import CartScreen from 'screens/App/Cart/Cart';
-import HomeScreen from 'screens/App/Home/Feed/Feed.Navigation';
+import HomeScreen from 'screens/App/Home/Home';
 import LockerScreen from 'screens/App/Locker/Locker';
 import SavingsScreen from 'screens/App/Savings/Savings';
 import SearchScreen from 'screens/App/Search/Search';
