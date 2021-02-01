@@ -1,56 +1,32 @@
 /**
- * @author Paul H. Sullivan
- * @date Sep 2020
- * @desc Authorization Screen
+ * @author Matthew P. Burruss
+ * @date Aug 2020
+ * @desc Stack navigation for authorization (login, registration, reset password, etc.)
  */
 
 import React, { FC } from 'react';
-import {
-  ImageBackground, Image, View, ImageSourcePropType,
-} from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import SafeArea from 'common/components/SafeArea';
-import AuthButton from 'screens/Auth/components/Basic.Button';
-import styles from 'styles/styles';
+import { createStackNavigator } from '@react-navigation/stack';
+import Landing from 'screens/Auth/Landing';
+import Login from 'screens/Auth/Login';
+import Register from 'screens/Auth/Register';
+import ForgotPasswordScreen from 'screens/Auth/ForgotPassword';
+import ResetPassword from 'screens/Auth/ResetPassword';
 
-import backgroundImage from 'assets/images/splash.png';
-import logoTextImage from 'assets/images/logo_text.png';
-import logoImage from 'assets/images/logo.png';
+import { AuthParamList } from 'types/navigation/auth.navigation.types';
 
-interface IProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  navigation: StackNavigationProp<any, any>
-}
+const AuthStack = createStackNavigator<AuthParamList>();
 
-const AuthScreen: FC<IProps> = ({ navigation }: IProps) => (
-  <SafeArea>
-    <View style={styles.container}>
-      <ImageBackground
-        source={backgroundImage as ImageSourcePropType}
-        style={styles.authBackgroundImage}
-      >
-        <View style={styles.centered}>
-          <Image source={logoTextImage as ImageSourcePropType} style={styles.logoText} />
-          <Image source={logoImage as ImageSourcePropType} />
-        </View>
-        <View style={styles.AuthButtonContainer}>
-          <AuthButton
-            text="Get Started"
-            onPress={() => {
-              navigation.navigate('Register');
-            }}
-          />
-          <AuthButton
-            text="Login"
-            mode="blurred"
-            onPress={() => {
-              navigation.navigate('Login');
-            }}
-          />
-        </View>
-      </ImageBackground>
-    </View>
-  </SafeArea>
+const AuthNavigation: FC = () => (
+  <AuthStack.Navigator headerMode="none" initialRouteName="Landing" mode="modal">
+    <AuthStack.Screen name="Landing" component={Landing} />
+    <AuthStack.Screen name="Login" component={Login} />
+    <AuthStack.Screen
+      name="ForgotPassword"
+      component={ForgotPasswordScreen}
+    />
+    <AuthStack.Screen name="ResetPassword" component={ResetPassword} />
+    <AuthStack.Screen name="Register" component={Register} />
+  </AuthStack.Navigator>
 );
 
-export default AuthScreen;
+export default AuthNavigation;

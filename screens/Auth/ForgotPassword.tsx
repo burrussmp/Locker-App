@@ -24,7 +24,7 @@ import AuthStyles from 'styles/Auth/Auth.Styles';
 import SafeArea from 'common/components/SafeArea';
 import LoadingAll from 'common/components/LoadingAll';
 
-import { ForgotPasswordProp } from 'types/Navigation/auth.navigation.types';
+import { ForgotPasswordProp } from 'types/navigation/auth.navigation.types';
 
 import logoImage from 'assets/images/logo.png';
 

@@ -4,14 +4,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import icons from 'icons/icons';
 
 import CartScreen from 'screens/App/Cart/Cart';
-import HomeScreen from 'screens/App/Home/Home';
+import HomeScreen from 'screens/App/Home/Feed/Feed.Navigation';
 import LockerScreen from 'screens/App/Locker/Locker';
 import SavingsScreen from 'screens/App/Savings/Savings';
 import SearchScreen from 'screens/App/Search/Search';
 
-import MainTabBar from 'navigation/components/MainTabBar';
+import AppBottomTabBar from 'screens/App/App.BottomTabBar';
 
-import { AppParamList } from 'types/Navigation/app.navigation.types';
+import { AppParamList } from 'types/navigation/app.navigation.types';
 
 const AppNavigation: FC = () => {
   const BottomTab = createBottomTabNavigator<AppParamList>();
@@ -24,7 +24,7 @@ const AppNavigation: FC = () => {
     >
       <BottomTab.Navigator
         initialRouteName="Search"
-        tabBar={MainTabBar}
+        tabBar={AppBottomTabBar}
         tabBarOptions={{
           activeTintColor: '#000000',
           inactiveTintColor: '#000000',

@@ -13,7 +13,6 @@ module.exports = function (api) {
           alias: {
             screens: './screens',
             components: './components',
-            navigation: './navigation',
             store: './store',
             api: './api',
             styles: './styles',

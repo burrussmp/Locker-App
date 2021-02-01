@@ -17,7 +17,6 @@
     "paths": {
       "components/*": ["components/*"],
       "screens/*": ["screens/*"],
-      "navigation/*": ["navigation/*"],
       "store/*": ["store/*"],
       "api/*" : ["api/*"],
       "styles/*" : ["styles/*"],

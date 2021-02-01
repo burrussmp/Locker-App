@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import SplashScreen from 'screens/App/Splash';
 import * as Font from 'expo-font';
 import store from 'store/index';
-import AppContainer from 'navigation/index';
+import AppContainer from 'screens/index';
 
 // import fonts
 import CircularBlack from 'assets/fonts/CircularStd-Black.otf';

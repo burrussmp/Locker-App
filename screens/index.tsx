@@ -10,9 +10,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import AuthNavigation from 'navigation/AuthNavigation';
-import AppNavigation from 'navigation/AppNavigation';
+
+import Auth from 'screens/Auth/Auth';
+import App from 'screens/App/App';
 import WelcomeScreen from 'screens/Auth/Welcome';
+
 import AuthSelectors from 'store/selectors/auth.selectors';
 import Splash from 'screens/App/Splash';
 import api from 'api/api';
@@ -56,9 +58,9 @@ const Navigation = ({ authState, Login }: IProps) => {
   ) : (
     <NavigationContainer>
       {AuthSelectors.isLoggedIn(authState) ? (
-        <AppNavigation />
+        <App />
       ) : (
-        <AuthNavigation />
+        <Auth />
       )}
     </NavigationContainer>
   );

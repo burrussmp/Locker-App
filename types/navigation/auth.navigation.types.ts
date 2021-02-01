@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 export type AuthParamList = {
-  Auth: undefined;
+  Landing: undefined;
   Login: {
     login?: string;
   };

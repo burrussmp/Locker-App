@@ -6,7 +6,7 @@
 
 import React, { FC } from 'react';
 import { Text, View } from 'react-native';
-import { PostDetailsProp } from 'types/Navigation/home.navigation.types';
+import { PostDetailsProp } from 'types/navigation/home.navigation.types';
 
 type IProps = PostDetailsProp
 

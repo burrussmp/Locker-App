@@ -14,7 +14,7 @@ import api, { APIErrorType } from 'api/api';
 import AuthActions from 'store/actions/auth.actions';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import { RootAction } from 'store/index';
-import { LockerProp } from 'types/Navigation/app.navigation.types';
+import { LockerProp } from 'types/navigation/app.navigation.types';
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   Logout: () => {

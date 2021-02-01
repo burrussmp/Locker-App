@@ -10,7 +10,7 @@ import { BlurView } from 'expo-blur';
 
 type IProps = BottomTabBarProps<BottomTabBarOptions>;
 
-const MainTabBar: FC<IProps> = ({ state, descriptors, navigation }: IProps) => (
+const AppBottomTabBar: FC<IProps> = ({ state, descriptors, navigation }: IProps) => (
   <BlurView
     style={{
       position: 'absolute',
@@ -25,4 +25,4 @@ const MainTabBar: FC<IProps> = ({ state, descriptors, navigation }: IProps) => (
   </BlurView>
 );
 
-export default MainTabBar;
+export default AppBottomTabBar;

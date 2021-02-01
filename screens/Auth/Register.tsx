@@ -32,7 +32,7 @@ import AuthStyles from 'styles/Auth/Auth.Styles';
 
 import { RootAction } from 'store/index';
 
-import { RegisterProp } from 'types/Navigation/auth.navigation.types';
+import { RegisterProp } from 'types/navigation/auth.navigation.types';
 
 import logoImage from 'assets/images/logo.png';
 

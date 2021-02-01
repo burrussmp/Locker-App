@@ -25,7 +25,7 @@ import LinkText from 'screens/Auth/components/LinkText';
 import api, { APIErrorType } from 'api/api';
 import AuthStyles from 'styles/Auth/Auth.Styles';
 
-import { ResetPasswordProp } from 'types/Navigation/auth.navigation.types';
+import { ResetPasswordProp } from 'types/navigation/auth.navigation.types';
 
 import logoImage from 'assets/images/logo.png';
 

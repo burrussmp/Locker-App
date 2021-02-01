@@ -8,11 +8,11 @@ import React, { FC } from 'react';
 import { View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import TopTabBar from 'navigation/components/TopTabBar';
+import FeedTopBar from 'screens/App/Home/Feed/Feed.TopBar';
 import FeedContainer from 'screens/App/Home/Feed/Feed.Container';
 import SafeArea from 'common/components/SafeArea';
 
-import { FeedParamList } from 'types/Navigation/feed.navigation.types';
+import { FeedParamList } from 'types/navigation/feed.navigation.types';
 
 const TabBarOptions = {
   activeTintColor: '#0c0b0b',
@@ -42,7 +42,7 @@ const FeedNavigator: FC = () => {
     <SafeArea>
       <View style={{ flex: 1 }}>
         <FeedTopTab.Navigator
-          tabBar={TopTabBar}
+          tabBar={FeedTopBar}
           tabBarOptions={TabBarOptions}
         >
           <FeedTopTab.Screen name="Following" component={FeedContainer} />
