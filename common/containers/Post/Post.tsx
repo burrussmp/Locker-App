@@ -41,6 +41,11 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
         }).catch((err: APIErrorType) => {
           Alert.alert(err.error);
         });
+        // api.Organization.GetByID(postInfo.content.organization).then((orgData) => {
+        //   orgData
+        // }).catch((err: APIErrorType) => {
+        //   Alert.alert(err.error);
+        // });
       }
     }).catch((err: APIErrorType) => {
       Alert.alert(err.error);

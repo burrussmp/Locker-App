@@ -14,8 +14,8 @@ import { Avatar } from 'react-native-elements';
 import { State, TapGestureHandler, TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-import LikeButton from 'components/Post/Post.LikeButton';
-import LockButton from 'components/Post/Post.LockButton';
+import LikeButton from 'common/components/buttons/LikeButton';
+import LockButton from 'common/components/buttons/LockButton';
 import icons from 'icons/icons';
 
 type IProps = {
