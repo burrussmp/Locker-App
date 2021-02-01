@@ -14,11 +14,17 @@ const PostFrontStyles = StyleSheet.create({
   container: {
     flex: 1,
     backfaceVisibility: 'hidden',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    borderColor: '#ccc',
+    elevation: 10,
   },
   heroImage: {
     flex: 1,
     width: '100%',
     resizeMode: 'cover',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
   },
 });
 

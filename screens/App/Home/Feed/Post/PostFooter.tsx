@@ -29,8 +29,15 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     alignContent: 'center',
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    borderWidth: 0.25,
+    borderColor: '#ccc',
+    shadowColor: '#000',
+    shadowRadius: 20,
+    elevation: 10,
   },
-  avatarContainer: {
+  companyContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -38,10 +45,20 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 17.5,
   },
-  avatar: {
+  avatarImage: {
+    resizeMode: 'cover',
+  },
+  avatarContainer: {
+    borderColor: '#777',
+    borderWidth: 1,
     height: 30,
-    width: 50,
-    borderRadius: 5,
+    width: 30,
+    borderRadius: 30,
+  },
+  avatarText: {
+    paddingLeft: 12,
+    fontSize: 16,
+    fontWeight: '400',
   },
   interactionContainer: {
     flex: 1,
@@ -103,14 +120,16 @@ const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
 
   return (
     <View style={[PostFeedBottomHeaderStyles.container, { backgroundColor: color }]}>
-      <View style={PostFeedBottomHeaderStyles.avatarContainer}>
+      <View style={PostFeedBottomHeaderStyles.companyContainer}>
         <Avatar
           source={orgLogoURI ? { uri: orgLogoURI } : undefined}
           rounded
-          containerStyle={PostFeedBottomHeaderStyles.avatar}
+          avatarStyle={PostFeedBottomHeaderStyles.avatarImage}
+          containerStyle={PostFeedBottomHeaderStyles.avatarContainer}
           onPress={() => Alert.alert('Avatar pressed.')}
           activeOpacity={1}
         />
+        <Text style={PostFeedBottomHeaderStyles.avatarText}>{orgData?.name || ''}</Text>
       </View>
       <View style={{ paddingTop: 10 }}>
         <TapGestureHandler onHandlerStateChange={onEllipsesTap}>

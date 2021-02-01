@@ -21,7 +21,6 @@ import PostBack from 'screens/App/Home/Feed/Post/PostBack';
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { flipAnimation } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
-import { OrganizationInfoType } from 'api/organization';
 
 type IProps = {
   id: string;
@@ -33,6 +32,8 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
   const [postData, setPostData] = useState<PostType | undefined>(undefined);
   const [heroImageURI, setHeroImageURI] = useState('');
 
+  const [footerColor, setFooterColor] = useState('#fff');
+
   useEffect(() => {
     let complete = false;
     api.Post.GetByID(id).then((postInfo) => {
@@ -40,6 +41,7 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
         if (postInfo.content.media.blurhash) {
           const blurHashServicer = BlurHashService.BlurHashDecoder(postInfo.content.media.blurhash);
           setHeroImageURI(blurHashServicer.getURI());
+          setFooterColor(blurHashServicer.getTabColor(60));
         }
         setPostData(postInfo);
         api.S3.getMedia(postInfo.content.media.key).then((dataURI) => {
@@ -75,7 +77,7 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
 
   return (
     <LoadingView style={{ height: 500 }} isLoaded={Boolean(postData)}>
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ flex: 1 }}>
         <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
           <View style={{ flex: 1 }}>
             <PostFront heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />
@@ -83,7 +85,7 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
           </View>
         </TapElement>
       </View>
-      <Footer postData={postData as PostType} orgId={postData?.content.organization || ''} />
+      <Footer color={footerColor} postData={postData as PostType} orgId={postData?.content.organization || ''} />
     </LoadingView>
   );
 };

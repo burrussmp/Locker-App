@@ -10,7 +10,9 @@ import {
 
 type IProps = {
   url: string;
-  style: TextStyle;
+  style?: TextStyle;
+  text?: string;
+
 };
 
 const LinkTextStyle = StyleSheet.create({
@@ -21,7 +23,7 @@ const LinkTextStyle = StyleSheet.create({
   },
 });
 
-const LinkText: FC<IProps> = ({ url, style }: IProps) => {
+const LinkText: FC<IProps> = ({ url, text, style }: IProps) => {
   const handlePress = async () => {
     const supported = await Linking.canOpenURL(url);
     if (supported) {
@@ -32,8 +34,13 @@ const LinkText: FC<IProps> = ({ url, style }: IProps) => {
   };
 
   return (
-    <Text style={[LinkTextStyle.defaultTextLinkStyle, style]} onPress={handlePress}>{url}</Text>
+    <Text style={[LinkTextStyle.defaultTextLinkStyle, style]} onPress={handlePress}>{text || url}</Text>
   );
+};
+
+LinkText.defaultProps = {
+  text: undefined,
+  style: {},
 };
 
 export default LinkText;

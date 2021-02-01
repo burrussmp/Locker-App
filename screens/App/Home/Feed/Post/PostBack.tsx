@@ -4,17 +4,22 @@
  * @desc Back of a post.
  */
 
-import React, { FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import {
-  Animated, StyleSheet, Text, View,
+  Alert, Animated, StyleSheet, Text, View,
 } from 'react-native';
 
-import { Avatar, Divider, Linking } from 'react-native-elements';
+import { Avatar, Divider } from 'react-native-elements';
+import GridImageView from 'react-native-grid-image-viewer';
 
 import LinkText from 'common/components/text/LinkText';
 
 import { flipAnimationTransform } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
+
+import BlurHashService from 'services/Images/BlurHashDecoder';
+
+import api, { APIErrorType } from 'api/api';
 
 const PostBackStyles = StyleSheet.create({
   container: {
@@ -23,12 +28,19 @@ const PostBackStyles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#FFFFFF',
     backfaceVisibility: 'hidden',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    borderWidth: 0.25,
+    borderColor: '#ccc',
+    elevation: 5,
   },
   topRowContainer: {
     height: 150,
     width: '100%',
     paddingTop: 25,
     paddingLeft: 25,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
@@ -40,12 +52,16 @@ const PostBackStyles = StyleSheet.create({
     fontWeight: '700',
   },
   priceText: {
+    fontSize: 17,
+    fontWeight: '100',
+  },
+  productText: {
     fontSize: 25,
     fontWeight: '200',
     marginTop: 5,
   },
   urlText: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '100',
   },
   smallHero: {
@@ -67,7 +83,37 @@ type IProps = {
   rotationRef: Animated.Value,
 }
 
+type additionalMediaState = {
+  key: string;
+  uri: string;
+};
+
 const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
+  const [additionalMedia, setAdditionalMedia] = useState<Array<additionalMediaState>>(
+    postData.content.additional_media.map((x) => {
+      const blurHashServicer = BlurHashService.BlurHashDecoder(x.blurhash);
+      return {
+        key: x.key,
+        uri: blurHashServicer.getURI(),
+      };
+    }),
+  );
+
+  useEffect(() => {
+    Promise.all(postData.content.additional_media.map(async (media) => {
+      const dataURI = await api.S3.getMedia(media.key);
+      return {
+        key: media.key,
+        uri: dataURI,
+      };
+    })).then((data) => {
+      setAdditionalMedia(data);
+    }).catch((err: APIErrorType & string) => {
+      Alert.alert(err.error || err);
+    });
+  }, []);
+
+  const productName = postData.content.name;
   const priceText = `$${postData.content.price}`;
   const productUrl = postData.content.url;
   const descriptionText = '';
@@ -75,10 +121,9 @@ const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
     <Animated.View style={[PostBackStyles.container, flipAnimationTransform(rotationRef, false)]}>
       <View style={PostBackStyles.topRowContainer}>
         <View style={{ flex: 0.9 }}>
-          <Text style={PostBackStyles.priceText}>
-            {priceText}
-          </Text>
-          <LinkText url={productUrl} style={PostBackStyles.urlText} />
+          <Text style={PostBackStyles.productText}>{productName}</Text>
+          <Text style={PostBackStyles.priceText}>{priceText}</Text>
+          <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
           <Text style={PostBackStyles.descriptionText} numberOfLines={5}>
             {descriptionText}
           </Text>
@@ -91,6 +136,9 @@ const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
       </View>
       <View>
         <Divider style={PostBackStyles.topRowDividerLine} />
+      </View>
+      <View style={{ flex: 1 }}>
+        <GridImageView data={additionalMedia.map((x) => ({ image: x.uri }))} />
       </View>
     </Animated.View>
   );
