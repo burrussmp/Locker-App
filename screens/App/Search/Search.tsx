@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import LockerScreen from 'screens/App/Locker/Locker';
-import SearchUsers from 'screens/App/Search/UsersList';
+import SearchUsers from 'screens/App/Search/User/UsersList';
 
 import { SearchProp } from 'types/navigation/app.navigation.types';
 

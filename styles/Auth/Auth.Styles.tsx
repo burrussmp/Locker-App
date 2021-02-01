@@ -5,7 +5,7 @@
  * @desc Styles for login page
  */
 
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const ResetPasswordStyles = StyleSheet.create({
   TopContainer: {
@@ -67,7 +67,10 @@ const ResetPasswordStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  Label: {color: '#555', fontFamily: 'CircularBlack'},
+  Label: {
+    color: '#555',
+    fontFamily: 'CircularBlack',
+  },
   CountryContainer: {
     paddingLeft: 5,
     paddingRight: 5,

@@ -5,16 +5,29 @@
  */
 
 import React, { useState, FC } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
 import api, { APIErrorType } from 'api/api';
 import { UserSearchResultsType } from 'api/search';
 
-import SearchResults from 'screens/App/Search/Results';
+import SearchResults from 'screens/App/Search/User/SearchUser.ListRows';
 import SafeArea from 'common/components/SafeArea';
 
-import SearchStyles from 'styles/Search/Search.Styles';
+const SearchStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  searchInputContainerStyle: {
+    backgroundColor: '#eee',
+  },
+  searchContainerStyle: {
+    backgroundColor: '#fff',
+  },
+  searchInputStyle: {
+    color: '#444',
+  },
+});
 
 const SearchUsers: FC = () => {
   const [search, updateSearch] = useState('');
