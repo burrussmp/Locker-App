@@ -4,15 +4,17 @@
  * @desc Authorization Screen
  */
 
-import * as React from 'react';
+import React, { FC } from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import FeedContainer from 'components/Feed.Container';
-import PostExpanded from 'components/Post/Post.Expanded';
+import FeedContainer from 'screens/App/Home/Feed/Feed.Container';
+import PostDetails from 'components/Post/Post.Expanded';
 
-const Feed = (props: any) => {
-  const FeedNavigator = createStackNavigator();
+import { FeedParamList } from 'types/Navigation/feed.navigation.types';
+
+const Feed: FC = () => {
+  const FeedNavigator = createStackNavigator<FeedParamList>();
   return (
     <FeedNavigator.Navigator headerMode="screen">
       <FeedNavigator.Screen
@@ -23,8 +25,8 @@ const Feed = (props: any) => {
         }}
       />
       <FeedNavigator.Screen
-        name="PostExpanded"
-        component={PostExpanded}
+        name="PostDetails"
+        component={PostDetails}
         options={{
           headerTransparent: true,
         }}

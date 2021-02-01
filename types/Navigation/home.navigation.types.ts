@@ -8,7 +8,7 @@ import { RouteProp } from '@react-navigation/native';
 
 export type HomeParamList = {
   Following: undefined;
-  ForYou: undefined;
+  'For You' : undefined;
 };
 
 export type FollowingProp = {
@@ -17,6 +17,6 @@ export type FollowingProp = {
 };
 
 export type ForYouProp = {
-  navigation: StackNavigationProp<HomeParamList, 'ForYou'>;
-  route: RouteProp<HomeParamList, 'ForYou'>;
+  navigation: StackNavigationProp<HomeParamList, 'For You'>;
+  route: RouteProp<HomeParamList, 'For You'>;
 };

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import PostActions from 'store/actions/post.actions';
 
-const PostExpanded: React.FunctionComponent = (props: any) => {
+const PostDetails: React.FunctionComponent = (props: any) => {
   React.useEffect(() => {
     const unsubscribe = props.navigation.addListener('transitionEnd', () => {
       // Do something
@@ -25,4 +25,4 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(PostExpanded);
+export default connect(null, mapDispatchToProps)(PostDetails);

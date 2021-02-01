@@ -11,7 +11,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import TopTabBar from 'navigation/components/TopTabBar';
 import PostSelectors from 'store/selectors/post.selectors';
-import Feed from 'screens/App/Home/Feed';
+import FeedNavigation from 'screens/App/Home/Feed/Feed.Navigation';
 import SafeArea from 'common/components/SafeArea';
 
 import { RootState } from 'store/index';
@@ -61,8 +61,8 @@ const HomeScreen: FC<IProps> = ({ postState }: IProps) => {
           swipeEnabled={!postIsExpanded}
           tabBarOptions={TabBarOptions}
         >
-          <HomeTopTab.Screen name="Following" component={Feed} />
-          <HomeTopTab.Screen name="For You" component={Feed} />
+          <HomeTopTab.Screen name="Following" component={FeedNavigation} />
+          <HomeTopTab.Screen name="For You" component={FeedNavigation} />
         </HomeTopTab.Navigator>
       </View>
     </SafeArea>
