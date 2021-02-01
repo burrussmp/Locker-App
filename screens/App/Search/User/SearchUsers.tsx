@@ -11,7 +11,7 @@ import { SearchBar } from 'react-native-elements';
 import api, { APIErrorType } from 'api/api';
 import { UserSearchResultsType } from 'api/search';
 
-import SearchResults from 'screens/App/Search/User/SearchUser.ListRows';
+import SearchResults from 'screens/App/Search/User/SearchUsers.ListRows';
 import SafeArea from 'common/components/SafeArea';
 
 const SearchStyles = StyleSheet.create({

@@ -13,7 +13,7 @@ import {
   Alert,
   ImageSourcePropType,
 } from 'react-native';
-import React, { useState, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -68,15 +68,13 @@ const LoginScreen: FC<IProps> = ({ Login }: IProps) => {
 
   const handleAutoFill = () => {
     setLoading(true);
-    api.Auth.Login(DefaultUser.login, DefaultUser.password)
-      .then(async (session: Session) => {
-        await Login(session);
-        setLoading(false);
-      })
-      .catch((err: APIErrorType) => {
-        setLoading(false);
-        Alert.alert(err.error);
-      });
+    api.Auth.Login(DefaultUser.login, DefaultUser.password).then(async (session: Session) => {
+      await Login(session);
+      setLoading(false);
+    }).catch((err: APIErrorType) => {
+      setLoading(false);
+      Alert.alert(err.error);
+    });
   };
 
   const ForgotPasswordText = 'Forgot Password?';
