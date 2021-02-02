@@ -6,7 +6,7 @@
 
 import React, { FC } from 'react';
 import {
-  View,
+  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 interface IProps {
-  children: unknown;
+  children: FC | JSX.Element | JSX.Element[];
   containerStyle?: ViewStyle;
   keyboardAvoidView?: boolean;
 }
@@ -24,10 +24,15 @@ interface IProps {
  * @prop {boolean} keyboardAvoidView True if keyboard should avoid view False if it can cover.
  * @prop {unknown} children The children to render.
  */
-const SafeArea: FC<IProps> = ({ containerStyle, keyboardAvoidView, children }: IProps) => {
-  const SafeAreaStyle = { marginTop: StatusBar.currentHeight, flex: 1 };
+const SafeArea: FC<IProps> = ({
+  containerStyle,
+  keyboardAvoidView,
+  children,
+}: IProps) => {
+  const SafeAreaStyle = Platform.OS === 'ios' ? { flex: 0 } : { height: StatusBar.currentHeight };
   return (
-    <View style={[SafeAreaStyle, containerStyle]}>
+    <>
+      <SafeAreaView style={[SafeAreaStyle, containerStyle]} />
       {keyboardAvoidView ? (
         <KeyboardAvoidingView
           style={{ flex: 1 }}
@@ -35,12 +40,12 @@ const SafeArea: FC<IProps> = ({ containerStyle, keyboardAvoidView, children }: I
           keyboardVerticalOffset={Platform.OS === 'ios' ? -100 : 20}
           enabled={Platform.OS === 'ios'}
         >
-          {children as FC}
+          {children}
         </KeyboardAvoidingView>
       ) : (
-        children as FC
+        children
       )}
-    </View>
+    </>
   );
 };
 
