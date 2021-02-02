@@ -10,10 +10,9 @@ import {
 } from 'react-native';
 
 import { Avatar, Divider } from 'react-native-elements';
-import { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 
-import ImageView from '@hamidfzm/react-native-image-viewing';
 import ImageList from 'common/containers/ImageList';
+import ImageView from '@hamidfzm/react-native-image-viewing';
 
 import LinkText from 'common/components/text/LinkText';
 
@@ -23,6 +22,7 @@ import { PostType } from 'api/post';
 import BlurHashService from 'services/Images/BlurHashDecoder';
 
 import api, { APIErrorType } from 'api/api';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const PostBackStyles = StyleSheet.create({
   container: {
@@ -84,7 +84,6 @@ type IProps = {
   },
   postData: PostType,
   rotationRef: Animated.Value,
-  flipCard: (flipToFront: boolean) => void,
 }
 
 type additionalMediaState = {
@@ -93,7 +92,7 @@ type additionalMediaState = {
 };
 
 const PostBack: FC<IProps> = ({
-  heroImage, flipCard, postData, rotationRef,
+  heroImage, postData, rotationRef,
 }: IProps) => {
   const [additionalMedia, setAdditionalMedia] = useState<Array<additionalMediaState>>(
     postData.content.additional_media.map((x) => {
@@ -129,7 +128,7 @@ const PostBack: FC<IProps> = ({
     <Animated.View style={[PostBackStyles.container, flipAnimationTransform(rotationRef, false)]}>
       <View style={PostBackStyles.topRowContainer}>
         <View style={{ flex: 0.9 }}>
-          <Button onPress={() => flipCard(true)} title="Go back" />
+          {/* <Button onPress={() => flipCard(true)} title="Go back" /> */}
           <Text style={PostBackStyles.productText}>{productName}</Text>
           <Text style={PostBackStyles.priceText}>{priceText}</Text>
           <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
@@ -148,12 +147,11 @@ const PostBack: FC<IProps> = ({
       </View>
       <View style={{ flex: 1 }}>
         <ImageList
-          images={additionalMedia.concat(additionalMedia).map((x: additionalMediaState) => x.uri)}
+          images={additionalMedia.map((x: additionalMediaState) => x.uri)}
           onPress={(index: number) => {
             setImageIndex(index);
             setVisible(true);
           }}
-          shift={0.75}
         />
         <ImageView
           data={additionalMedia}
