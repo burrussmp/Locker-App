@@ -6,11 +6,14 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import {
-  Alert, Animated, StyleSheet, Text, View,
+  Alert, Animated, Button, StyleSheet, Text, View,
 } from 'react-native';
 
 import { Avatar, Divider } from 'react-native-elements';
-import GridImageView from 'react-native-grid-image-viewer';
+import { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
+
+import ImageView from '@hamidfzm/react-native-image-viewing';
+import ImageList from 'common/containers/ImageList';
 
 import LinkText from 'common/components/text/LinkText';
 
@@ -81,6 +84,7 @@ type IProps = {
   },
   postData: PostType,
   rotationRef: Animated.Value,
+  flipCard: (flipToFront: boolean) => void,
 }
 
 type additionalMediaState = {
@@ -88,7 +92,9 @@ type additionalMediaState = {
   uri: string;
 };
 
-const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
+const PostBack: FC<IProps> = ({
+  heroImage, flipCard, postData, rotationRef,
+}: IProps) => {
   const [additionalMedia, setAdditionalMedia] = useState<Array<additionalMediaState>>(
     postData.content.additional_media.map((x) => {
       const blurHashServicer = BlurHashService.BlurHashDecoder(x.blurhash);
@@ -98,6 +104,8 @@ const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
       };
     }),
   );
+  const [visible, setVisible] = useState(false);
+  const [currentImageIndex, setImageIndex] = useState(0);
 
   useEffect(() => {
     Promise.all(postData.content.additional_media.map(async (media) => {
@@ -121,6 +129,7 @@ const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
     <Animated.View style={[PostBackStyles.container, flipAnimationTransform(rotationRef, false)]}>
       <View style={PostBackStyles.topRowContainer}>
         <View style={{ flex: 0.9 }}>
+          <Button onPress={() => flipCard(true)} title="Go back" />
           <Text style={PostBackStyles.productText}>{productName}</Text>
           <Text style={PostBackStyles.priceText}>{priceText}</Text>
           <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
@@ -138,7 +147,22 @@ const PostBack: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
         <Divider style={PostBackStyles.topRowDividerLine} />
       </View>
       <View style={{ flex: 1 }}>
-        <GridImageView data={additionalMedia.map((x) => ({ image: x.uri }))} />
+        <ImageList
+          images={additionalMedia.concat(additionalMedia).map((x: additionalMediaState) => x.uri)}
+          onPress={(index: number) => {
+            setImageIndex(index);
+            setVisible(true);
+          }}
+          shift={0.75}
+        />
+        <ImageView
+          data={additionalMedia}
+          getImage={(data: {uri: string}) => ({ uri: data.uri })}
+          presentationStyle="overFullScreen"
+          imageIndex={currentImageIndex}
+          visible={visible}
+          onRequestClose={() => setVisible(false)}
+        />
       </View>
     </Animated.View>
   );
