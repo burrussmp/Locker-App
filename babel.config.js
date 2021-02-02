@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 module.exports = function (api) {
   api.cache(true);
   return {
@@ -11,13 +13,13 @@ module.exports = function (api) {
           alias: {
             screens: './screens',
             components: './components',
-            navigation: './navigation',
             store: './store',
             api: './api',
             styles: './styles',
             assets: './assets',
             containers: './containers',
             tests: './tests',
+            common: './common',
           },
         },
       ],

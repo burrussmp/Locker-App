@@ -1,46 +1,57 @@
-import {Session} from 'store/types/auth.types';
-import AuthActions from 'store/actions/auth.actions';
-import api from 'api/api';
-import store from 'store/index';
-
 /**
  * @author Matthew P. Burruss
  * @date Aug 2020
  * @desc Selectors are easy ways to retrieve certain information from the store
+*/
+import { Dispatch } from 'redux';
+
+import { Session, AuthState } from 'store/types/auth.types';
+import AuthActions from 'store/actions/auth.actions';
+import api from 'api/api';
+
+import store, { RootAction } from 'store/index';
+
+/**
+ * @desc Check Redux state and see if logged in.
+ * @param {AuthState} authState The redux auth state
+ * @return {boolean} True if logged in else False.
  */
+const isLoggedIn = (authState: AuthState): boolean => (
+  Boolean(authState
+    && authState.session
+    && authState.verified
+    && authState.session.access_token)
+);
 
-const isLoggedIn = (state: any): boolean => {
-  return (
-    state.auth &&
-    state.auth.session &&
-    state.auth.verified &&
-    state.auth.session.access_token
-  );
-};
-
-const Authenticate = async (dispatch: any, session: Session) => {
-  dispatch(AuthActions.SetSession(session));
+/**
+ * @desc Authenticate a user.
+ * @param dispatch
+ * @param session
+ */
+const authenticate = async (dispatch: Dispatch<RootAction>, session: Session): Promise<void> => {
+  dispatch(AuthActions.setSession(session));
   if (session) {
-    const verified = await api.Session.verifyToken(session['access_token']);
-    dispatch(AuthActions.VerifyToken(verified));
+    const verified = await api.Session.verifyToken(session.access_token);
+    dispatch(AuthActions.verifyToken(verified));
   }
 };
 
 /**
- * @desc Retrieve the my userID from redux
+ * @desc Retrieve the my userId from redux
  * @return "{
  *  "id" : user ID,
  * } if it exists otherwise throws an error
  */
-const getMyID = (): undefined | string => {
+const getMyID = (): string => {
   const state = store.getState();
   if (state.auth && state.auth.session) {
     return state.auth.session._id;
   }
+  return '';
 };
 
 export default {
   isLoggedIn,
-  Authenticate,
+  authenticate,
   getMyID,
 };

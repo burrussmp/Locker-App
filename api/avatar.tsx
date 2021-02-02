@@ -5,16 +5,17 @@
  */
 
 import utils from 'api/utils';
+import { mediaData } from 'api/S3';
 
 /**
  * @desc Get the avatar of a specific user
  * @param {string| undefined} userId The user ID of the avatar to retrieve. If this is undefined, retrieve
- * the userID from AsyncStorage.
- * @param {string | undefined} size An optional query parameter to resize the user avatar.
+ * the userId from AsyncStorage.
+ * @param {string | undefined} size An optional query parameter to resize the user avatar. Supports small, medium, large, and xlarge
  * @return {Promise<string>}
  * @success
   ```
-  let img_src = await getAvatar(userID);
+  let img_src = await getAvatar(userId);
   <img src={URL.createObjectURL(img_src)} />
   ```
  */
@@ -24,15 +25,9 @@ const Get = async (userId?: string, size?: string): Promise<string> => {
   return utils.createURI(res);
 };
 
-type media = {
-  name: string;
-  type: string;
-  uri: string;
-};
-
 /**
  * @desc Update the user's avatar.
- * @param {media} media An object with a name, type, and uri attribute (see react-native-image-picker)
+ * @param {mediaData} media An object with a name, type, and uri attribute (see react-native-image-picker)
  * @return {Promise<Record<string, string>>}
  * @success
  ```
@@ -42,7 +37,7 @@ type media = {
   ```
  */
 
-const Update = async (avatar: media): Promise<Record<string, string>> => {
+const Update = async (avatar: mediaData): Promise<Record<string, string>> => {
   const form = new FormData();
   form.append('media', avatar as unknown as Blob);
   const res = await utils.postRequest(`/api/users/${utils.getIDAndAccessToken()._id}/avatar`, form);

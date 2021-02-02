@@ -1,11 +1,40 @@
-'use strict';
+/**
+ * @author Matthew P. Burruss
+ * @date 1/30/2021
+ * @desc A configuration
+*/
 
-const config = {
-  server: 'http://localhost:3000',
-  default_user: {
+type ConfigType = {
+  server: string;
+  defaultUser: {
+    login: string;
+    password: string;
+  }
+};
+
+const devConfig: ConfigType = {
+  server: 'http://192.168.1.107:8080',
+  defaultUser: {
     login: 'paulasullivan',
     password: 'Pass@123',
   },
 };
 
-export default config;
+const testConfig: ConfigType = {
+  server: 'http://localhost:3000',
+  defaultUser: {
+    login: 'paulasullivan',
+    password: 'Pass@123',
+  },
+};
+
+const getConfig = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return devConfig;
+  } if (process.env.NODE_ENV === 'test') {
+    return testConfig;
+  }
+  throw new Error(`Invalid environment ${process.env.NODE_ENV || ''}`);
+};
+
+export default getConfig();

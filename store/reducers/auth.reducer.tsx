@@ -6,17 +6,12 @@
  */
 
 import {
-  AuthorizationActions,
+  AuthActions,
+  AuthState,
   SET_SESSION,
   LOGOUT,
   VERIFY_TOKEN,
-  Session,
 } from 'store/types/auth.types';
-
-type AuthState = {
-  session: Session;
-  verified: boolean;
-};
 
 const AuthInitialState = {
   session: {
@@ -28,7 +23,13 @@ const AuthInitialState = {
   verified: false,
 };
 
-const AuthorizationReducer = (state = AuthInitialState, action: AuthorizationActions): AuthState => {
+/**
+ * @desc A reducer for auth state and actions
+ * @param {AuthState} state The auth state.
+ * @param {AuthActions} action The dispatched action.
+ * @return {AuthState} A new state.
+ */
+const AuthReducer = (state = AuthInitialState, action: AuthActions): AuthState => {
   switch (action.type) {
     case LOGOUT:
       return AuthInitialState;
@@ -41,4 +42,4 @@ const AuthorizationReducer = (state = AuthInitialState, action: AuthorizationAct
   }
 };
 
-export default AuthorizationReducer;
+export default AuthReducer;

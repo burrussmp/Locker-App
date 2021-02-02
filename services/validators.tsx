@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/prefer-regexp-exec */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * @desc Validators
  * @author Matthew P. Burruss
@@ -7,19 +10,19 @@ import * as T from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { fold } from 'fp-ts/Either';
 
-const validateType = (decoder: T.Decoder<any, any>, value: any) => {
-  const handleError = (errors: any) => {
+const validateType: (decoder: T.Decoder<any, any>, value: any) => string = (decoder: T.Decoder<any, any>, value: any) => {
+  const handleError = (errors: T.Errors) => {
     throw new Error(JSON.stringify(errors));
-  }
+  };
   return pipe(
-      decoder.decode(value),
-      fold(
-        // failure handler
-        handleError,
-        // success handler
-        (a) => 'success'
-      )
-    )
+    decoder.decode(value),
+    fold(
+      // failure handler
+      handleError,
+      // success handler
+      () => 'success',
+    ),
+  );
 };
 
 /**
@@ -31,18 +34,17 @@ const validateType = (decoder: T.Decoder<any, any>, value: any) => {
 const isValidPassword = (password: string): string => {
   if (!password.match(/[a-z]/)) {
     return 'Must container a lowercase letter';
-  } else if (!password.match(/[A-Z]/)) {
+  } if (!password.match(/[A-Z]/)) {
     return 'Must contain an uppercase character';
-  } else if (!password.match(/[0-9]/i)) {
+  } if (!password.match(/[0-9]/i)) {
     return 'Must contain a number';
-  } else if (
+  } if (
     !password.match(
-      // eslint-disable-next-line no-useless-escape
-      /\^|\$|\*|\.|\[|\]|\{|\}|\(|\)|\?|\"|\!|\@|\#|\%|\&|\/|\\|\,|\>|\<|\'|\:|\;|\||\_|\~|\`/i
+      /\^|\$|\*|\.|\[|\]|\{|\}|\(|\)|\?|\"|\!|\@|\#|\%|\&|\/|\\|\,|\>|\<|\'|\:|\;|\||\_|\~|\`/i,
     )
   ) {
     return 'Must contain a special character';
-  } else if (password.length < 8) {
+  } if (password.length < 8) {
     return 'Must be greater than 8 characters';
   }
   return '';

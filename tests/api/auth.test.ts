@@ -50,7 +50,7 @@ describe('API Tests', () => {
       const fakeUser = helper.getFakeUser();
       const session = await api.Auth.SignUp(fakeUser.email, fakeUser.phone_number, fakeUser.username,
         fakeUser.password, fakeUser.first_name, fakeUser.last_name);
-      expect(dispatchSpy).toBeCalledWith(AuthActions.SetSession(session));
+      expect(dispatchSpy).toBeCalledWith(AuthActions.setSession(session));
     });
 
     it('SignUp - Failure (Bad password)', async () => {
@@ -92,7 +92,7 @@ describe('API Tests', () => {
     });
     it('Login - Redux authorization called to store', async () => {
       const session = await api.Auth.Login(user.email, user.password);
-      expect(dispatchSpy).toBeCalledWith(AuthActions.SetSession(session));
+      expect(dispatchSpy).toBeCalledWith(AuthActions.setSession(session));
     });
     it('Login - Wrong login info', async () => {
       try {
@@ -108,7 +108,7 @@ describe('API Tests', () => {
     });
     it('Logout - Redux store dispatch action', async () => {
       await api.Auth.Logout();
-      expect(dispatchSpy).toBeCalledWith(AuthActions.Logout());
+      expect(dispatchSpy).toBeCalledWith(AuthActions.logout());
     });
 
     it('Forgot Password - Get cognito username', async () => {

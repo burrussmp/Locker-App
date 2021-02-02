@@ -4,7 +4,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/unbound-method */
 // Import the dependencies for testing
@@ -36,7 +35,7 @@ describe('API Tests', () => {
       expect(idAndAccessToken.access_token).toBe('');
     });
     it('getIDAndAccessToken - Session set', () => {
-      store.dispatch(AuthActions.SetSession(mockSession));
+      store.dispatch(AuthActions.setSession(mockSession));
       const idAndAccessToken = utils.getIDAndAccessToken();
       expect(idAndAccessToken.access_token).toBe(mockSession.access_token);
       expect(idAndAccessToken._id).toBe(mockSession._id);
@@ -50,7 +49,7 @@ describe('API Tests', () => {
     });
 
     it('getHeaders - Sets Authorization header with access token', () => {
-      store.dispatch(AuthActions.SetSession(mockSession));
+      store.dispatch(AuthActions.setSession(mockSession));
       const headers = utils.getHeaders();
       expect(headers.Authorization).toEqual(`Bearer ${mockSession.access_token}`);
     });

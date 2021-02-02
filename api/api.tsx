@@ -10,16 +10,19 @@ import session from 'api/session';
 import user from 'api/user';
 import avatar from 'api/avatar';
 import s3 from 'api/S3';
+import organization from 'api/organization';
 import post from 'api/post';
-import productPost from 'api/product_post';
 import comments from 'api/comments';
 import replies from 'api/replies';
 import search from 'api/search';
+import collection from 'api/collection';
+import locker from 'api/locker';
+import lockerCollection from 'api/locker.collection';
 
-type PostAPIType = {
-  Basic: typeof post;
-  ProductPost: typeof productPost;
-};
+export type APIErrorType = {
+  error: string;
+  status: string;
+}
 
 type APIType = {
   Session: typeof session;
@@ -27,15 +30,14 @@ type APIType = {
   User: typeof user;
   Avatar: typeof avatar;
   S3: typeof s3;
-  Post: PostAPIType;
+  Post: typeof post;
   Comments: typeof comments;
   Replies: typeof replies;
   Search: typeof search;
-};
-
-const postAPI: PostAPIType = {
-  Basic: post,
-  ProductPost: productPost,
+  Organization: typeof organization;
+  Collection: typeof collection;
+  Locker: typeof locker;
+  LockerCollection: typeof lockerCollection;
 };
 
 const api: APIType = {
@@ -44,10 +46,14 @@ const api: APIType = {
   User: user,
   Avatar: avatar,
   S3: s3,
-  Post: postAPI,
+  Post: post,
   Comments: comments,
   Replies: replies,
   Search: search,
+  Organization: organization,
+  Collection: collection,
+  Locker: locker,
+  LockerCollection: lockerCollection,
 };
 
 export default api;

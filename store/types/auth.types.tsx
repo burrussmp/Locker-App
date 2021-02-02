@@ -17,20 +17,25 @@ export interface Session {
   [key: string]: string;
 }
 
-interface SetSession {
+export interface SetSession {
   type: typeof SET_SESSION;
   session: Session;
 }
-interface LogOutAction {
+export interface LogOutAction {
   type: typeof LOGOUT;
 }
 
-interface VerifyTokenAction {
+export interface VerifyTokenAction {
   type: typeof VERIFY_TOKEN;
   verified: boolean;
 }
 
-export type AuthorizationActions =
+export type AuthActions =
   | SetSession
   | LogOutAction
   | VerifyTokenAction;
+
+export interface AuthState {
+    session: Session;
+    verified: boolean;
+}

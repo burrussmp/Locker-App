@@ -7,29 +7,29 @@
  */
 
 import {
-  AuthorizationActions,
+  AuthActions,
   SET_SESSION,
   LOGOUT,
   VERIFY_TOKEN,
   Session,
 } from 'store/types/auth.types';
 
-const VerifyToken = (verified: boolean): AuthorizationActions => ({
+const verifyToken = (verified: boolean): AuthActions => ({
   type: VERIFY_TOKEN,
   verified,
 });
 
-const SetSession = (payload: Session): AuthorizationActions => ({
+const setSession = (payload: Session): AuthActions => ({
   type: SET_SESSION,
   session: payload,
 });
 
-const Logout = (): AuthorizationActions => ({
+const logout = (): AuthActions => ({
   type: LOGOUT,
 });
 
 export default {
-  Logout,
-  SetSession,
-  VerifyToken,
+  logout,
+  setSession,
+  verifyToken,
 };

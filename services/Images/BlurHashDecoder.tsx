@@ -1,29 +1,37 @@
-'use strict';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-import RnPng from 'react-native-png';
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable no-bitwise */
+/**
+ * @author Matthew P. Burruss
+ * @date 2/1/2021
+ * @desc A blur hash module
+ */
 import pako from 'pako';
 import base64js from 'base64-js';
-import {decode, isBlurhashValid} from 'blurhash';
+import { decode, isBlurhashValid } from 'blurhash';
 import * as ImageManipulator from 'expo-image-manipulator';
+
+import RnPng from 'react-native-png';
 
 const asyncImageResize = async (
   uri: string,
   width?: number,
-  height?: number
+  height?: number,
 ): Promise<string> => {
-  const new_size = {
-    width: width ? width : undefined,
-    height: height ? height : undefined,
+  const newSize = {
+    width: width || undefined,
+    height: height || undefined,
   };
-  const manipResult = await ImageManipulator.manipulateAsync(
+  const manipulateResult = await ImageManipulator.manipulateAsync(
     uri,
-    [{resize: new_size}],
-    {compress: 1, format: ImageManipulator.SaveFormat.PNG}
+    [{ resize: newSize }],
+    { compress: 1, format: ImageManipulator.SaveFormat.PNG },
   );
-  return manipResult.uri;
+  return manipulateResult.uri;
 };
+
 /**
  * @desc Returns the decoded blur hash
  * @param {string} blur_hash : The blur hash
@@ -31,17 +39,15 @@ const asyncImageResize = async (
  * @param {number} height : The height of the output blur image
  * @return A data buffer
  */
-const decode_blur_hash = (
-  blur_hash: string,
+const decodeBlurHash = (
+  blurHash: string,
   width: number,
-  height: number
+  height: number,
 ): Uint8ClampedArray => {
-  if (isBlurhashValid(blur_hash).result) {
-    const clamped_array = decode(blur_hash, width, height);
-    return clamped_array;
-  } else {
-    throw isBlurhashValid(blur_hash).errorReason;
+  if (isBlurhashValid(blurHash).result) {
+    return decode(blurHash, width, height);
   }
+  throw isBlurhashValid(blurHash).errorReason;
 };
 
 /**
@@ -54,34 +60,34 @@ const decode_blur_hash = (
  * @param {Number} channels : the number of channels (either 3 or 4)
  * @return a list of average rgb values e.g. [127, 212, 12]
  */
-const get_average_pixels = (
+const getAveragePixels = (
   data: Uint8ClampedArray,
   x: number,
   y: number,
   width: number,
   height: number,
-  channels: number
+  channels: number,
 ): Array<number> => {
   if (x < 0 || x > width || y < 0 || y > height) {
-    throw 'Error: x and/or y cannot be out of bounds of the image';
+    throw Error('Error: x and/or y cannot be out of bounds of the image');
   }
   if (width < 0 || height < 0) {
-    throw 'Error: Width and/or height are zero';
+    throw Error('Error: Width and/or height are zero');
   }
   if (!data || data.length === 0) {
-    throw 'Error: The byte array is undefined or empty';
+    throw Error('Error: The byte array is undefined or empty');
   }
   if (channels !== 3 && channels !== 4) {
-    throw 'Channels must be either 3 or 4';
+    throw Error('Channels must be either 3 or 4');
   }
   const rgb = [0, 0, 0];
-  let start_iter = channels * (y * width + x);
+  let startIter = channels * (y * width + x);
   let total = 0;
-  while (start_iter < data.length) {
-    rgb[0] += data[start_iter];
-    rgb[1] += data[start_iter + 1];
-    rgb[2] += data[start_iter + 2];
-    start_iter += channels;
+  while (startIter < data.length) {
+    rgb[0] += data[startIter];
+    rgb[1] += data[startIter + 1];
+    rgb[2] += data[startIter + 2];
+    startIter += channels;
     total += 1;
   }
   return [~~(rgb[0] / total), ~~(rgb[1] / total), ~~(rgb[2] / total)];
@@ -94,22 +100,18 @@ const get_average_pixels = (
  * @param {Number} height : The height of the image (must be positive)
  * @return {string} :  The data URI
  */
-const pixel_array_to_uri = (
-  pixel_array: Uint8ClampedArray,
+const pixelArrayToURI = (
+  pixelArray: Uint8ClampedArray,
   width: number,
-  height: number
+  height: number,
 ): string => {
-  const png = new RnPng({
-    width: width,
-    height: height,
-    zlibLib: pako,
-  });
-  for (let y = 0; y < height; ++y) {
-    for (let x = 0; x < width; ++x) {
+  const png = new RnPng({ width, height, zlibLib: pako });
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
       const index = 4 * (x + width * y);
-      const r = pixel_array[index];
-      const g = pixel_array[index + 1];
-      const b = pixel_array[index + 2];
+      const r = pixelArray[index];
+      const g = pixelArray[index + 1];
+      const b = pixelArray[index + 2];
       png.setPixelAt([x, y], [r, g, b]);
     }
   }
@@ -117,40 +119,27 @@ const pixel_array_to_uri = (
   return `data:image/png;base64,${base64ImageData}`;
 };
 
+type BlurHashDecoderType = {
+  getTabColor: (percentageFromBottom?: number) => string;
+  getURI: () => string;
+}
+
 /**
  * @desc Blur has module
- * @param {string} blur_hash : The blur hash string
- * @return {function} getTabColor
- * @return {function} getURI
+ * @param {string} blurHash : The blur hash string
  */
-const BlurHashDecoder = (blur_hash: string) => {
+const BlurHashDecoder = (blurHash: string): BlurHashDecoderType => {
   const height = 16;
   const width = 16;
-  const pixel_array = decode_blur_hash(blur_hash, width, height);
+  const pixelArray = decodeBlurHash(blurHash, width, height);
   return {
-    /**
-     * @desc Gets the tab color from a percentage of the bottom of the blurred image
-     * @param {number} percentage_from_bottom : Percentage from bottom of image to average
-     * @return {Array<number>} An array of rgb values representing the average color from the section of the
-     * blurred image
-     */
-    getTabColor: (percentage_from_bottom?: number): Array<number> => {
-      if (!percentage_from_bottom) {
-        percentage_from_bottom = 10;
-      }
-      const start_height = ~~(
-        height -
-        height * (percentage_from_bottom / 100.0)
-      );
-      return get_average_pixels(pixel_array, 0, start_height, width, height, 4);
+    getTabColor: (percentageFromBottom?: number): string => {
+      const mPercentageFromBottom = percentageFromBottom || 10;
+      const startHeight = ~~(height - height * (mPercentageFromBottom / 100.0));
+      const RGB = getAveragePixels(pixelArray, 0, startHeight, width, height, 4);
+      return `rgb(${RGB[0]}, ${RGB[1]}, ${RGB[2]})`;
     },
-    /**
-     * @desc Converts the pixel array to a URI
-     * @return {string} The data URI of the blurred hash image
-     */
-    getURI: (): string => {
-      return pixel_array_to_uri(pixel_array, width, height);
-    },
+    getURI: (): string => pixelArrayToURI(pixelArray, width, height),
   };
 };
 export default {

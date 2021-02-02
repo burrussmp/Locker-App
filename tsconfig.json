@@ -13,16 +13,17 @@
     "target": "es6",
     "rootDir": "./",
     "sourceMap": true,
+    "typeRoots" : ["node_modules/@types", "types/"],
     "paths": {
       "components/*": ["components/*"],
       "screens/*": ["screens/*"],
-      "navigation/*": ["navigation/*"],
       "store/*": ["store/*"],
       "api/*" : ["api/*"],
       "styles/*" : ["styles/*"],
       "assets/*" : ["assets/*"],
       "container/*" : ["containers/*"],
-      "tests/*": ["tests/*"]
+      "tests/*": ["tests/*"],
+      "common/*": ["common/*"]
     }
   }
 }

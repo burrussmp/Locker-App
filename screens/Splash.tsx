@@ -1,27 +1,14 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/**
+ * @author Matthew P. Burruss
+ * @date 1/27/2021
+ * @desc A simple splash screen
+*/
+import React, { FC } from 'react';
+import { ImageBackground, ImageSourcePropType } from 'react-native';
+import backgroundImage from 'assets/images/splash.png';
 
-'use strict';
-
-import React from 'react';
-import {ImageBackground, View, Image} from 'react-native';
-// import Loading from 'components/Common/LoadingAll';
-const backgroundImage = require('assets/images/splash.png');
-// const logoImage = require('assets/images/logo.png');
-const Splash = () => {
-  return (
-    <ImageBackground source={backgroundImage} style={{flex: 1}}>
-      {/* <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Image source={logoImage} />
-      </View> */}
-      {/* <Loading /> */}
-    </ImageBackground>
-  );
-};
+const Splash: FC = () => (
+  <ImageBackground source={backgroundImage as ImageSourcePropType} style={{ flex: 1 }} />
+);
 
 export default Splash;

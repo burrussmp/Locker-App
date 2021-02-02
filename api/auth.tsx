@@ -3,13 +3,14 @@
  * @author Matthew P. Burruss
  * @date 12/24/2020
  */
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiSession from 'api/session';
 import utils from 'api/utils';
 
 import AuthActions from 'store/actions/auth.actions';
 import store from 'store/index';
 import { Session } from 'store/types/auth.types';
+import { ASYNC_STORAGE_LOCKER_ID_KEY } from 'api/locker';
 
 /**
  * @desc User Login API
@@ -31,7 +32,7 @@ const Login = async (login: string, password: string): Promise<Session> => {
   const res = await utils.postRequest('/auth/login', { login, password });
   const session = await res.json() as Session;
   await apiSession.setSession(session);
-  store.dispatch(AuthActions.SetSession(session));
+  store.dispatch(AuthActions.setSession(session));
   return session;
 };
 
@@ -48,8 +49,9 @@ const Login = async (login: string, password: string): Promise<Session> => {
  */
 const Logout = async (): Promise<{message: string}> => {
   await apiSession.setSession();
-  store.dispatch(AuthActions.Logout());
+  store.dispatch(AuthActions.logout());
   const res = await utils.getRequest('/auth/logout');
+  await AsyncStorage.setItem(ASYNC_STORAGE_LOCKER_ID_KEY, '');
   return await res.json() as {message: string};
 };
 
@@ -86,7 +88,7 @@ const SignUp = async (email: string, phoneNumber: string, username: string, pass
   });
   const session = await res.json() as Session;
   await apiSession.setSession(session);
-  store.dispatch(AuthActions.SetSession(session));
+  store.dispatch(AuthActions.setSession(session));
   return session;
 };
 

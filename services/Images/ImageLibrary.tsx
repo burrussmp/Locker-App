@@ -1,14 +1,12 @@
-'use strict';
+/**
+ * @author Matthew P. Burruss
+ * @date 2/1/2021
+ * @desc Image library services
+ */
 
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-
-type media = {
-  name: string;
-  type: string;
-  uri: string;
-};
 
 /**
  * @desc Ensures that the user has permission to select from this library and alerts the user if they have permission
@@ -23,16 +21,13 @@ type media = {
  */
 const getImageLibraryPermissions = async (): Promise<boolean> => {
   if (Platform.OS !== 'web') {
-    const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status !== 'granted') {
       global.alert('Sorry, we need camera roll permissions to make this work!');
-      return false;
-    } else {
-      return true;
     }
-  } else {
-    return false;
+    return status === 'granted';
   }
+  return false;
 };
 
 /**
@@ -47,27 +42,29 @@ const getImageLibraryPermissions = async (): Promise<boolean> => {
   }
  ```
  */
-const pickImageFromLibrary = async (): Promise<media> => {
+const pickImageFromLibrary = async (): Promise<{
+  name: string;
+  type: string;
+  uri: string;
+}> => {
   const allowed = await getImageLibraryPermissions();
   if (!allowed) {
-    throw 'User has not permitted access to image library';
+    throw Error('User has not permitted access to image library');
   }
   const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
     allowsEditing: true,
     aspect: [4, 3],
     quality: 1,
   });
   if (!result.cancelled) {
-    const media = {
+    return {
       name: 'profile_photo',
       type: 'image/png',
       uri: result.uri,
     };
-    return media;
-  } else {
-    throw 'User cancelled the action';
   }
+  throw Error('User cancelled the action');
 };
 
 export default {
