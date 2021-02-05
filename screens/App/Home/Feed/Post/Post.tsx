@@ -102,20 +102,27 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
 
   return (
     <LoadingView style={{ height: 500 }} isLoaded={Boolean(postData)}>
-      <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
-        <View style={{ flex: 1 }}>
-          {!isBack && <PostFront heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />}
-        </View>
-      </TapElement>
-      {showAnimation && <AnimatedLike onComplete={() => setShowAnimation(false)} />}
-      {isBack && (
-        <PostBack
-          flipFront={() => setIsBack(false)}
-          heroImage={{ uri: heroImageURI }}
-          postData={postData as PostType}
-          rotationRef={rotationDegreesRef}
-        />
-      )}
+
+      {!isBack
+        ? (
+          <>
+            <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
+              <View style={{ flex: 1 }}>
+                <PostFront heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />
+              </View>
+            </TapElement>
+            {showAnimation && <AnimatedLike onComplete={() => setShowAnimation(false)} />}
+          </>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <PostBack
+              flipFront={() => setIsBack(false)}
+              heroImage={{ uri: heroImageURI }}
+              postData={postData as PostType}
+              rotationRef={rotationDegreesRef}
+            />
+          </View>
+        )}
       {postData
       && (
       <Footer

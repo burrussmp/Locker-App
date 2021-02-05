@@ -23,12 +23,12 @@ const styles = StyleSheet.create({
     marginLeft: 3,
     marginBottom: 5,
   },
-  button: {
+  imageContainer: {
     marginRight: 5,
   },
   image: {
-    width: IMAGE_WIDTH,
-    height: IMAGE_HEIGHT,
+    height: '100%',
+    width: 300,
     borderRadius: 5,
   },
 });
@@ -42,7 +42,7 @@ const ImageList: FC<IProps> = ({ images, onPress }: IProps) => (
     keyExtractor={() => uuid()}
     renderItem={({ item, index }) => (
       <TouchableOpacity
-        style={styles.button}
+        style={styles.imageContainer}
         key={uuid()}
         activeOpacity={0.8}
         onPress={() => onPress(index)}
