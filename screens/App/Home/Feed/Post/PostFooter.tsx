@@ -20,7 +20,6 @@ import icons from 'icons/icons';
 
 import api, { APIErrorType } from 'api/api';
 import { PostType } from 'api/post';
-import { LockerProductInfoType } from 'api/locker';
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { OrganizationInfoType } from 'api/organization';
 
@@ -91,8 +90,6 @@ const PostFooter: FC<IProps> = ({
   postData, numLikes, isLiked, handleLike, color, orgId,
 }: IProps) => {
   const [orgData, setOrgData] = useState<OrganizationInfoType | undefined>(undefined);
-  const [lockerProductId, setLockerProductId] = useState<string | undefined>(undefined);
-  const [isLocked, setIsLocked] = useState(false);
 
   const [orgLogoURI, setOrgLogoURI] = useState('');
   const navigation = useNavigation();
@@ -100,32 +97,6 @@ const PostFooter: FC<IProps> = ({
   const onEllipsesTap = (event: TapGestureHandlerStateChangeEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       navigation.navigate('PostDetails', { postData });
-    }
-  };
-
-  const getLockerProductId = async (): Promise<void> => api.Locker.GetProducts()
-    .then((mLockerProducts) => {
-      const foundProduct = mLockerProducts.filter((x) => x.product === postData.content._id);
-      if (foundProduct.length === 1) {
-        setIsLocked(true);
-        setLockerProductId(foundProduct[0]._id);
-      }
-    });
-
-  const handleLocked = (mIsLocked: boolean) => {
-    if (mIsLocked && lockerProductId) {
-      setIsLocked(false);
-      api.Locker.RemoveProduct(lockerProductId).catch((err: APIErrorType) => {
-        Alert.alert(err.error);
-      });
-      setLockerProductId(undefined);
-    } else if (!mIsLocked && !lockerProductId) {
-      setIsLocked(true);
-      api.Locker.AddProduct(postData.content._id).then((lockerProduct) => {
-        setLockerProductId(lockerProduct._id);
-      }).catch((err: APIErrorType) => {
-        Alert.alert(err.error);
-      });
     }
   };
 
@@ -138,10 +109,6 @@ const PostFooter: FC<IProps> = ({
           const blurHashServicer = BlurHashService.BlurHashDecoder(orgInfo.logo.blurhash);
           setOrgLogoURI(blurHashServicer.getURI());
         }
-        getLockerProductId().catch((err: APIErrorType) => {
-          Alert.alert(err.error);
-        });
-
         api.S3.getMedia(orgInfo.logo.key).then((dataURI) => {
           setOrgLogoURI(dataURI);
         }).catch((err: APIErrorType) => {
@@ -156,6 +123,7 @@ const PostFooter: FC<IProps> = ({
     };
   }, []);
 
+  console.log(postData.content);
   return (
     <View style={[PostFeedBottomHeaderStyles.container, { backgroundColor: color }]}>
       <View style={PostFeedBottomHeaderStyles.companyContainer}>
@@ -179,7 +147,7 @@ const PostFooter: FC<IProps> = ({
       <View style={PostFeedBottomHeaderStyles.interactionContainer}>
         <Text>{numLikes}</Text>
         <LikeButton onChange={handleLike} style={{ marginEnd: 5 }} isLiked={isLiked} />
-        <LockButton onChange={handleLocked} isLocked={isLocked} />
+        <LockButton productId={postData.content._id} initiallyIsLocked={postData.content.isLocked} />
       </View>
     </View>
   );
