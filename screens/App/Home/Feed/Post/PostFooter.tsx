@@ -18,8 +18,8 @@ import LikeButton from 'common/components/buttons/LikeButton';
 import LockButton from 'common/components/buttons/LockButton';
 import icons from 'icons/icons';
 
-import { PostType } from 'api/post';
 import api, { APIErrorType } from 'api/api';
+import { PostType } from 'api/post';
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { OrganizationInfoType } from 'api/organization';
 
@@ -80,13 +80,18 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
 type IProps = {
   postData: PostType;
   orgId: string;
+  numLikes: number;
+  isLiked: boolean;
+  handleLike: (like: boolean) => Promise<void>;
   color?: string;
 };
 
-const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
+const PostFooter: FC<IProps> = ({
+  postData, numLikes, isLiked, handleLike, color, orgId,
+}: IProps) => {
   const [orgData, setOrgData] = useState<OrganizationInfoType | undefined>(undefined);
-  const [orgLogoURI, setOrgLogoURI] = useState('');
 
+  const [orgLogoURI, setOrgLogoURI] = useState('');
   const navigation = useNavigation();
 
   const onEllipsesTap = (event: TapGestureHandlerStateChangeEvent) => {
@@ -118,6 +123,7 @@ const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
     };
   }, []);
 
+  console.log(postData.content);
   return (
     <View style={[PostFeedBottomHeaderStyles.container, { backgroundColor: color }]}>
       <View style={PostFeedBottomHeaderStyles.companyContainer}>
@@ -139,8 +145,9 @@ const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
         </TapGestureHandler>
       </View>
       <View style={PostFeedBottomHeaderStyles.interactionContainer}>
-        <LikeButton style={{ marginEnd: 5 }} />
-        <LockButton />
+        <Text>{numLikes}</Text>
+        <LikeButton onChange={handleLike} style={{ marginEnd: 5 }} isLiked={isLiked} />
+        <LockButton productId={postData.content._id} initiallyIsLocked={postData.content.isLocked} />
       </View>
     </View>
   );

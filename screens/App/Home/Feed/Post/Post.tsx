@@ -17,6 +17,7 @@ import TapElement from 'common/components/TapElement';
 import Footer from 'screens/App/Home/Feed/Post/PostFooter';
 import PostFront from 'screens/App/Home/Feed/Post/PostFront';
 import PostBack from 'screens/App/Home/Feed/Post/PostBack';
+import AnimatedLike from 'common/components/animated/AnimatedLike';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { flipAnimation } from 'services/animations/PostAnimations';
@@ -27,23 +28,29 @@ type IProps = {
 };
 
 const PostContainer: FC<IProps> = ({ id }: IProps) => {
-  const [isFront, setFront] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [numLikes, setNumLikes] = useState(0);
+  const [isBack, setIsBack] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
   const [postData, setPostData] = useState<PostType | undefined>(undefined);
   const [heroImageURI, setHeroImageURI] = useState('');
-
   const [footerColor, setFooterColor] = useState('#fff');
 
   useEffect(() => {
     let complete = false;
-    api.Post.GetByID(id).then((postInfo) => {
+    api.Post.GetByID(id).then(async (postInfo) => {
       if (!complete) {
         if (postInfo.content.media.blurhash) {
           const blurHashServicer = BlurHashService.BlurHashDecoder(postInfo.content.media.blurhash);
           setHeroImageURI(blurHashServicer.getURI());
           setFooterColor(blurHashServicer.getTabColor(60));
         }
+        const reactionData = await api.Post.GetReactions(postInfo._id);
+        setIsLiked(reactionData.selected === 'like');
+        setNumLikes(reactionData.like);
         setPostData(postInfo);
+
         api.S3.getMedia(postInfo.content.media.key).then((dataURI) => {
           setHeroImageURI(dataURI);
         }).catch((err: APIErrorType) => {
@@ -59,33 +66,68 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
   }, []);
 
   useEffect(() => {
-    flipAnimation(rotationDegreesRef, isFront);
-  }, [isFront]);
+    flipAnimation(rotationDegreesRef, isBack);
+  }, [isBack]);
 
   const onContentTap = (event: TapGestureHandlerStateChangeEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      setFront(!isFront);
+      setIsBack(!isBack);
     }
   };
 
-  const onContentDoubleTap = (event: TapGestureHandlerStateChangeEvent) => {
+  const onContentDoubleTap = async (event: TapGestureHandlerStateChangeEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      Alert.alert('Like');
-      // like action goes here
+      if (postData) {
+        setShowAnimation(true);
+        if (!isLiked) setNumLikes(numLikes + 1);
+        setIsLiked(true);
+        await api.Post.AddReaction(postData._id, 'like');
+      }
+    }
+  };
+
+  const handleLike = async (like: boolean) => {
+    if (postData) {
+      if (like) {
+        if (!isLiked) setNumLikes(numLikes + 1);
+        setIsLiked(true);
+        await api.Post.AddReaction(postData._id, 'like');
+      } else {
+        if (isLiked) setNumLikes(numLikes - 1);
+        setIsLiked(false);
+        await api.Post.DeleteReaction(postData._id);
+      }
     }
   };
 
   return (
     <LoadingView style={{ height: 500 }} isLoaded={Boolean(postData)}>
-      <View style={{ flex: 1 }}>
-        <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
-          <View style={{ flex: 1 }}>
-            <PostFront heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />
-            <PostBack heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />
-          </View>
-        </TapElement>
-      </View>
-      <Footer color={footerColor} postData={postData as PostType} orgId={postData?.content.organization || ''} />
+      <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
+        <View style={{ flex: 1 }}>
+          {!isBack && <PostFront heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />}
+        </View>
+      </TapElement>
+      {showAnimation && <AnimatedLike onComplete={() => setShowAnimation(false)} />}
+      {isBack && (
+        <PostBack
+          flipFront={() => setIsBack(false)}
+          heroImage={{ uri: heroImageURI }}
+          postData={postData as PostType}
+          rotationRef={rotationDegreesRef}
+        />
+      )}
+      {postData
+      && (
+      <Footer
+        handleLike={handleLike}
+        isLiked={isLiked}
+        numLikes={numLikes}
+        color={footerColor}
+        postData={postData}
+        orgId={postData?.content.organization || ''}
+      />
+      )}
+
     </LoadingView>
   );
 };

@@ -1,4 +1,4 @@
-import {Animated} from 'react-native';
+import { Animated } from 'react-native';
 
 const likeAnimation = (scale: Animated.Value) => {
   scale.setValue(0.8);
@@ -10,37 +10,35 @@ const likeAnimation = (scale: Animated.Value) => {
   }).start();
 };
 
-const likeAnimationTransform = (scale: Animated.Value) => {
-  return {
-    transform: [{scale: scale}],
-  };
-};
+const likeAnimationTransform = (scale: Animated.Value) => ({
+  transform: [{ scale }],
+});
 
-const lockAnimation = (rotationDegrees: Animated.Value) => {
-  Animated.spring(rotationDegrees, {
-    toValue: 0,
-    bounciness: 10,
-    speed: 50,
-    useNativeDriver: true,
-  }).start();
-};
-
-const unlockAnimation = (rotationDegrees: Animated.Value) => {
+const lockAnimation = (rotationDegrees: Animated.Value, callback? : () => void) => {
   Animated.spring(rotationDegrees, {
     toValue: 90,
     bounciness: 10,
     speed: 50,
     useNativeDriver: true,
-  }).start();
+  }).start(callback);
+};
+
+const unlockAnimation = (rotationDegrees: Animated.Value, callback? : () => void) => {
+  Animated.spring(rotationDegrees, {
+    toValue: 0,
+    bounciness: 10,
+    speed: 50,
+    useNativeDriver: true,
+  }).start(callback);
 };
 
 const lockAnimationTransform = (rotationDegrees: Animated.Value) => {
   const rotationInterpolate = rotationDegrees.interpolate({
-    inputRange: [-45, 45],
-    outputRange: ['-45deg', '45deg'],
+    inputRange: [0, 90],
+    outputRange: ['0deg', '90deg'],
   });
   return {
-    transform: [{rotate: rotationInterpolate}],
+    transform: [{ rotate: rotationInterpolate }],
   };
 };
 

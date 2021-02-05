@@ -15,8 +15,7 @@ import AuthActions from 'store/actions/auth.actions';
 import AuthSelectors from 'store/selectors/auth.selectors';
 import { RootAction } from 'store/index';
 import { LockerProp } from 'types/navigation/app.navigation.types';
-import { LockerListType } from 'api/locker';
-import { LockerInfoType } from 'api/locker';
+import { LockerInfoType, LockerProductInfoType } from 'api/locker';
 import SafeArea from 'common/components/SafeArea';
 import LockerHeader from './LockerHeader';
 
@@ -32,27 +31,31 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 
 type IProps = PropsFromRedux & LockerProp;
 
-const LockerScreen: FC<IProps> = ({ Logout, route }: IProps) => {
+const LockerScreen: FC<IProps> = ({ Logout, navigation, route }: IProps) => {
+  const [lockerProducts, setLockerProducts] = useState<[LockerProductInfoType] | undefined>(undefined);
+  const [focused, setFocused] = useState(false);
+
   const userId = route.params?.userId || AuthSelectors.getMyID();
   const isMyLocker = userId === AuthSelectors.getMyID();
   const [lockerData, setLockerData] = useState<LockerInfoType | undefined>(undefined);
   console.log(userId);
+
   useEffect(() => {
-    let complete = false;
-    api.Locker.GetAll(userId).then((lockerList) => {
-      const lockerId = lockerList[0]._id;
-      api.Locker.GetByID(lockerId).then((lockerInfo) => {
-        setLockerData(lockerInfo);
+    const unsubscribe = navigation.addListener('focus', () => {
+      api.Locker.GetAll(userId).then((lockerList) => {
+        const lockerId = lockerList[0]._id;
+        api.Locker.GetByID(lockerId).then((lockerInfo) => {
+          setLockerData(lockerInfo);
+        }).catch((err: APIErrorType) => {
+          Alert.alert(err.error);
+        });
       }).catch((err: APIErrorType) => {
         Alert.alert(err.error);
       });
-    }).catch((err: APIErrorType) => {
-      Alert.alert(err.error);
     });
-    return function cleanup() {
-      complete = true;
-    };
-  }, []);
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeArea>

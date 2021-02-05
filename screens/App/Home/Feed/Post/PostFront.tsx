@@ -12,12 +12,16 @@ import { PostType } from 'api/post';
 
 const PostFrontStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#FFFFFF',
     backfaceVisibility: 'hidden',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    borderWidth: 0.25,
     borderColor: '#ccc',
-    elevation: 10,
+    elevation: 5,
   },
   heroImage: {
     flex: 1,

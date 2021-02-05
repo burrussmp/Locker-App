@@ -4,14 +4,14 @@
  * @desc The feed container.
  */
 
-import React, { useEffect, useState, FC } from "react";
-import { Alert, FlatList, View } from "react-native";
+import React, { useEffect, useState, FC } from 'react';
+import { Alert, FlatList, View } from 'react-native';
 
-import SafeArea from "common/components/SafeArea";
-import Post from "screens/App/Home/Feed/Post/Post";
+import SafeArea from 'common/components/SafeArea';
+import Post from 'screens/App/Home/Feed/Post/Post';
 
-import api, { APIErrorType } from "api/api";
-import { PostListType } from "api/post";
+import api, { APIErrorType } from 'api/api';
+import { PostListType } from 'api/post';
 
 const FeedContainer: FC = () => {
   const [feedData, setFeedData] = useState<PostListType>([]);
@@ -34,7 +34,7 @@ const FeedContainer: FC = () => {
 
   return (
     <FlatList
-      data={feedData}
+      data={feedData.slice(0, 1)}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={<View style={{ height: 58 }} />}
