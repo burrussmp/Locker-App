@@ -6,10 +6,11 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import {
-  Alert, Animated, Image, StyleSheet, Platform, Text, View,
+  Alert, Animated, Image, StyleSheet, Platform, Text, TouchableOpacity, View, Share,
 } from 'react-native';
 
 import { Divider } from 'react-native-elements';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ImageList from 'common/containers/ImageList';
 
@@ -56,7 +57,7 @@ const PostBackStyles = StyleSheet.create({
     fontWeight: '100',
   },
   productText: {
-    fontSize: 20,
+    fontSize: 23,
     fontWeight: '200',
   },
   urlText: {
@@ -103,6 +104,25 @@ const PostBack: FC<IProps> = ({
   const [visible, setVisible] = useState(false);
   const [currentImageIndex, setImageIndex] = useState(0);
 
+  const handleShare = async () => {
+    try {
+      const result = await Share.share({
+        message: postData.content.url,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
+
   useEffect(() => {
     Promise.all(postData.content.additional_media.map(async (media) => {
       const dataURI = await api.S3.getMedia(media.key);
@@ -133,7 +153,16 @@ const PostBack: FC<IProps> = ({
             flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start',
           }}
           >
-            <Text style={PostBackStyles.productText}>{productName}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+              <Text style={PostBackStyles.productText}>{productName}</Text>
+              <TouchableOpacity onPress={handleShare} style={{ marginLeft: 5 }}>
+                <Icons
+                  name={Platform.OS === 'ios' ? 'export-variant' : 'share-variant'}
+                  size={25}
+                  color="#000"
+                />
+              </TouchableOpacity>
+            </View>
             <Text style={PostBackStyles.priceText}>{priceText}</Text>
             <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
             <Text style={PostBackStyles.descriptionText} numberOfLines={5}>
