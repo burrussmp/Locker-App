@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import React, { FC } from 'react';
 import {
-  Image, View, StyleSheet, TouchableOpacity, Text,
+  Image, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import uuid from 'react-uuid';
@@ -17,11 +17,11 @@ const IMAGE_WIDTH = 120;
 const IMAGE_HEIGHT = 120;
 
 const styles = StyleSheet.create({
-  root: { flexGrow: 1 },
   container: {
     flex: 1,
-    paddingLeft: 10,
-    marginBottom: 10,
+    marginTop: 5,
+    marginLeft: 3,
+    marginBottom: 5,
   },
   button: {
     marginRight: 5,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 const ImageList: FC<IProps> = ({ images, onPress }: IProps) => (
   <FlatList
     horizontal
-    style={styles.root}
+    style={styles.container}
     data={images}
     scrollEventThrottle={16}
     keyExtractor={() => uuid()}
@@ -50,11 +50,9 @@ const ImageList: FC<IProps> = ({ images, onPress }: IProps) => (
         <Image source={{ uri: item }} style={styles.image} />
       </TouchableOpacity>
     )}
-    getItemLayout={(data, index) => ({
-      length: 550,
-      offset: 550 * index,
-      index,
-    })}
+    getItemLayout={(data, index) => (
+      { length: IMAGE_WIDTH, offset: IMAGE_WIDTH * index, index }
+    )}
   />
 );
 

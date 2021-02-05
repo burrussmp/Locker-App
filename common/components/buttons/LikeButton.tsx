@@ -12,10 +12,10 @@ import { likeAnimation, likeAnimationTransform } from 'services/animations/React
 import icons from 'icons/icons';
 
 type IProps = {
+  isLiked: boolean;
   size?: string;
   style?: ViewStyle;
-  isLiked?: boolean;
-  onChange?: (state: boolean) => void;
+  onChange?: (state: boolean) => Promise<void>;
 };
 
 const getIcon = (isLiked: boolean, size?: string) => {
@@ -28,15 +28,13 @@ const getIcon = (isLiked: boolean, size?: string) => {
 const LikeButton: FC<IProps> = ({
   size, style, isLiked, onChange,
 }: IProps) => {
-  const [mIsLiked, setMIsLiked] = useState(Boolean(isLiked));
   const scaleRef = useRef(new Animated.Value(1)).current;
 
-  const onSingleTap = (event: TapGestureHandlerGestureEvent) => {
+  const onSingleTap = async (event: TapGestureHandlerGestureEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      setMIsLiked(!mIsLiked);
       likeAnimation(scaleRef);
       if (onChange) {
-        onChange(mIsLiked);
+        await onChange(!isLiked);
       }
     }
   };
@@ -45,7 +43,7 @@ const LikeButton: FC<IProps> = ({
     <View style={style}>
       <TapGestureHandler onHandlerStateChange={onSingleTap}>
         <Animated.Image
-          source={getIcon(mIsLiked, size)}
+          source={getIcon(isLiked, size)}
           style={likeAnimationTransform(scaleRef)}
         />
       </TapGestureHandler>
@@ -56,7 +54,6 @@ const LikeButton: FC<IProps> = ({
 LikeButton.defaultProps = {
   size: 'large',
   style: {},
-  isLiked: false,
   onChange: undefined,
 };
 

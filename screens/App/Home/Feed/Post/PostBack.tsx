@@ -6,23 +6,23 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import {
-  Alert, Animated, Button, StyleSheet, Text, View,
+  Alert, Animated, Image, StyleSheet, Platform, Text, View,
 } from 'react-native';
 
-import { Avatar, Divider } from 'react-native-elements';
+import { Divider } from 'react-native-elements';
 
 import ImageList from 'common/containers/ImageList';
-import ImageView from '@hamidfzm/react-native-image-viewing';
+
+import ImageView from 'react-native-image-viewing';
 
 import LinkText from 'common/components/text/LinkText';
-
+import GoBackButton from 'common/components/buttons/GoBackButton';
 import { flipAnimationTransform } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 
 import api, { APIErrorType } from 'api/api';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const PostBackStyles = StyleSheet.create({
   container: {
@@ -38,16 +38,13 @@ const PostBackStyles = StyleSheet.create({
     elevation: 5,
   },
   topRowContainer: {
-    height: 150,
+    height: 125,
     width: '100%',
-    paddingTop: 25,
+    paddingTop: 15,
     paddingLeft: 25,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    alignContent: 'space-between',
     backgroundColor: '#FFFFFF',
   },
   descriptionText: {
@@ -59,9 +56,8 @@ const PostBackStyles = StyleSheet.create({
     fontWeight: '100',
   },
   productText: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: '200',
-    marginTop: 5,
   },
   urlText: {
     fontSize: 13,
@@ -74,7 +70,7 @@ const PostBackStyles = StyleSheet.create({
   },
   topRowDividerLine: {
     backgroundColor: 'black',
-    marginHorizontal: 75,
+    marginHorizontal: 20,
   },
 });
 
@@ -84,6 +80,7 @@ type IProps = {
   },
   postData: PostType,
   rotationRef: Animated.Value,
+  flipFront: () => void;
 }
 
 type additionalMediaState = {
@@ -92,7 +89,7 @@ type additionalMediaState = {
 };
 
 const PostBack: FC<IProps> = ({
-  heroImage, postData, rotationRef,
+  heroImage, postData, rotationRef, flipFront,
 }: IProps) => {
   const [additionalMedia, setAdditionalMedia] = useState<Array<additionalMediaState>>(
     postData.content.additional_media.map((x) => {
@@ -127,41 +124,44 @@ const PostBack: FC<IProps> = ({
   return (
     <Animated.View style={[PostBackStyles.container, flipAnimationTransform(rotationRef, false)]}>
       <View style={PostBackStyles.topRowContainer}>
-        <View style={{ flex: 0.9 }}>
-          {/* <Button onPress={() => flipCard(true)} title="Go back" /> */}
-          <Text style={PostBackStyles.productText}>{productName}</Text>
-          <Text style={PostBackStyles.priceText}>{priceText}</Text>
-          <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
-          <Text style={PostBackStyles.descriptionText} numberOfLines={5}>
-            {descriptionText}
-          </Text>
-        </View>
-        <Avatar
-          source={heroImage}
-          rounded
-          containerStyle={PostBackStyles.smallHero}
-        />
-      </View>
-      <View>
-        <Divider style={PostBackStyles.topRowDividerLine} />
-      </View>
-      <View style={{ flex: 1 }}>
-        <ImageList
-          images={additionalMedia.map((x: additionalMediaState) => x.uri)}
-          onPress={(index: number) => {
-            setImageIndex(index);
-            setVisible(true);
+        <View style={{
+          flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start',
+        }}
+        >
+          <GoBackButton onPress={flipFront} iconSize={30} />
+          <View style={{
+            flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start',
           }}
-        />
-        <ImageView
-          data={additionalMedia}
-          getImage={(data: {uri: string}) => ({ uri: data.uri })}
-          presentationStyle="overFullScreen"
-          imageIndex={currentImageIndex}
-          visible={visible}
-          onRequestClose={() => setVisible(false)}
+          >
+            <Text style={PostBackStyles.productText}>{productName}</Text>
+            <Text style={PostBackStyles.priceText}>{priceText}</Text>
+            <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
+            <Text style={PostBackStyles.descriptionText} numberOfLines={5}>
+              {descriptionText}
+            </Text>
+          </View>
+        </View>
+        <Image
+          resizeMethod="auto"
+          source={heroImage}
+          style={PostBackStyles.smallHero}
         />
       </View>
+      <Divider style={PostBackStyles.topRowDividerLine} />
+      <ImageList
+        images={additionalMedia.map((x: additionalMediaState) => x.uri)}
+        onPress={(index: number) => {
+          setImageIndex(index);
+          setVisible(true);
+        }}
+      />
+      <ImageView
+        images={additionalMedia.map((x) => ({ uri: x.uri }))}
+        imageIndex={currentImageIndex}
+        visible={visible}
+        onRequestClose={() => setVisible(false)}
+        presentationStyle={Platform.OS === 'android' ? 'overFullScreen' : 'fullScreen'}
+      />
     </Animated.View>
   );
 };

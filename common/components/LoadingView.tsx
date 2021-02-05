@@ -11,7 +11,7 @@ import Loading from 'common/components/LoadingRelative';
 type IProps = {
   isLoaded: boolean;
   style?: ViewStyle;
-  children: JSX.Element | FC | JSX.Element[];
+  children: (false | JSX.Element | undefined)[] | JSX.Element | FC | JSX.Element[];
 };
 
 const LoadingView: FC<IProps> = ({ isLoaded, style, children }: IProps) => (

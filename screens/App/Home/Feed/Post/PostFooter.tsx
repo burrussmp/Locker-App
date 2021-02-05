@@ -18,8 +18,9 @@ import LikeButton from 'common/components/buttons/LikeButton';
 import LockButton from 'common/components/buttons/LockButton';
 import icons from 'icons/icons';
 
-import { PostType } from 'api/post';
 import api, { APIErrorType } from 'api/api';
+import { PostType } from 'api/post';
+import { LockerProductInfoType } from 'api/locker';
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { OrganizationInfoType } from 'api/organization';
 
@@ -80,18 +81,51 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
 type IProps = {
   postData: PostType;
   orgId: string;
+  numLikes: number;
+  isLiked: boolean;
+  handleLike: (like: boolean) => Promise<void>;
   color?: string;
 };
 
-const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
+const PostFooter: FC<IProps> = ({
+  postData, numLikes, isLiked, handleLike, color, orgId,
+}: IProps) => {
   const [orgData, setOrgData] = useState<OrganizationInfoType | undefined>(undefined);
-  const [orgLogoURI, setOrgLogoURI] = useState('');
+  const [lockerProductId, setLockerProductId] = useState<string | undefined>(undefined);
+  const [isLocked, setIsLocked] = useState(false);
 
+  const [orgLogoURI, setOrgLogoURI] = useState('');
   const navigation = useNavigation();
 
   const onEllipsesTap = (event: TapGestureHandlerStateChangeEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
       navigation.navigate('PostDetails', { postData });
+    }
+  };
+
+  const getLockerProductId = async (): Promise<void> => api.Locker.GetProducts()
+    .then((mLockerProducts) => {
+      const foundProduct = mLockerProducts.filter((x) => x.product === postData.content._id);
+      if (foundProduct.length === 1) {
+        setIsLocked(true);
+        setLockerProductId(foundProduct[0]._id);
+      }
+    });
+
+  const handleLocked = (mIsLocked: boolean) => {
+    if (mIsLocked && lockerProductId) {
+      setIsLocked(false);
+      api.Locker.RemoveProduct(lockerProductId).catch((err: APIErrorType) => {
+        Alert.alert(err.error);
+      });
+      setLockerProductId(undefined);
+    } else if (!mIsLocked && !lockerProductId) {
+      setIsLocked(true);
+      api.Locker.AddProduct(postData.content._id).then((lockerProduct) => {
+        setLockerProductId(lockerProduct._id);
+      }).catch((err: APIErrorType) => {
+        Alert.alert(err.error);
+      });
     }
   };
 
@@ -104,6 +138,10 @@ const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
           const blurHashServicer = BlurHashService.BlurHashDecoder(orgInfo.logo.blurhash);
           setOrgLogoURI(blurHashServicer.getURI());
         }
+        getLockerProductId().catch((err: APIErrorType) => {
+          Alert.alert(err.error);
+        });
+
         api.S3.getMedia(orgInfo.logo.key).then((dataURI) => {
           setOrgLogoURI(dataURI);
         }).catch((err: APIErrorType) => {
@@ -139,8 +177,9 @@ const PostFooter: FC<IProps> = ({ postData, color, orgId }: IProps) => {
         </TapGestureHandler>
       </View>
       <View style={PostFeedBottomHeaderStyles.interactionContainer}>
-        <LikeButton style={{ marginEnd: 5 }} />
-        <LockButton />
+        <Text>{numLikes}</Text>
+        <LikeButton onChange={handleLike} style={{ marginEnd: 5 }} isLiked={isLiked} />
+        <LockButton onChange={handleLocked} isLocked={isLocked} />
       </View>
     </View>
   );
