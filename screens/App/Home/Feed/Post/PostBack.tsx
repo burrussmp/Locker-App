@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import {
-  Alert, Animated, Image, StyleSheet, Platform, Text, TouchableOpacity, View, Share,
+  Alert, Animated, ImageBackground, Image, StyleSheet, Platform, Text, TouchableOpacity, View, Share,
 } from 'react-native';
 
 import { Divider } from 'react-native-elements';
@@ -18,6 +18,7 @@ import ImageView from 'react-native-image-viewing';
 
 import LinkText from 'common/components/text/LinkText';
 import GoBackButton from 'common/components/buttons/GoBackButton';
+import ShareButton from 'common/components/buttons/ShareButton';
 import { flipAnimationTransform } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
 
@@ -57,17 +58,28 @@ const PostBackStyles = StyleSheet.create({
     fontWeight: '100',
   },
   productText: {
-    fontSize: 23,
+    fontSize: 20,
     fontWeight: '200',
   },
   urlText: {
     fontSize: 13,
     fontWeight: '100',
   },
+  shareButton: {
+    position: 'absolute',
+    right: 15,
+    top: 8,
+    width: 25,
+    height: 25,
+    borderRadius: 25 / 2,
+    backgroundColor: '#00000055',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   smallHero: {
     height: 100,
     width: 100,
-    marginRight: 25,
+    marginRight: 10,
   },
   topRowDividerLine: {
     backgroundColor: 'black',
@@ -148,20 +160,13 @@ const PostBack: FC<IProps> = ({
           flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start',
         }}
         >
-          <GoBackButton onPress={flipFront} iconSize={30} />
+          <GoBackButton onPress={flipFront} iconSize={25} />
           <View style={{
             flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start',
           }}
           >
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
               <Text style={PostBackStyles.productText}>{productName}</Text>
-              <TouchableOpacity onPress={handleShare} style={{ marginLeft: 5 }}>
-                <Icons
-                  name={Platform.OS === 'ios' ? 'export-variant' : 'share-variant'}
-                  size={25}
-                  color="#000"
-                />
-              </TouchableOpacity>
             </View>
             <Text style={PostBackStyles.priceText}>{priceText}</Text>
             <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
@@ -170,11 +175,8 @@ const PostBack: FC<IProps> = ({
             </Text>
           </View>
         </View>
-        <Image
-          resizeMethod="auto"
-          source={heroImage}
-          style={PostBackStyles.smallHero}
-        />
+        <ImageBackground resizeMethod="resize" source={heroImage} style={PostBackStyles.smallHero} />
+        <ShareButton color="#fff" size={20} shareMessage={postData.content.url} containerStyle={PostBackStyles.shareButton} />
       </View>
       <Divider style={PostBackStyles.topRowDividerLine} />
       <ImageList

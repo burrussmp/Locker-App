@@ -34,7 +34,7 @@ const FeedContainer: FC = () => {
 
   return (
     <FlatList
-      data={feedData.slice(0, 1)}
+      data={feedData.slice(0, 10)}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={<View style={{ height: 58 }} />}
