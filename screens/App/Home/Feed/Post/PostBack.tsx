@@ -12,6 +12,7 @@ import {
 import { Divider } from 'react-native-elements';
 
 import ImageList from 'common/containers/ImageList';
+import TagList from 'common/containers/TagList';
 
 import ImageView from 'react-native-image-viewing';
 
@@ -24,6 +25,8 @@ import { PostType } from 'api/post';
 import BlurHashService from 'services/Images/BlurHashDecoder';
 
 import api, { APIErrorType } from 'api/api';
+
+import faker from 'faker';
 
 const PostBackStyles = StyleSheet.create({
   container: {
@@ -39,14 +42,25 @@ const PostBackStyles = StyleSheet.create({
     elevation: 5,
   },
   topRowContainer: {
-    height: 125,
     width: '100%',
     paddingTop: 15,
     paddingLeft: 25,
+    paddingBottom: 5,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+  },
+  rowContainer: {
+    flex: 1,
+    maxHeight: 140,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  infoContainer: {
+    flex: 1,
+    height: '100%',
   },
   descriptionText: {
     fontSize: 14,
@@ -128,31 +142,24 @@ const PostBack: FC<IProps> = ({
       Alert.alert(err.error || err);
     });
   }, []);
-  console.log(postData)
   const productName = postData.content.name;
   const priceText = `$${postData.content.price}`;
   const productUrl = postData.content.url;
   const descriptionText = '';
+  const productCollection = postData.content.product_collection;
+
   return (
     <Animated.View style={[PostBackStyles.container, flipAnimationTransform(rotationRef, false)]}>
       <View style={PostBackStyles.topRowContainer}>
-        <View style={{
-          flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start',
-        }}
-        >
+        <View style={PostBackStyles.rowContainer}>
           <GoBackButton onPress={flipFront} iconSize={25} />
-          <View style={{
-            flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start',
-          }}
-          >
+          <View style={PostBackStyles.infoContainer}>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
               <Text style={PostBackStyles.productText}>{productName}</Text>
             </View>
             <Text style={PostBackStyles.priceText}>{priceText}</Text>
             <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
-            <Text style={PostBackStyles.descriptionText} numberOfLines={5}>
-              {descriptionText}
-            </Text>
+            <TagList tags={faker.random.words(Math.floor(Math.random() * 20)).split(' ')} />
           </View>
         </View>
         <ImageBackground resizeMethod="resize" source={heroImage} style={PostBackStyles.smallHero} />
