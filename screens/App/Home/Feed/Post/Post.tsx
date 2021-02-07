@@ -50,7 +50,7 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
           setHeroImageURI(blurHashServicer.getURI());
           setFooterColor(blurHashServicer.getTabColor(60));
         }
-        await setInitialLockerButtonState(postInfo.content._id, lockButtonDispatch);
+        await setInitialLockerButtonState(postInfo.content._id, postInfo.content.is_locked, lockButtonDispatch);
 
         setPostData(postInfo);
 

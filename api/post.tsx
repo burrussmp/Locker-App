@@ -31,7 +31,7 @@ export const ProductPostInfoType = T.type({
   available: T.boolean,
   meta: T.UnknownRecord,
   last_scraped: T.string,
-  isLocked: T.boolean,
+  is_locked: T.boolean,
   createdAt: T.string,
   updatedAt: T.string,
 });
