@@ -40,10 +40,10 @@ const AnimatedLock: FC<IProps> = ({ onComplete }: IProps) => {
   const fadeUnLock = useRef(new Animated.Value(0)).current;
   // const sizeAnim = useRef(new Animated.Value(0)).current;
 
-  const startDuration = 350;
-  const rotateDuration = 500;
-  const holdDuration = 350;
-  const endDuration = 300;
+  const startDuration = 250;
+  const rotateDuration = 400;
+  const holdDuration = 250;
+  const endDuration = 200;
 
   useEffect(() => {
     // make unlock button appear
