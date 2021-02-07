@@ -43,7 +43,7 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
 
   useEffect(() => {
     let complete = false;
-    api.Post.GetByID(id).then(async (postInfo) => {
+    api.Post.GetByID(id).then((postInfo) => {
       if (!complete) {
         if (postInfo.content.media.blurhash) {
           const blurHashServicer = BlurHashService.BlurHashDecoder(postInfo.content.media.blurhash);
