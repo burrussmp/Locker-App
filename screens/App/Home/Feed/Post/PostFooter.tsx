@@ -14,8 +14,8 @@ import { Avatar } from 'react-native-elements';
 import { State, TapGestureHandler, TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-import LikeButton from 'common/components/buttons/LikeButton';
-import LockButton from 'common/components/buttons/LockButton';
+// import LikeButton from 'common/components/buttons/LikeButton';
+import LockButton, { LockButtonActions, LockButtonState } from 'common/components/buttons/LockButton';
 import icons from 'icons/icons';
 
 import api, { APIErrorType } from 'api/api';
@@ -80,14 +80,13 @@ const PostFeedBottomHeaderStyles = StyleSheet.create({
 type IProps = {
   postData: PostType;
   orgId: string;
-  numLikes: number;
-  isLiked: boolean;
-  handleLike: (like: boolean) => Promise<void>;
+  lockButtonState: LockButtonState;
+  lockButtonDispatch: (value: LockButtonActions) => void;
   color?: string;
 };
 
 const PostFooter: FC<IProps> = ({
-  postData, numLikes, isLiked, handleLike, color, orgId,
+  postData, lockButtonState, lockButtonDispatch, color, orgId,
 }: IProps) => {
   const [orgData, setOrgData] = useState<OrganizationInfoType | undefined>(undefined);
 
@@ -123,7 +122,6 @@ const PostFooter: FC<IProps> = ({
     };
   }, []);
 
-  console.log(postData.content);
   return (
     <View style={[PostFeedBottomHeaderStyles.container, { backgroundColor: color }]}>
       <View style={PostFeedBottomHeaderStyles.companyContainer}>
@@ -145,9 +143,7 @@ const PostFooter: FC<IProps> = ({
         </TapGestureHandler>
       </View>
       <View style={PostFeedBottomHeaderStyles.interactionContainer}>
-        <Text>{numLikes}</Text>
-        <LikeButton onChange={handleLike} style={{ marginEnd: 5 }} isLiked={isLiked} />
-        <LockButton productId={postData.content._id} initiallyIsLocked={postData.content.isLocked} />
+        <LockButton state={lockButtonState} dispatch={lockButtonDispatch} style={{ marginEnd: 10 }} />
       </View>
     </View>
   );

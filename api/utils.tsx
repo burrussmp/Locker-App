@@ -1,3 +1,6 @@
+/* eslint-disable no-throw-literal */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /**
  * @description API Utilities
  * @author Matthew P. Burruss
@@ -108,9 +111,17 @@ const postRequest = async (url: string, data?: Record<string, string> | FormData
   const method = 'POST';
   const body = !(data instanceof FormData) ? JSON.stringify(data) : data;
   const queryString = new URLSearchParams(query).toString();
-  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers, body });
-  if (res.ok) {
-    return res;
+  let res;
+  try {
+    res = await fetch(`${config.server}${url}?${queryString}`, { method, headers, body });
+    if (res.ok) {
+      return res;
+    }
+  } catch (err) {
+    throw {
+      status: 500,
+      error: err.message,
+    };
   }
   throw await handleError(res);
 };
@@ -127,9 +138,17 @@ const putRequest = async (url: string, data?: Record<string, string> | FormData,
   const method = 'PUT';
   const body = !(data instanceof FormData) ? JSON.stringify(data) : data;
   const queryString = new URLSearchParams(query).toString();
-  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers, body });
-  if (res.ok) {
-    return res;
+  let res;
+  try {
+    res = await fetch(`${config.server}${url}?${queryString}`, { method, headers, body });
+    if (res.ok) {
+      return res;
+    }
+  } catch (err) {
+    throw {
+      status: 500,
+      error: err.message,
+    };
   }
   throw await handleError(res);
 };
@@ -144,9 +163,17 @@ const getRequest = async (url: string, query?: Record<string, string>): Promise<
   const headers = getHeaders();
   const method = 'GET';
   const queryString = new URLSearchParams(query).toString();
-  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers });
-  if (res.ok) {
-    return res;
+  let res;
+  try {
+    res = await fetch(`${config.server}${url}?${queryString}`, { method, headers });
+    if (res.ok) {
+      return res;
+    }
+  } catch (err) {
+    throw {
+      status: 500,
+      error: err.message,
+    };
   }
   throw await handleError(res);
 };
@@ -161,9 +188,17 @@ const deleteRequest = async (url: string, query?: Record<string, string>): Promi
   const headers = getHeaders();
   const method = 'DELETE';
   const queryString = new URLSearchParams(query).toString();
-  const res = await fetch(`${config.server}${url}?${queryString}`, { method, headers });
-  if (res.ok) {
-    return res;
+  let res;
+  try {
+    res = await fetch(`${config.server}${url}?${queryString}`, { method, headers });
+    if (res.ok) {
+      return res;
+    }
+  } catch (err) {
+    throw {
+      status: 500,
+      error: err.message,
+    };
   }
   throw await handleError(res);
 };

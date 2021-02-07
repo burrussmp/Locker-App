@@ -41,6 +41,38 @@ const Users = async (search: string): Promise<UserSearchResultsType> => {
   return await res.json() as UserSearchResultsType;
 };
 
+/**
+ * @desc Results when an organization search is performed.
+ */
+export const OrganizationSearchResultsType = T.array(
+  T.type({
+    data: T.type({
+      _id: T.string,
+      name: T.string,
+      logo: T.union([
+        T.type({
+          _id: T.string,
+          key: T.string,
+          mimetype: T.string,
+          blurhash: T.union([T.undefined, T.string]),
+        }), T.undefined]),
+    }),
+    score: T.number,
+  }),
+);
+export type OrganizationSearchResultsType = T.TypeOf<typeof OrganizationSearchResultsType>;
+
+/**
+ * @desc Search for organizations based on their name.
+ * @param {string} search Search text.
+ * @return {Promise<SearchResults>} A list of users that match a search and the confidence.
+ */
+const Organizations = async (search: string): Promise<OrganizationSearchResultsType> => {
+  const res = await utils.postRequest('/api/search/organizations', { search });
+  return await res.json() as OrganizationSearchResultsType;
+};
+
 export default {
   Users,
+  Organizations,
 };

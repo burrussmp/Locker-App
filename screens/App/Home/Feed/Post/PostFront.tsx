@@ -8,8 +8,6 @@ import React, { FC } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { flipAnimationTransform } from 'services/animations/PostAnimations';
 
-import { PostType } from 'api/post';
-
 const PostFrontStyles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -36,11 +34,10 @@ type IProps = {
   heroImage: {
     uri: string;
   },
-  postData: PostType,
   rotationRef: Animated.Value,
 }
 
-const PostFront: FC<IProps> = ({ heroImage, postData, rotationRef }: IProps) => {
+const PostFront: FC<IProps> = ({ heroImage, rotationRef }: IProps) => {
   console.log('');
   return (
     <Animated.View style={[PostFrontStyles.container, flipAnimationTransform(rotationRef, true)]}>

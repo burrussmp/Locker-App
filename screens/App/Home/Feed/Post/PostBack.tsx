@@ -6,23 +6,27 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import {
-  Alert, Animated, Image, StyleSheet, Platform, Text, View,
+  Alert, Animated, ImageBackground, StyleSheet, Platform, Text, View,
 } from 'react-native';
 
 import { Divider } from 'react-native-elements';
 
 import ImageList from 'common/containers/ImageList';
+import TagList from 'common/containers/TagList';
 
 import ImageView from 'react-native-image-viewing';
 
 import LinkText from 'common/components/text/LinkText';
 import GoBackButton from 'common/components/buttons/GoBackButton';
+import ShareButton from 'common/components/buttons/ShareButton';
 import { flipAnimationTransform } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 
 import api, { APIErrorType } from 'api/api';
+
+import faker from 'faker';
 
 const PostBackStyles = StyleSheet.create({
   container: {
@@ -38,14 +42,25 @@ const PostBackStyles = StyleSheet.create({
     elevation: 5,
   },
   topRowContainer: {
-    height: 125,
     width: '100%',
     paddingTop: 15,
     paddingLeft: 25,
+    paddingBottom: 5,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+  },
+  rowContainer: {
+    flex: 1,
+    maxHeight: 140,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  infoContainer: {
+    flex: 1,
+    height: '100%',
   },
   descriptionText: {
     fontSize: 14,
@@ -63,10 +78,21 @@ const PostBackStyles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '100',
   },
+  shareButton: {
+    position: 'absolute',
+    right: 15,
+    top: 8,
+    width: 25,
+    height: 25,
+    borderRadius: 25 / 2,
+    backgroundColor: '#00000055',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   smallHero: {
     height: 100,
     width: 100,
-    marginRight: 25,
+    marginRight: 10,
   },
   topRowDividerLine: {
     backgroundColor: 'black',
@@ -116,36 +142,28 @@ const PostBack: FC<IProps> = ({
       Alert.alert(err.error || err);
     });
   }, []);
-
   const productName = postData.content.name;
   const priceText = `$${postData.content.price}`;
   const productUrl = postData.content.url;
   const descriptionText = '';
+  const productCollection = postData.content.product_collection;
+
   return (
     <Animated.View style={[PostBackStyles.container, flipAnimationTransform(rotationRef, false)]}>
       <View style={PostBackStyles.topRowContainer}>
-        <View style={{
-          flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start',
-        }}
-        >
-          <GoBackButton onPress={flipFront} iconSize={30} />
-          <View style={{
-            flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start',
-          }}
-          >
-            <Text style={PostBackStyles.productText}>{productName}</Text>
+        <View style={PostBackStyles.rowContainer}>
+          <GoBackButton onPress={flipFront} iconSize={25} />
+          <View style={PostBackStyles.infoContainer}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+              <Text style={PostBackStyles.productText}>{productName}</Text>
+            </View>
             <Text style={PostBackStyles.priceText}>{priceText}</Text>
             <LinkText text="Click to view product" url={productUrl} style={PostBackStyles.urlText} />
-            <Text style={PostBackStyles.descriptionText} numberOfLines={5}>
-              {descriptionText}
-            </Text>
+            <TagList tags={faker.random.words(Math.floor(Math.random() * 20)).split(' ')} />
           </View>
         </View>
-        <Image
-          resizeMethod="auto"
-          source={heroImage}
-          style={PostBackStyles.smallHero}
-        />
+        <ImageBackground resizeMethod="resize" source={heroImage} style={PostBackStyles.smallHero} />
+        <ShareButton color="#fff" size={20} shareMessage={postData.content.url} containerStyle={PostBackStyles.shareButton} />
       </View>
       <Divider style={PostBackStyles.topRowDividerLine} />
       <ImageList

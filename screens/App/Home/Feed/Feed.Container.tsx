@@ -7,7 +7,6 @@
 import React, { useEffect, useState, FC } from 'react';
 import { Alert, FlatList, View } from 'react-native';
 
-import SafeArea from 'common/components/SafeArea';
 import Post from 'screens/App/Home/Feed/Post/Post';
 
 import api, { APIErrorType } from 'api/api';
@@ -34,7 +33,7 @@ const FeedContainer: FC = () => {
 
   return (
     <FlatList
-      data={feedData.slice(0, 1)}
+      data={feedData.slice(0, 10)}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={<View style={{ height: 58 }} />}

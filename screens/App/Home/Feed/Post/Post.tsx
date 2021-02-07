@@ -5,7 +5,7 @@
  */
 
 import React, {
-  useEffect, useRef, useState, FC,
+  useEffect, useRef, useState, useReducer, FC,
 } from 'react';
 import { Alert, Animated, View } from 'react-native';
 import LoadingView from 'common/components/LoadingView';
@@ -17,19 +17,21 @@ import TapElement from 'common/components/TapElement';
 import Footer from 'screens/App/Home/Feed/Post/PostFooter';
 import PostFront from 'screens/App/Home/Feed/Post/PostFront';
 import PostBack from 'screens/App/Home/Feed/Post/PostBack';
-import AnimatedLike from 'common/components/animated/AnimatedLike';
+import AnimatedLock from 'common/components/animated/LockAnimated';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { flipAnimation } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
+
+import {
+  ANIMATE, LOCK, SET_PRODUCT_ID, lockButtonReducer, lockButtonInitialState,
+} from 'common/components/buttons/LockButton';
 
 type IProps = {
   id: string;
 };
 
 const PostContainer: FC<IProps> = ({ id }: IProps) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [numLikes, setNumLikes] = useState(0);
   const [isBack, setIsBack] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
@@ -37,18 +39,21 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
   const [heroImageURI, setHeroImageURI] = useState('');
   const [footerColor, setFooterColor] = useState('#fff');
 
+  const [lockButtonState, lockButtonDispatch] = useReducer(lockButtonReducer, lockButtonInitialState);
+
   useEffect(() => {
     let complete = false;
-    api.Post.GetByID(id).then(async (postInfo) => {
+    api.Post.GetByID(id).then((postInfo) => {
       if (!complete) {
         if (postInfo.content.media.blurhash) {
           const blurHashServicer = BlurHashService.BlurHashDecoder(postInfo.content.media.blurhash);
           setHeroImageURI(blurHashServicer.getURI());
           setFooterColor(blurHashServicer.getTabColor(60));
         }
-        const reactionData = await api.Post.GetReactions(postInfo._id);
-        setIsLiked(reactionData.selected === 'like');
-        setNumLikes(reactionData.like);
+        lockButtonDispatch({ type: SET_PRODUCT_ID, productId: postInfo.content._id });
+        if (postInfo.content.locker_product) {
+          lockButtonDispatch({ type: LOCK, lockerProductId: postInfo.content.locker_product });
+        }
         setPostData(postInfo);
 
         api.S3.getMedia(postInfo.content.media.key).then((dataURI) => {
@@ -75,53 +80,48 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
     }
   };
 
-  const onContentDoubleTap = async (event: TapGestureHandlerStateChangeEvent) => {
+  const onContentDoubleTap = (event: TapGestureHandlerStateChangeEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      if (postData) {
-        setShowAnimation(true);
-        if (!isLiked) setNumLikes(numLikes + 1);
-        setIsLiked(true);
-        await api.Post.AddReaction(postData._id, 'like');
-      }
-    }
-  };
-
-  const handleLike = async (like: boolean) => {
-    if (postData) {
-      if (like) {
-        if (!isLiked) setNumLikes(numLikes + 1);
-        setIsLiked(true);
-        await api.Post.AddReaction(postData._id, 'like');
-      } else {
-        if (isLiked) setNumLikes(numLikes - 1);
-        setIsLiked(false);
-        await api.Post.DeleteReaction(postData._id);
+      setShowAnimation(true);
+      if (!lockButtonState.isLocked && lockButtonState.productId) {
+        lockButtonDispatch({ type: ANIMATE, isLocked: true });
+        api.Locker.AddProduct(lockButtonState.productId).then((lockerProduct) => {
+          lockButtonDispatch({ type: LOCK, lockerProductId: lockerProduct._id });
+        }).catch((err: APIErrorType) => {
+          Alert.alert(err.error);
+        });
       }
     }
   };
 
   return (
     <LoadingView style={{ height: 500 }} isLoaded={Boolean(postData)}>
-      <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
-        <View style={{ flex: 1 }}>
-          {!isBack && <PostFront heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />}
-        </View>
-      </TapElement>
-      {showAnimation && <AnimatedLike onComplete={() => setShowAnimation(false)} />}
-      {isBack && (
-        <PostBack
-          flipFront={() => setIsBack(false)}
-          heroImage={{ uri: heroImageURI }}
-          postData={postData as PostType}
-          rotationRef={rotationDegreesRef}
-        />
-      )}
+
+      {!isBack
+        ? (
+          <>
+            <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
+              <View style={{ flex: 1 }}>
+                <PostFront heroImage={{ uri: heroImageURI }} rotationRef={rotationDegreesRef} />
+              </View>
+            </TapElement>
+            {showAnimation && <AnimatedLock onComplete={() => setShowAnimation(false)} />}
+          </>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <PostBack
+              flipFront={() => setIsBack(false)}
+              heroImage={{ uri: heroImageURI }}
+              postData={postData as PostType}
+              rotationRef={rotationDegreesRef}
+            />
+          </View>
+        )}
       {postData
       && (
       <Footer
-        handleLike={handleLike}
-        isLiked={isLiked}
-        numLikes={numLikes}
+        lockButtonDispatch={lockButtonDispatch}
+        lockButtonState={lockButtonState}
         color={footerColor}
         postData={postData}
         orgId={postData?.content.organization || ''}
