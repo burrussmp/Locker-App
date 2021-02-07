@@ -6,11 +6,10 @@
 
 import React, { useState, useEffect, FC } from 'react';
 import {
-  Alert, Animated, ImageBackground, Image, StyleSheet, Platform, Text, TouchableOpacity, View, Share,
+  Alert, Animated, ImageBackground, StyleSheet, Platform, Text, View,
 } from 'react-native';
 
 import { Divider } from 'react-native-elements';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ImageList from 'common/containers/ImageList';
 
@@ -115,25 +114,6 @@ const PostBack: FC<IProps> = ({
   );
   const [visible, setVisible] = useState(false);
   const [currentImageIndex, setImageIndex] = useState(0);
-
-  const handleShare = async () => {
-    try {
-      const result = await Share.share({
-        message: postData.content.url,
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      Alert.alert(error);
-    }
-  };
 
   useEffect(() => {
     Promise.all(postData.content.additional_media.map(async (media) => {

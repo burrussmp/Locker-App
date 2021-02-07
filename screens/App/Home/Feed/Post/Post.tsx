@@ -5,7 +5,7 @@
  */
 
 import React, {
-  useEffect, useRef, useState, FC,
+  useEffect, useRef, useState, useReducer, FC,
 } from 'react';
 import { Alert, Animated, View } from 'react-native';
 import LoadingView from 'common/components/LoadingView';
@@ -17,25 +17,29 @@ import TapElement from 'common/components/TapElement';
 import Footer from 'screens/App/Home/Feed/Post/PostFooter';
 import PostFront from 'screens/App/Home/Feed/Post/PostFront';
 import PostBack from 'screens/App/Home/Feed/Post/PostBack';
-import AnimatedLike from 'common/components/animated/AnimatedLike';
+import AnimatedLock from 'common/components/animated/LockAnimated';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 import { flipAnimation } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
+
+import {
+  ANIMATE, LOCK, setInitialLockerButtonState, lockButtonReducer, lockButtonInitialState,
+} from 'common/components/buttons/LockButton';
 
 type IProps = {
   id: string;
 };
 
 const PostContainer: FC<IProps> = ({ id }: IProps) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [numLikes, setNumLikes] = useState(0);
   const [isBack, setIsBack] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
   const rotationDegreesRef = useRef(new Animated.Value(0)).current;
   const [postData, setPostData] = useState<PostType | undefined>(undefined);
   const [heroImageURI, setHeroImageURI] = useState('');
   const [footerColor, setFooterColor] = useState('#fff');
+
+  const [lockButtonState, lockButtonDispatch] = useReducer(lockButtonReducer, lockButtonInitialState);
 
   useEffect(() => {
     let complete = false;
@@ -46,9 +50,8 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
           setHeroImageURI(blurHashServicer.getURI());
           setFooterColor(blurHashServicer.getTabColor(60));
         }
-        const reactionData = await api.Post.GetReactions(postInfo._id);
-        setIsLiked(reactionData.selected === 'like');
-        setNumLikes(reactionData.like);
+        await setInitialLockerButtonState(postInfo.content._id, lockButtonDispatch);
+
         setPostData(postInfo);
 
         api.S3.getMedia(postInfo.content.media.key).then((dataURI) => {
@@ -75,27 +78,16 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
     }
   };
 
-  const onContentDoubleTap = async (event: TapGestureHandlerStateChangeEvent) => {
+  const onContentDoubleTap = (event: TapGestureHandlerStateChangeEvent) => {
     if (event.nativeEvent.state === State.ACTIVE) {
-      if (postData) {
-        setShowAnimation(true);
-        if (!isLiked) setNumLikes(numLikes + 1);
-        setIsLiked(true);
-        await api.Post.AddReaction(postData._id, 'like');
-      }
-    }
-  };
-
-  const handleLike = async (like: boolean) => {
-    if (postData) {
-      if (like) {
-        if (!isLiked) setNumLikes(numLikes + 1);
-        setIsLiked(true);
-        await api.Post.AddReaction(postData._id, 'like');
-      } else {
-        if (isLiked) setNumLikes(numLikes - 1);
-        setIsLiked(false);
-        await api.Post.DeleteReaction(postData._id);
+      setShowAnimation(true);
+      if (!lockButtonState.isLocked && lockButtonState.productId) {
+        lockButtonDispatch({ type: ANIMATE, isLocked: true });
+        api.Locker.AddProduct(lockButtonState.productId).then((lockerProduct) => {
+          lockButtonDispatch({ type: LOCK, lockerProductId: lockerProduct._id });
+        }).catch((err: APIErrorType) => {
+          Alert.alert(err.error);
+        });
       }
     }
   };
@@ -108,10 +100,10 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
           <>
             <TapElement onSingleTap={onContentTap} onDoubleTap={onContentDoubleTap}>
               <View style={{ flex: 1 }}>
-                <PostFront heroImage={{ uri: heroImageURI }} postData={postData as PostType} rotationRef={rotationDegreesRef} />
+                <PostFront heroImage={{ uri: heroImageURI }} rotationRef={rotationDegreesRef} />
               </View>
             </TapElement>
-            {showAnimation && <AnimatedLike onComplete={() => setShowAnimation(false)} />}
+            {showAnimation && <AnimatedLock onComplete={() => setShowAnimation(false)} />}
           </>
         ) : (
           <View style={{ flex: 1 }}>
@@ -126,9 +118,8 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
       {postData
       && (
       <Footer
-        handleLike={handleLike}
-        isLiked={isLiked}
-        numLikes={numLikes}
+        lockButtonDispatch={lockButtonDispatch}
+        lockButtonState={lockButtonState}
         color={footerColor}
         postData={postData}
         orgId={postData?.content.organization || ''}

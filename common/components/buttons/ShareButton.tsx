@@ -6,7 +6,7 @@
 
 import React, { FC } from 'react';
 import {
-  Alert, StyleSheet, Platform, TouchableOpacity, Share, ViewStyle,
+  Alert, Platform, TouchableOpacity, Share, ViewStyle,
 } from 'react-native';
 
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
