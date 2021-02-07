@@ -5,20 +5,15 @@ import React, {
   useState, useEffect, useRef, FC,
 } from 'react';
 import {
-  Animated, Text, StyleSheet, TouchableOpacity, View,
+  Animated, Text, StyleSheet, TouchableOpacity, View, ViewStyle, TextStyle,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import uuid from 'react-uuid';
 
 import seedRandom from 'seedrandom';
 
-type IProps = {
-  tags: string[];
-  onPress?: (index: number) => void;
-};
-
 const styles = StyleSheet.create({
-  tagContainer: {
+  tagContainerDefault: {
     marginRight: 5,
     marginTop: 5,
     paddingRight: 7,
@@ -27,7 +22,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     borderRadius: 12,
   },
-  text: {
+  textDefault: {
     fontWeight: 'bold',
     fontSize: 12,
     color: '#000',
@@ -41,29 +36,47 @@ const selectRandomColor = (tag: string): string => {
   return PASTEL_COLORS[Math.floor(rng() * PASTEL_COLORS.length)];
 };
 
-const TagList: FC<IProps> = ({ tags, onPress }: IProps) => (
+type IProps = {
+  tags: string[];
+  tagContainerStyle?: ViewStyle;
+  textStyle?: TextStyle;
+  horizontal?: boolean;
+  numColumns?: number;
+  onPress?: (index: number) => void;
+};
+
+const TagList: FC<IProps> = ({
+  tags, tagContainerStyle, textStyle, onPress, horizontal,
+  numColumns,
+}: IProps) => (
   <FlatList
+    showsHorizontalScrollIndicator={false}
     data={tags}
-    columnWrapperStyle={{ flexWrap: 'wrap' }}
-    numColumns={25}
+    columnWrapperStyle={!horizontal ? { flexWrap: 'wrap' } : undefined}
+    numColumns={!horizontal ? numColumns : undefined}
     ListHeaderComponent={<View style={{ paddingStart: 10 }} />}
     ListFooterComponent={<View style={{ paddingEnd: 10 }} />}
     scrollEventThrottle={5}
+    horizontal={horizontal}
     keyExtractor={() => uuid()}
     renderItem={({ item, index }) => (
       <TouchableOpacity
-        style={[styles.tagContainer, { backgroundColor: selectRandomColor(item) }]}
+        style={[styles.tagContainerDefault, { backgroundColor: selectRandomColor(item) }, tagContainerStyle]}
         key={uuid()}
-        activeOpacity={0.8}
+        activeOpacity={0.5}
         onPress={() => console.log(`Pressed tag ${tags[index]}`)}
       >
-        <Text style={styles.text}>{item}</Text>
+        <Text style={[styles.textDefault, textStyle]}>{item}</Text>
       </TouchableOpacity>
     )}
   />
 );
 TagList.defaultProps = {
+  tagContainerStyle: {},
+  textStyle: {},
   onPress: undefined,
+  horizontal: false,
+  numColumns: 25,
 };
 
 export default TagList;

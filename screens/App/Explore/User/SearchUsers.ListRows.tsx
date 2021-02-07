@@ -7,7 +7,7 @@
 import React, { FC } from 'react';
 import { FlatList, View } from 'react-native';
 import { UserSearchResultsType } from 'api/search';
-import SearchRow from 'screens/App/Search/User/components/SearchUsers.Row';
+import SearchRow from 'screens/App/Explore/User/components/SearchUsers.Row';
 
 type IProps = {
   searchResults: UserSearchResultsType;

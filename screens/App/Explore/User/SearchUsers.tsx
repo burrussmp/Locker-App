@@ -5,27 +5,56 @@
  */
 
 import React, { useState, FC } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import {
+  Alert, Text, StyleSheet, View,
+} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
 import api, { APIErrorType } from 'api/api';
 import { UserSearchResultsType } from 'api/search';
 
-import SearchResults from 'screens/App/Search/User/SearchUsers.ListRows';
+import TagList from 'common/containers/TagList';
+
+import SearchResults from 'screens/App/Explore/User/SearchUsers.ListRows';
 import SafeArea from 'common/components/SafeArea';
 
 const SearchStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  headerContainer: {
+    marginLeft: 15,
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  headerText: {
+    fontSize: 30,
+    fontFamily: 'CircularBlack',
   },
   searchInputContainerStyle: {
     backgroundColor: '#eee',
   },
   searchContainerStyle: {
     backgroundColor: '#fff',
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent',
   },
   searchInputStyle: {
     color: '#444',
+  },
+  searchTagContainer: {
+    width: '100%',
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginBottom: 10,
+  },
+  searchTagTextContainer: {
+
+  },
+  searchText: {
+    fontSize: 14,
+    fontFamily: 'CircularBlack',
   },
 });
 
@@ -54,14 +83,25 @@ const SearchUsers: FC = () => {
   };
   return (
     <SafeArea>
-      <View style={{ flex: 1 }}>
+      <View style={SearchStyles.container}>
+        <View style={SearchStyles.headerContainer}>
+          <Text style={SearchStyles.headerText}>Explore</Text>
+        </View>
+        <View style={SearchStyles.searchTagContainer}>
+          <TagList
+            horizontal
+            tags={['Stores', 'Clothes', 'Users', 'Popular', 'Outfits', 'Sustainable Products']}
+            tagContainerStyle={SearchStyles.searchTagTextContainer}
+            textStyle={SearchStyles.searchText}
+          />
+        </View>
         <SearchBar
-          placeholder="Search for a user..."
+          placeholder="Type to search..."
           onChangeText={handleChangeText}
           value={search}
           platform="default"
-          lightTheme
           containerStyle={SearchStyles.searchContainerStyle}
+          lightTheme
           inputContainerStyle={SearchStyles.searchInputContainerStyle}
           inputStyle={SearchStyles.searchInputStyle}
           onCancel={() => {

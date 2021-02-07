@@ -8,8 +8,9 @@ import { RouteProp } from '@react-navigation/native';
 
 export type AppParamList = {
   Home: undefined;
-  Search: {
+  Explore: {
     userId?: string;
+    organizationId?: string;
   };
   Locker: {
     userId?: string;
@@ -23,9 +24,9 @@ export type HomeProp = {
   route: RouteProp<AppParamList, 'Home'>;
 };
 
-export type SearchProp = {
-  navigation: StackNavigationProp<AppParamList, 'Search'>;
-  route: RouteProp<AppParamList, 'Search'>;
+export type ExploreProp = {
+  navigation: StackNavigationProp<AppParamList, 'Explore'>;
+  route: RouteProp<AppParamList, 'Explore'>;
 };
 
 export type LockerProp = {

@@ -24,7 +24,7 @@ import { flipAnimation } from 'services/animations/PostAnimations';
 import { PostType } from 'api/post';
 
 import {
-  ANIMATE, LOCK, setInitialLockerButtonState, lockButtonReducer, lockButtonInitialState,
+  ANIMATE, LOCK, SET_PRODUCT_ID, lockButtonReducer, lockButtonInitialState,
 } from 'common/components/buttons/LockButton';
 
 type IProps = {
@@ -50,8 +50,10 @@ const PostContainer: FC<IProps> = ({ id }: IProps) => {
           setHeroImageURI(blurHashServicer.getURI());
           setFooterColor(blurHashServicer.getTabColor(60));
         }
-        await setInitialLockerButtonState(postInfo.content._id, postInfo.content.is_locked, lockButtonDispatch);
-
+        lockButtonDispatch({ type: SET_PRODUCT_ID, productId: postInfo.content._id });
+        if (postInfo.content.locker_product) {
+          lockButtonDispatch({ type: LOCK, lockerProductId: postInfo.content.locker_product });
+        }
         setPostData(postInfo);
 
         api.S3.getMedia(postInfo.content.media.key).then((dataURI) => {

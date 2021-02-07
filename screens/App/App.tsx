@@ -7,7 +7,7 @@ import CartScreen from 'screens/App/Cart/Cart';
 import HomeScreen from 'screens/App/Home/Home';
 import LockerScreen from 'screens/App/Locker/Locker';
 import SavingsScreen from 'screens/App/Savings/Savings';
-import SearchScreen from 'screens/App/Search/Search';
+import Explore from 'screens/App/Explore/Explore';
 
 import AppBottomTabBar from 'screens/App/App.BottomTabBar';
 
@@ -23,7 +23,7 @@ const AppNavigation: FC = () => {
       enabled={Platform.OS === 'ios'}
     >
       <BottomTab.Navigator
-        initialRouteName="Search"
+        initialRouteName="Explore"
         tabBar={AppBottomTabBar}
         tabBarOptions={{
           activeTintColor: '#000000',
@@ -49,8 +49,8 @@ const AppNavigation: FC = () => {
           }}
         />
         <BottomTab.Screen
-          name="Search"
-          component={SearchScreen}
+          name="Explore"
+          component={Explore}
           options={{
             tabBarLabel: '',
             tabBarIcon: ({ focused }: {focused: boolean}) => (

@@ -77,22 +77,6 @@ export const lockButtonReducer = (state: LockButtonState, action: LockButtonActi
   }
 };
 
-export const setInitialLockerButtonState = async (
-  productId: string, isLocked: boolean, dispatch: (value: LockButtonActions) => void,
-): Promise<void> => {
-  dispatch({ type: SET_PRODUCT_ID, productId });
-  if (isLocked) {
-    dispatch({ type: ANIMATE, isLocked: true });
-    return api.Locker.GetProducts().then((mLockerProducts) => {
-      const foundProduct = mLockerProducts.filter((x) => x.product === productId);
-      if (foundProduct.length === 1) {
-        dispatch({ type: LOCK, lockerProductId: foundProduct[0]._id });
-      }
-    });
-  }
-  return undefined;
-};
-
 type IProps = {
   state: LockButtonState;
   dispatch: (value: LockButtonActions) => void;
