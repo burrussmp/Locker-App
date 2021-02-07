@@ -128,7 +128,7 @@ const PostBack: FC<IProps> = ({
       Alert.alert(err.error || err);
     });
   }, []);
-
+  console.log(postData)
   const productName = postData.content.name;
   const priceText = `$${postData.content.price}`;
   const productUrl = postData.content.url;
