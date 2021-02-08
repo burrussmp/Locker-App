@@ -46,7 +46,7 @@ const ImageList: FC<IProps> = ({ images, onPress }: IProps) => (
           activeOpacity={0.8}
           onPress={() => onPress(index)}
         >
-          <Image source={{ uri: item }} style={styles.image} />
+          <Image source={{ uri: item }} style={styles.image} resizeMethod="scale"/>
         </TouchableOpacity>
       )}
     />

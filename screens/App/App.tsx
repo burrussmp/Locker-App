@@ -7,7 +7,7 @@ import CartScreen from 'screens/App/Cart/Cart';
 import HomeScreen from 'screens/App/Home/Home';
 import LockerScreen from 'screens/App/Locker/Locker';
 import SavingsScreen from 'screens/App/Savings/Savings';
-import Explore from 'screens/App/Explore/Explore';
+import ExploreNavigation from 'screens/App/Explore/ExploreNavigation';
 
 import AppBottomTabBar from 'screens/App/App.BottomTabBar';
 
@@ -50,7 +50,7 @@ const AppNavigation: FC = () => {
         />
         <BottomTab.Screen
           name="Explore"
-          component={Explore}
+          component={ExploreNavigation}
           options={{
             tabBarLabel: '',
             tabBarIcon: ({ focused }: {focused: boolean}) => (

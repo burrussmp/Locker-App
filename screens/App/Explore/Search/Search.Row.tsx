@@ -1,7 +1,7 @@
 /**
  * @author Matthew P. Burruss
  * @date 1/30/2021
- * @desc Component for a single search item
+ * @desc A component for a search row
  */
 
 import React, { useState, useEffect, FC } from 'react';
@@ -9,15 +9,14 @@ import {
   View, Text, StyleSheet, Alert, ImageSourcePropType,
 } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import api, { APIErrorType } from 'api/api';
-import { UserSearchResultsType } from 'api/search';
 
 import BlurHashService from 'services/Images/BlurHashDecoder';
 
 import DefaultAvatar from 'assets/images/profile-pic.png';
+import { mediaType } from 'api/S3';
 
 const SearchItemStyles = StyleSheet.create({
   title: {
@@ -38,50 +37,51 @@ const SearchItemStyles = StyleSheet.create({
 });
 
 type IProps = {
-  userSearchResult: UserSearchResultsType[0]
+  title: string;
+  onPress: () => void;
+  subTitle?: string;
+  media?: mediaType;
 }
-const SearchRow: FC<IProps> = ({ userSearchResult }: IProps) => {
-  const navigation = useNavigation();
+const SearchRow: FC<IProps> = ({
+  title, onPress, subTitle, media,
+}: IProps) => {
   const [source, setSource] = useState(DefaultAvatar as ImageSourcePropType);
   useEffect(() => {
     let complete = false;
     if (!complete) {
-      if (userSearchResult.data.profile_photo && userSearchResult.data.profile_photo.blurhash) {
-        const BlurHashDecoder = BlurHashService.BlurHashDecoder(userSearchResult.data.profile_photo.blurhash);
-        setSource({ uri: BlurHashDecoder.getURI() });
-        const { key } = userSearchResult.data.profile_photo;
-        api.S3.getMedia(key, 'large').then((profilePhotoURI) => {
-          setSource({ uri: profilePhotoURI });
+      if (media) {
+        if (media.blurhash) {
+          const BlurHashDecoder = BlurHashService.BlurHashDecoder(media.blurhash);
+          setSource({ uri: BlurHashDecoder.getURI() });
+        }
+        api.S3.getMedia(media.key, 'large').then((dataURI) => {
+          setSource({ uri: dataURI });
         }).catch((err: APIErrorType) => {
           Alert.alert(err.error);
         });
       }
-      setSource(DefaultAvatar);
     }
     return function cleanup() {
       complete = true;
     };
   }, []);
-  const subtitleText = `${userSearchResult.data.first_name || ''} ${userSearchResult.data.last_name || ''}`;
   return (
-    <ListItem
-      bottomDivider
-      onPress={() => {
-        navigation.navigate('FoundUser', {
-          userId: userSearchResult.data._id,
-        });
-      }}
-    >
+    <ListItem bottomDivider onPress={onPress}>
       <Avatar rounded size="small" source={source} />
       <View style={SearchItemStyles.rowContainer}>
         <View>
-          <Text style={SearchItemStyles.title}>{userSearchResult.data.username}</Text>
-          <Text style={SearchItemStyles.subTitle}>{subtitleText}</Text>
+          <Text style={SearchItemStyles.title}>{title}</Text>
+          <Text style={SearchItemStyles.subTitle}>{subTitle}</Text>
         </View>
         <Icon name="ios-arrow-forward" color="tan" size={25} />
       </View>
     </ListItem>
   );
+};
+
+SearchRow.defaultProps = {
+  subTitle: '',
+  media: undefined,
 };
 
 export default SearchRow;

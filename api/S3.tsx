@@ -22,7 +22,7 @@ export type mediaData = {
 export const mediaType = T.type({
   key: T.string,
   mimetype: T.string,
-  blurhash: T.string,
+  blurhash: T.union([T.undefined, T.string]),
 });
 export type mediaType = T.TypeOf<typeof mediaType>;
 
