@@ -7,6 +7,11 @@
 import utils from 'api/utils';
 import * as T from 'io-ts';
 
+export type GenericSearchType = {
+  data: any;
+  score: number;
+}[];
+
 /**
  * @desc Results when a user search is performed
  */

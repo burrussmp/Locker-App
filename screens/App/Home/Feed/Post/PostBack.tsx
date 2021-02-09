@@ -119,7 +119,7 @@ const PostBack: FC<IProps> = ({
 }: IProps) => {
   const [additionalMedia, setAdditionalMedia] = useState<Array<additionalMediaState>>(
     postData.content.additional_media.map((x) => {
-      const blurHashServicer = BlurHashService.BlurHashDecoder(x.blurhash);
+      const blurHashServicer = BlurHashService.BlurHashDecoder(x.blurhash || 'LEHV6nWB2yk8pyo0adR*.7kCMdnj');
       return {
         key: x.key,
         uri: blurHashServicer.getURI(),

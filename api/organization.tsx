@@ -17,6 +17,7 @@ export const OrganizationListType = T.array(
     _id: T.string,
     updatedAt: T.string,
     createdAt: T.string,
+    logo: mediaType,
   }),
 );
 export type OrganizationListType = T.TypeOf<typeof OrganizationListType>;

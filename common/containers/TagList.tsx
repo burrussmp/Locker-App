@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import {
   Animated, Text, StyleSheet, TouchableOpacity, View, ViewStyle, TextStyle,
+  GestureResponderEvent,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import uuid from 'react-uuid';
@@ -42,7 +43,7 @@ type IProps = {
   textStyle?: TextStyle;
   horizontal?: boolean;
   numColumns?: number;
-  onPress?: (index: number) => void;
+  onPress?: (index: number, event: GestureResponderEvent) => void;
 };
 
 const TagList: FC<IProps> = ({
@@ -64,7 +65,9 @@ const TagList: FC<IProps> = ({
         style={[styles.tagContainerDefault, { backgroundColor: selectRandomColor(item) }, tagContainerStyle]}
         key={uuid()}
         activeOpacity={0.5}
-        onPress={() => console.log(`Pressed tag ${tags[index]}`)}
+        onPress={(event: GestureResponderEvent) => {
+          if (onPress) onPress(index, event);
+        }}
       >
         <Text style={[styles.textDefault, textStyle]}>{item}</Text>
       </TouchableOpacity>
@@ -74,7 +77,7 @@ const TagList: FC<IProps> = ({
 TagList.defaultProps = {
   tagContainerStyle: {},
   textStyle: {},
-  onPress: undefined,
+  onPress: () => undefined,
   horizontal: false,
   numColumns: 25,
 };
