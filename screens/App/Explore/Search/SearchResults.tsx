@@ -34,39 +34,42 @@ type IProps = {
   } | undefined;
 };
 
-const SearchResults: FC<IProps> = ({ searchData }: IProps) => (
-  <View>
-    <FlatList
-      data={searchData?.organizations || []}
-      renderItem={({ item }) => (
-        <SearchRow
-          title={item.data.name}
-          subTitle="Shop"
-          media={item.data.logo}
-          onPress={() => {
-            useNavigation().navigate('FoundOrganization', { organizationId: item.data._id });
-          }}
-        />
-      )}
-      keyExtractor={(item: OrganizationSearchResultsType[0]) => item.data.name}
-      ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
-    />
-    <FlatList
-      data={searchData?.users || []}
-      renderItem={({ item }) => (
-        <SearchRow
-          title={item.data.username}
-          subTitle={'Locker' || `${item.data.first_name || ''} ${item.data.last_name || ''}`}
-          media={item.data.profile_photo}
-          onPress={() => {
-            useNavigation().navigate('FoundUser', { userId: item.data._id });
-          }}
-        />
-      )}
-      keyExtractor={(item: UserSearchResultsType[0]) => item.data.username}
-      ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
-    />
-  </View>
-);
+const SearchResults: FC<IProps> = ({ searchData }: IProps) => {
+  const navigation = useNavigation();
+  return (
+    <View>
+      <FlatList
+        data={searchData?.organizations || []}
+        renderItem={({ item }) => (
+          <SearchRow
+            title={item.data.name}
+            subTitle="Shop"
+            media={item.data.logo}
+            onPress={() => {
+              navigation.navigate('FoundOrganization', { organizationId: item.data._id });
+            }}
+          />
+        )}
+        keyExtractor={(item: OrganizationSearchResultsType[0]) => item.data.name}
+        ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
+      />
+      <FlatList
+        data={searchData?.users || []}
+        renderItem={({ item }) => (
+          <SearchRow
+            title={item.data.username}
+            subTitle={'Locker' || `${item.data.first_name || ''} ${item.data.last_name || ''}`}
+            media={item.data.profile_photo}
+            onPress={() => {
+              navigation.navigate('FoundUser', { userId: item.data._id });
+            }}
+          />
+        )}
+        keyExtractor={(item: UserSearchResultsType[0]) => item.data.username}
+        ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
+      />
+    </View>
+  );
+};
 
 export default SearchResults;

@@ -7,7 +7,7 @@
 import React, { FC } from 'react';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 
-import Locker from 'screens/App/Locker/Locker';
+import LockerScreen from 'screens/App/Locker/Locker';
 import ExploreLanding from 'screens/App/Explore/ExploreLanding';
 import SearchSpecific from 'screens/App/Explore/Search/SearchSpecific';
 
@@ -21,7 +21,6 @@ const ExploreNavigation: FC<ExploreProp> = () => {
     <ExploreNavigator.Navigator
       initialRouteName="ExploreLanding"
       headerMode="none"
-      screenOptions={{ cardStyleInterpolator: CardStyleInterpolators.forNoAnimation }}
     >
       <ExploreNavigator.Screen
         name="ExploreLanding"
@@ -30,7 +29,7 @@ const ExploreNavigation: FC<ExploreProp> = () => {
       />
       <ExploreNavigator.Screen
         name="FoundUser"
-        component={Locker}
+        component={LockerScreen}
         options={{ headerShown: false }}
       />
       <ExploreNavigator.Screen

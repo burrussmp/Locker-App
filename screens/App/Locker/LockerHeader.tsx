@@ -28,50 +28,24 @@ const styles = StyleSheet.create({
 
 type IProps = {
   lockerData: LockerInfoType,
+  userData: UserInfoType,
   isMyLocker: boolean,
+  userAvatarUri: string;
 }
 
-const LockerHeader: FC<IProps> = ({ lockerData, isMyLocker }: IProps) => {
-  const [userData, setUserData] = useState<UserInfoType | undefined>(undefined);
-  const [userAvatarUri, setUserAvatarUri] = useState('');
-  console.log(lockerData)
-  useEffect(() => {
-    let complete = false;
-    api.User.GetByID(lockerData?.user).then((userInfo) => {
-      if (!complete) {
-        setUserData(userInfo);
-      }
-      if (userInfo.profile_photo?.blurhash) {
-        const blurHashServicer = BlurHashService.BlurHashDecoder(userInfo.profile_photo.blurhash);
-        setUserAvatarUri(blurHashServicer.getURI());
-      }
-      if (userInfo.profile_photo?.key) {
-        api.S3.getMedia(userInfo.profile_photo?.key).then((dataUri) => {
-          setUserAvatarUri(dataUri);
-        }).catch((err: APIErrorType) => {
-          Alert.alert(err.error);
-        });
-      }
-    }).catch((err: APIErrorType) => {
-      Alert.alert(err.error);
-    });
-    return function cleanup() {
-      complete = true;
-    };
-  }, []);
-
-  return (
-    <View>
-      <View style={styles.container}>
-        <Avatar
-          rounded
-          size={50}
-          source={userAvatarUri ? { uri: userAvatarUri } : undefined}
-        />
-        <Text style={styles.text}>{lockerData ? lockerData.name : ''}</Text>
-      </View>
+const LockerHeader: FC<IProps> = ({
+  lockerData, userData, isMyLocker, userAvatarUri,
+}: IProps) => (
+  <View>
+    <View style={styles.container}>
+      <Avatar
+        rounded
+        size={50}
+        source={userAvatarUri ? { uri: userAvatarUri } : undefined}
+      />
+      <Text style={styles.text}>{isMyLocker ? 'My Locker' : `${userData?.username}'s Locker`}</Text>
     </View>
-  );
-};
+  </View>
+);
 
 export default LockerHeader;
